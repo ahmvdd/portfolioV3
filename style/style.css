@@ -1,5 +1,6 @@
 /* 1.1.general-setting-pages *************************/
 /****************************************************/
+
 :root {
 	--pr-color: #fff;
 	--second-color: #000000;
@@ -22,6 +23,7 @@ body {
 }
 
 /******************************************/
+
 section {
 	padding-top: 50px;
 	padding-bottom: 100px;
@@ -45,6 +47,7 @@ section {
 
 /* Paralax Effect On GSAP **********************************/
 /* header ********/
+
 .header {
 	position: relative;
 	display: flex;
@@ -167,12 +170,7 @@ section {
 	z-index: -1;
 }
 
-
-
-
-
-
-/* about *************************************************************************************************************************/
+/* About Section */
 
 .about .section-title {
     text-align: center;
@@ -199,21 +197,19 @@ section {
 }
 
 .about__txt {
-    padding: 0 20px; /* Ajoute un padding latéral */
+    padding: 0 20px;
 }
 
 .about__p {
     font-size: 1.5rem;
     color: var(--thre-color);
-	padding-bottom: 200px;	
-	width: 150%; /* Ajuste la largeur (en pourcentage ou en pixels) */
-    margin-left: -20%; 
-	justify-content: center;
-	
+    padding-bottom: 200px;
+    width: 150%;
+    margin-left: -20%;
+    justify-content: center;
 }
 
-
-/* benefits ********************************************************************************************************/
+/* Benefits Section */
 .benefits__list {
 	display: flex;
 	flex-wrap: wrap;
@@ -240,7 +236,7 @@ section {
 	color: var(--thre-color);
 }
 
-/* work ****************************************************************************************************************************************/
+/* Work Section */
 .work {
 	padding-top: 150px;
 }
@@ -273,8 +269,8 @@ section {
 	height: 50%;
 	overflow: hidden;
 	border-radius: 20px;
-	filter: brightness(0.4); /* Ajustez la valeur pour rendre l'image plus sombre */
-	transition: filter 0.3s ease
+	filter: brightness(0.4);
+	transition: filter 0.3s ease;
 }
 
 .work__item-img img {
@@ -284,7 +280,7 @@ section {
 	object-fit: cover;
 }
 
-/* serv ************************************************************************************************************************************/
+/* Serv Section */
 .serv__item {
 	position: relative;
 	padding: 40px 0;
@@ -315,25 +311,24 @@ section {
 	text-transform: uppercase;
 }
 
-/* footer ****************************************************************************************************************************************/
-
+/* Footer Section */
 .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Ajustez selon le besoin pour les écrans plus petits */
-    padding: 20px; /* Ajoutez un padding pour éviter que le contenu touche les bords */
-    box-sizing: border-box; /* Inclut le padding dans la hauteur totale */
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .footer__div {
-    font-size: 5vw; /* Utilisez une unité relative pour une taille de police responsive */
-    padding-left: 5%; /* Ajustez le padding pour les écrans plus petits */
+    font-size: 5vw;
+    padding-left: 5%;
     padding-right: 5%;
-    letter-spacing: 0.5em; /* Ajustez pour être proportionnel à la taille de la police */
+    letter-spacing: 0.5em;
     color: var(--pr-color);
     text-transform: uppercase;
-    text-align: center; /* Centrez le texte pour les écrans plus petits */
+    text-align: center;
 }
 
 .footer__div span {
@@ -346,65 +341,6 @@ section {
 }
 
 /* Media Queries pour ajuster le style sur des écrans spécifiques */
-@media (max-width: 768px) {
-    .footer {
-        height: auto; /* Permet au footer de s'ajuster à la hauteur du contenu */
-        padding: 10px; /* Réduisez le padding sur les écrans plus petits */
-    }
-
-    .footer__div {
-        font-size: 6vw; /* Ajustez la taille de police pour les écrans plus petits */
-        letter-spacing: 0.3em; /* Réduisez l'espacement des lettres */
-    }
-}
-
-@media (max-width: 480px) {
-    .footer__div {
-        font-size: 8vw; /* Augmentez la taille de police pour les petits écrans */
-        letter-spacing: 0.1em; /* Encore plus petit espacement des lettres */
-    }
-}
-
-
-
-.benefits {
-    text-align: center;
-    margin-bottom: 30px; /* Ajout d'un espacement sous le titre */
-}
-
-.benefits__item {
-    display: flex;
-    flex-direction: column; /* Empile les éléments verticalement */
-    align-items: center; /* Centre les éléments horizontalement */
-    gap: 10px; /* Espacement entre le numéro et le texte */
-    margin-bottom: 20px; /* Espacement entre les items */
-}
-
-.benefits__item-num {
-    font-size: 50px; /* Ajuste la taille du numéro pour qu'il ne domine pas */
-    font-weight: bold;
-    line-height: 1;
-}
-
-.benefits__item-txt {
-    font-size: 16px; /* Ajuste la taille pour une meilleure lisibilité */
-    line-height: 1.5;
-    max-width: 90%; /* Empêche le texte de dépasser les limites */
-    text-align: center;
-}
-
-/* Responsive fixes */
-@media (max-width: 480px) {
-    .benefits__item-num {
-        font-size: 40px; /* Réduit la taille du numéro sur petit écran */
-    }
-    .benefits__item-txt {
-        font-size: 14px; /* Réduit la taille du texte pour s'adapter */
-    }
-}
-
-
-/* Mobile-first design */
 
 /* Pour les écrans ≤ 1200px */
 @media (max-width: 1200px) {
@@ -433,28 +369,45 @@ section {
 @media (max-width: 768px) {
 	.about__wrapp {
 		flex-direction: column;
-		gap: 20px;
+		align-items: center;
+		padding: 10px;
 	}
-	.about__img, .about__txt {
+
+	.about__img,
+	.about__txt {
 		width: 100%;
-		padding-right: 0;
+		max-width: 500px;
 	}
-	.about__img {
-		height: auto;
-	}
+
 	.about__p {
-		font-size: 18px;
-		line-height: 1.6;
+		font-size: 1rem;
+		line-height: 1.4;
+		margin-left: 0;
 	}
+
 	.benefits__item {
 		width: calc(50% - 20px);
 	}
+
+	.work__item {
+		width: 100%;
+		height: auto;
+	}
+
+	.work__item-num {
+		font-size: 30px;
+	}
+
 	.section-title {
 		font-size: 50px;
 	}
+
 	.section-title__square {
 		width: 100px;
 		height: 100px;
+	}
+	.cc p{
+		font-size: 10px;
 	}
 }
 
@@ -478,7 +431,7 @@ section {
 		height: auto;
 	}
 	.work__item-num {
-		font-size: 40px;
+		font-size: 25px;
 	}
 	.serv__item-txt {
 		font-size: 30px;
@@ -491,8 +444,10 @@ section {
 		font-size: 20px;
 		padding: 10% 10% 10% 10%;
 	}
+	.cc p{
+		font-size: 10px;
+	}
 }
-
 
 /* Exemple de scrollbar personnalisée */
 ::-webkit-scrollbar {
@@ -500,10 +455,42 @@ section {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--thre-color); /* Couleur de la barre */
+    background: var(--thre-color);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.cc p{
+	text-align: center;
+	color: var(--thre-color);
+	font-size: 60px;
+}
+/* Pour les écrans ≤ 1200px */
+@media (max-width: 1231px) {
+    .cc p {
+        font-size: 50px;
+		padding: 45px;
+
+    }
+}
+
+
+/* Pour les écrans ≤ 768px */
+@media (max-width: 768px) {
+    .cc p {
+        font-size: 30px;
+		padding: 45px;
+
+    }
+}
+
+/* Pour les écrans ≤ 480px */
+@media (max-width: 480px) {
+    .cc p {
+        font-size: 15px;
+		padding: 5%;
+    }
 }
