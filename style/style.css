@@ -5,6 +5,7 @@
 	--second-color: #000000;
 	--cubicbz: cubic-bezier(.9, 0, .1, 1);
 	--fz-big: 60px;
+	--thre-color: rgba(0, 255, 60, 0.725);
 }
 
 * {
@@ -22,8 +23,8 @@ body {
 
 /******************************************/
 section {
-	padding-top: 150px;
-	padding-bottom: 50px;
+	padding-top: 50px;
+	padding-bottom: 100px;
 }
 
 .wrapp {
@@ -117,8 +118,8 @@ section {
 
 .title .stroke {
 	display: inline-block;
-	color: transparent;
-	-webkit-text-stroke: 1px var(--pr-color);
+	color: var(--thre-color);
+	/* -webkit-text-stroke: 1px var(--pr-color); */
 }
 
 .header__img {
@@ -166,45 +167,53 @@ section {
 	z-index: -1;
 }
 
-/* about ********/
+
+
+
+
+
+/* about *************************************************************************************************************************/
+
 .about .section-title {
-	text-align: left;
+    text-align: center;
+    font-size: 5rem;
+    margin-bottom: 20px;
 }
 
 .about__wrapp {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .about__img,
 .about__txt {
-	width: calc(50% - 35px);
-	height: auto;
+    width: 100%;
+    max-width: 600px; /* Limite la taille pour centrer mieux */
+    margin-bottom: 20px;
 }
 
 .about__txt {
-	padding-right: 70px;
+    padding: 0 20px; /* Ajoute un padding latéral */
 }
 
 .about__p {
-	line-height: 1.4;
-	font-size: 20px;
-	color: #4b4b4b;
+    font-size: 1.5rem;
+    color: var(--thre-color);
+	padding-bottom: 200px;	
+	width: 150%; /* Ajuste la largeur (en pourcentage ou en pixels) */
+    margin-left: -20%; 
+	justify-content: center;
+	
 }
 
-.about__img {
-	height: 100vh;
-	overflow: hidden;
-}
 
-.about__img img {
-	display: block;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-/* benefits ********/
+/* benefits ********************************************************************************************************/
 .benefits__list {
 	display: flex;
 	flex-wrap: wrap;
@@ -228,10 +237,10 @@ section {
 
 .benefits__p {
 	font-size: 20px;
-	color: #4b4b4b;
+	color: var(--thre-color);
 }
 
-/* work ********/
+/* work ****************************************************************************************************************************************/
 .work {
 	padding-top: 150px;
 }
@@ -261,7 +270,7 @@ section {
 
 .work__item-img {
 	width: 90%;
-	height: 80%;
+	height: 50%;
 	overflow: hidden;
 	border-radius: 20px;
 	filter: brightness(0.4); /* Ajustez la valeur pour rendre l'image plus sombre */
@@ -275,7 +284,7 @@ section {
 	object-fit: cover;
 }
 
-/* serv ********/
+/* serv ************************************************************************************************************************************/
 .serv__item {
 	position: relative;
 	padding: 40px 0;
@@ -302,11 +311,11 @@ section {
 
 .serv__item-txt {
 	font-size: 50px;
-	color: #4b4b4b;
+	color: var(--thre-color);
 	text-transform: uppercase;
 }
 
-/* footer ********/
+/* footer ****************************************************************************************************************************************/
 
 .footer {
     display: flex;
@@ -355,18 +364,6 @@ section {
         letter-spacing: 0.1em; /* Encore plus petit espacement des lettres */
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -494,4 +491,19 @@ section {
 		font-size: 20px;
 		padding: 10% 10% 10% 10%;
 	}
+}
+
+
+/* Exemple de scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--thre-color); /* Couleur de la barre */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
