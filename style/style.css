@@ -416,6 +416,9 @@ section {
 	.header {
 		padding: 0 20px;
 	}
+	.char{
+		font-size: 30px;
+	}
 	.title {
 		font-size: 40px;
 	}
@@ -436,10 +439,14 @@ section {
 	.serv__item-txt {
 		font-size: 30px;
 	}
-	.about__p {
-		font-size: 16px;
-		line-height: 1.5;
-	}
+	.about .section-title{
+		font-size: 45px;
+		text-align: center;
+	}.about__p {
+        font-size: 0.9rem; /* Réduisez encore la taille de la police pour les plus petits écrans */
+        padding-bottom: 30px; /* Réduisez davantage le padding */
+        width: 90%; /* Limitez encore la largeur pour s'adapter aux petits écrans */
+    }
 	.footer__div span {
 		font-size: 20px;
 		padding: 10% 10% 10% 10%;
@@ -493,4 +500,19 @@ section {
         font-size: 15px;
 		padding: 5%;
     }
+}
+
+
+
+
+.sticky-name {
+    position: fixed; /* Cela rend l'élément fixé même lors du défilement */
+    top: 10px; /* Positionne l'élément à 10px du haut de la page */
+    right: 10px; /* Positionne l'élément à 10px du bord droit */
+    font-size: 20px; /* Taille du texte */
+    color: white; /* Couleur du texte */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    padding: 10px; /* Espace autour du texte */
+    font-family: 'Syne', sans-serif; /* Police du texte */
+    z-index: 1000; /* Assure-toi que l'élément soit au-dessus des autres éléments */
 }

@@ -174,3 +174,17 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 	footer();
 });
+document.addEventListener("DOMContentLoaded", function () {
+	'use strict';
+	
+	// Animation de l'élément sticky-name
+	gsap.from('.sticky-name', {
+	  xPercent: 100, // Commence à droite de l'écran (100% à droite)
+	  opacity: 0, // Commence avec une opacité de 0 (invisible)
+	  duration: 1.5, // Durée de l'animation
+	  ease: "power4.out", // Un easing pour une animation fluide
+	});
+  
+	// Votre code GSAP existant ici...
+  });
+  
