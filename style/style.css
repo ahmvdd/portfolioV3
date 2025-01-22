@@ -117,6 +117,7 @@ section {
 .title_paralax {
 	display: inline-block;
 	will-change: transform;
+	padding: 55px;
 }
 
 .title .stroke {
@@ -409,6 +410,9 @@ section {
 	.cc p{
 		font-size: 10px;
 	}
+	.cc a{
+		font-size: 10px;
+	}
 }
 
 /* Pour les écrans ≤ 480px */
@@ -437,7 +441,7 @@ section {
 		font-size: 25px;
 	}
 	.serv__item-txt {
-		font-size: 30px;
+		font-size: 22px;
 	}
 	.about .section-title{
 		font-size: 45px;
@@ -454,6 +458,15 @@ section {
 	.cc p{
 		font-size: 10px;
 	}
+	.cc a{
+		font-size: 20px;
+	}
+	.cc span{
+		font-size: 30px;
+	}
+	
+	
+	
 }
 
 /* Exemple de scrollbar personnalisée */
@@ -475,6 +488,25 @@ section {
 	color: var(--thre-color);
 	font-size: 60px;
 }
+
+
+.cc p:hover{
+	color:  rgb(1, 104, 1);
+}
+.cc a{
+	display: flex; /* Active Flexbox */
+    justify-content: center; /* Centre horizontalement les enfants */
+    align-items: center; /* Centre verticalement les enfants */
+	color: var(--thre-color);
+	font-size: clamp(10px, 20vw, 50px);
+	
+}
+
+.cc a:hover{
+	color: rgb(1, 104, 1);
+	
+}
+
 /* Pour les écrans ≤ 1200px */
 @media (max-width: 1231px) {
     .cc p {
