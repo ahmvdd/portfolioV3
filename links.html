@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Links</title>
+    <style>
+        :root {
+            --pr-color: #ffffff; /* Blanc - Primaire */
+            --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
+            --cubicbz: cubic-bezier(.9, 0, .1, 1);
+            --fz-big: 60px;
+            --thre-color: #50a01e; /* Vert dynamique - Tertiaire */
+        }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--second-color);
+            color: var(--pr-color);
+            font-family: Arial, sans-serif;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+        }
+        .grid-background {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+        }
+        .back-link a {
+            color: var(--pr-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s var(--cubicbz);
+        }
+        .back-link a:hover {
+            color: var(--thre-color);
+        }
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        .social-links {
+            list-style: none;
+            padding: 0;
+        }
+        .social-links li {
+            margin: 20px 0;
+            font-size: var(--fz-big);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .social-links a {
+            text-decoration: none;
+            color: var(--pr-color);
+            transition: color 0.3s var(--cubicbz);
+        }
+        .social-links a:hover {
+            color: var(--thre-color);
+        }
+        @media (max-width: 768px) {
+            :root {
+                --fz-big: 40px;
+            }
+            .back-link {
+                font-size: 16px;
+                top: 10px;
+                left: 10px;
+            }
+            .social-links li {
+                font-size: var(--fz-big);
+            }
+        }
+        @media (max-width: 480px) {
+            :root {
+                --fz-big: 30px;
+            }
+            .back-link {
+                font-size: 14px;
+            }
+            .social-links li {
+                font-size: var(--fz-big);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="back-link">
+        <a href="index.html">&#8592; Retour</a>
+    </div>
+    <div class="container">
+        <ul class="social-links">
+            <li><a href="https://www.linkedin.com/in/ahmed-sayeh-189989222/" target="_blank">/ LINKEDIN</a></li>
+            <li><a href="https://github.com/ahmvdd?tab=overview&from=2025-03-01&to=2025-03-12" target="_blank">/ GITHUB</a></li>
+            <li><a href="https://x.com/ahmhs" target="_blank">/ X (TWITTER)</a></li>
+            <li><a href="https://discord.com/users/yourid" target="_blank">/ DISCORD</a></li>
+        </ul>
+    </div>
+</body>
+</html>

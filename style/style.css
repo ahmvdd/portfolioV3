@@ -3,7 +3,7 @@
 
 :root {
 	--pr-color: #ffffff; /* Blanc - Primaire */
-	--second-color:	linear-gradient(0deg, rgba(5,30,10,1) 1%, rgba(20,50,40,1) 15%, rgba(0,20,30,1) 40%, rgba(0,0,0,1) 98%);
+	--second-color:linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
 	--cubicbz: cubic-bezier(.9, 0, .1, 1);
 	--fz-big: 60px;
 	--thre-color: #50a01e; /* Vert dynamique - Tertiaire */
@@ -56,6 +56,9 @@ section {
 	align-items: center;
 	width: 100%;
 	height: 100vh;
+}
+#rr {
+	color: whitesmoke;
 }
 
 .header__marq {
@@ -250,8 +253,8 @@ section {
 
 .work__item {
     position: relative;
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 300px;
     border-radius: 15px;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
@@ -275,6 +278,7 @@ section {
     mix-blend-mode: difference;
     z-index: 2;
     transition: color 0.3s ease;
+	
 }
 
 .work__item:hover .work__item-num {
@@ -492,6 +496,13 @@ section {
 		
 	}
 	
+	@media (max-width: 480px) {
+		.serv__item-arrow img {
+			width: 40px;  /* Réduit la taille */
+			height: auto; /* Conserve les proportions */
+		}
+	}
+	
 	
 	
 }
@@ -517,8 +528,8 @@ section {
 
 }
 ::selection {
-	background-color: #8ce5f5b8;  
-	color: #ffffff;  
+	/* background-color: #000000b8;   */
+	color: #ffffff; 
   }
 
 .cc p {
