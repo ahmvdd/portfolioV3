@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --pr-color: #ffffff;
+            --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
+            --cubicbz: cubic-bezier(.9, 0, .1, 1);
+            --fz-big: 60px;
+            --thre-color: #007074;
+            --nav-bg: rgba(251, 251, 251, 0.051);
+            --nav-blur: blur(10px);
+            --nav-shadow: rgba(0, 0, 0, 0.2);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--second-color);
+            color: var(--pr-color);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1200px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--nav-bg);
+            backdrop-filter: var(--nav-blur);
+            -webkit-backdrop-filter: var(--nav-blur);
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px var(--nav-shadow);
+            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);       
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--pr-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s var(--cubicbz);
+        }
+
+        nav ul li a:hover {
+            color: var(--thre-color);
+        }
+
+        .btn-download {
+            background-color: var(--pr-color);
+            color: black;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            transition:
+                background-color 0.3s ease-in-out,
+                transform 0.3s ease-in-out,
+                color 0.3s ease-in-out;
+        }
+
+        .btn-download:hover {
+            background-color: var(--thre-color);
+            color: var(--pr-color);
+            transform: scale(1.05);
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 80px);
+            padding-top: 80px;
+        }
+
+        .image {
+            flex: 0 0 55%;
+            position: relative;
+            right: -50px;
+        }
+
+        .image img {
+            width: 80%;
+            height: auto;
+            border-radius: 30px;
+             transition: transform 0.5s var(--cubicbz);
+        }
+        .image img:hover{
+            filter: brightness(150%); /* Rend l'image plus lumineuse */
+
+        }
+        .text {
+            flex: 0 0 45%;
+            padding-left: 50px;
+        }
+
+        h1 {
+            font-size: var(--fz-big);
+            color: var(--thre-color);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s var(--cubicbz) forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-info {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            color: var(--pr-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-info h2 {
+            font-size: 24px;
+            color: var(--thre-color);
+            margin-bottom: 15px;
+        }
+
+        .project-info p {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 100px 20px 20px;
+            }
+            .image, .text {
+                flex: 0 0 100%;
+                right: 0;
+                padding-left: 0;
+            }
+            .image {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#magasin">Intro</a></li>
+            <li><a href="#pro">Pro</a></li>
+            <li><a href="#equipes">Inspiration</a></li>
+            <li><a href="#developpeurs">Explication</a></li>
+        </ul>
+        <a href="index.html" class="btn-download">Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="text">
+            <h1>Plateforme de Communication Moderne</h1>
+            <p>Bienvenue sur notre plateforme de chat, conçue pour faciliter les échanges et la collaboration. Nous allions design intuitif et fonctionnalités avancées pour une communication fluide et efficace.</p>
+            <p>Explorez nos outils et découvrez comment nous pouvons améliorer les interactions au sein de votre équipe ou communauté.</p>
+        </div>
+        <div class="image">
+            <img src="img/rr.png" alt="Plateforme de Communication">
+        </div>
+    </div>
+    
+    <div class="project-info">
+        <h2>À Propos de ce Projet</h2>
+        <p>L'idée de cette plateforme est née de la nécessité de centraliser et de simplifier la communication au sein d'une école de tech. L'objectif est de créer un outil intuitif et efficace pour faciliter les échanges entre étudiants, enseignants et personnel administratif, tout en permettant de gérer facilement les demandes et les projets collaboratifs.</p>
+        <p>La plateforme a été développée en utilisant les technologies suivantes :</p>
+        <ul>
+            <li><strong>Front-end :</strong> React pour une interface utilisateur moderne, intuitive et responsive.</li>
+            <li><strong>Back-end :</strong>laravel / php pour gérer les communications en temps réel et les API.</li>
+            <li><strong>Base de données :</strong> mysql pour stocker les messages, les demandes et les informations des utilisateurs de manière sécurisée.</li>
+        </ul>
+        <p>Durant le développement, plusieurs défis ont été relevés :</p>
+        <ul>
+            <li><strong>Communication en temps réel :</strong> Mettre en place un système de messagerie instantanée fluide et fiable.</li>
+            <li><strong>Gestion des demandes :</strong> Créer un système de tickets pour suivre et résoudre les demandes de manière organisée.</li>
+            <li><strong>Expérience utilisateur :</strong> Concevoir une interface simple et accessible pour tous les utilisateurs, quel que soit leur niveau technique.</li>
+        </ul>
+        <p>Malgré ces défis, le projet a permis de développer une plateforme robuste et intuitive, qui améliore significativement la communication et la collaboration au sein de l'école. Cette expérience a également renforcé nos compétences en développement web et en gestion de projet.</p>
+    </div>
+</body>
+</html>
