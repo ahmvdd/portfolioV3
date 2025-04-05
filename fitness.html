@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fitness and healt</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Automatisation des Processus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --pr-color: #ffffff;
             --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
             --cubicbz: cubic-bezier(.9, 0, .1, 1);
             --fz-big: 60px;
-            --thre-color: #007074;
+            --thre-color: #4CAF50;
             --nav-bg: rgba(251, 251, 251, 0.051);
             --nav-blur: blur(10px);
             --nav-shadow: rgba(0, 0, 0, 0.2);
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
-
+        /* Styles de base */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--second-color);
             color: var(--pr-color);
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
+        /* Navigation */
         nav {
             position: fixed;
             top: 20px;
@@ -44,11 +41,10 @@
             justify-content: space-between;
             background: var(--nav-bg);
             backdrop-filter: var(--nav-blur);
-            -webkit-backdrop-filter: var(--nav-blur);
             border-radius: 12px;
-            box-shadow: 0px 4px 15px var(--nav-shadow);
-            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);       
-        z-index: 1000; }
+            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);
+            z-index: 1000;
+        }
 
         nav ul {
             list-style-type: none;
@@ -73,7 +69,7 @@
             color: var(--thre-color);
         }
 
-        .btn-download {
+        .btn-download, .btn-back {
             background-color: var(--pr-color);
             color: black;
             padding: 8px 15px;
@@ -81,105 +77,158 @@
             font-size: 14px;
             font-weight: bold;
             text-decoration: none;
-            transition:
-                background-color 0.3s ease-in-out,
-                transform 0.3s ease-in-out,
-                color 0.3s ease-in-out;
-
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-download:hover {
+        .btn-download:hover, .btn-back:hover {
             background-color: var(--thre-color);
             color: var(--pr-color);
             transform: scale(1.05);
         }
 
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Contenu principal */
+        .main-content {
             max-width: 1200px;
-            margin: 0 auto;
-            min-height: calc(100vh - 80px);
-            padding-top: 80px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
         }
 
-        .image {
-            flex: 0 0 55%;
-            position: relative;
-            right: -50px;
+        /* Section Automatisation */
+        .automation-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .image img {
-            width: 80%;
-            height: auto;
-            border-radius: 30px;
-             transition: transform 0.5s var(--cubicbz);
-        }
-        .image img:hover{
-            filter: brightness(150%); /* Rend l'image plus lumineuse */
-
-        }
-
-        .text {
-            flex: 0 0 45%;
-            padding-left: 50px;
-        }
-
-        h1 {
-            font-size: var(--fz-big);
+        .automation-section h2 {
             color: var(--thre-color);
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s var(--cubicbz) forwards;
-            animation-delay: 0.3s;
+        .automation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(20px);
-            }
-        }
-
-        .project-info {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            color: var(--pr-color);
+        .automation-card {
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--thre-color);
+            backdrop-filter: blur(2px);
         }
 
-        .project-info h2 {
-            font-size: 24px;
+        .automation-card:hover {
+            backdrop-filter: blur(8px);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .automation-card h3 {
             color: var(--thre-color);
-            margin-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.5rem;
         }
 
-        .project-info p {
-            font-size: 16px;
-            line-height: 1.8;
+        .automation-card ul {
+            padding-left: 20px;
         }
 
+        .automation-card li {
+            margin-bottom: 10px;
+        }
+
+        /* Diagramme */
+        .automation-diagram {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .automation-diagram img {
+            height: 400px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Bouton Retour */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
+            nav {
                 flex-direction: column;
-                padding: 100px 20px 20px;
+                padding: 15px;
+                top: 10px;
+                width: calc(100% - 20px);
             }
-            .image, .text {
-                flex: 0 0 100%;
-                right: 0;
-                padding-left: 0;
+
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 15px;
             }
-            .image {
-                margin-bottom: 30px;
+
+            nav ul li {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .btn-download, .btn-back {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .main-content {
+                margin-top: 150px;
+            }
+
+            .automation-section {
+                padding: 20px 15px;
+            }
+
+            .automation-section h2 {
+                font-size: 2rem;
+            }
+
+            .automation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .automation-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .automation-card {
+                padding: 15px;
+            }
+
+            .main-content {
+                margin-top: 180px;
             }
         }
     </style>
@@ -187,41 +236,183 @@
 <body>
     <nav>
         <ul>
-            <li><a href="#magasin">intro</a></li>
-            <li><a href="#pro">Pro</a></li>
-            <li><a href="#equipes">inspiration</a></li>
-            <li><a href="#developpeurs">Explication</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#process">Processus</a></li>
+            <li><a href="#tools">Outils</a></li>
+            <li><a href="#benefits">Avantages</a></li>
         </ul>
-        <a href="index.html" class="btn-download">Home</a>
+        <a href="index.html" class="btn-download">Accueil</a>
     </nav>
 
-    <div class="container">
-        <div class="text">
-            <h1>Plateforme Fitness et Nutrition</h1>
-            <p>Bienvenue sur notre plateforme dédiée au fitness et à la nutrition. Nous combinons un design moderne et des outils intuitifs pour vous aider à atteindre vos objectifs de santé et de bien-être.</p>
-            <p>Explorez nos fonctionnalités et découvrez comment nous pouvons vous accompagner dans votre transformation personnelle.</p>
-        </div>
-        <div class="image">
-            <img src="img/Frame 1.png" alt="Plateforme Fitness et Nutrition">
-        </div>
+    <div class="main-content">
+        <section class="automation-section" id="features">
+            <h2>Automatisation des Processus</h2>
+            
+            <p>Notre plateforme d'automatisation transforme vos workflows manuels en processus efficaces et sans erreur, tout en fournissant des outils internes sur mesure.</p>
+            
+            <div class="automation-grid">
+                <div class="automation-card">
+                    <h3>Automatisation RPA</h3>
+                    <ul>
+                        <li>Bots logiciels configurables</li>
+                        <li>Automatisation UI/API</li>
+                        <li>Orchestration des workflows</li>
+                        <li>Gestion des exceptions</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Intégration Systèmes</h3>
+                    <ul>
+                        <li>Connecteurs pré-construits</li>
+                        <li>Middleware d'intégration</li>
+                        <li>Synchronisation des données</li>
+                        <li>API management</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Outils Internes</h3>
+                    <ul>
+                        <li>Générateur d'applications</li>
+                        <li>Tableaux de bord personnalisés</li>
+                        <li>Formulaires dynamiques</li>
+                        <li>Workflows approbation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="automation-diagram">
+                <img src="img/Fun Digital Illustrations by Alex Fedotov _ Inspiration Grid.jpeg" alt="Flux d'automatisation">
+            </div>
+        </section>
+        
+        <section class="automation-section" id="process">
+            <h2>Processus Clés Automatisables</h2>
+            
+            <div class="automation-grid">
+                <div class="automation-card">
+                    <h3>Processus Métier</h3>
+                    <ul>
+                        <li>Facturation et comptabilité</li>
+                        <li>Gestion des commandes</li>
+                        <li>Onboarding clients</li>
+                        <li>Traitement des réclamations</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Processus IT</h3>
+                    <ul>
+                        <li>Provisioning ressources</li>
+                        <li>Gestion des tickets</li>
+                        <li>Monitoring automatique</li>
+                        <li>Backup et recovery</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Processus RH</h3>
+                    <ul>
+                        <li>Recrutement et onboarding</li>
+                        <li>Gestion des congés</li>
+                        <li>Évaluations performance</li>
+                        <li>Formation et développement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="automation-section" id="tools">
+            <h2>Outils Internes</h2>
+            
+            <div class="automation-grid">
+                <div class="automation-card">
+                    <h3>Gestion des Données</h3>
+                    <ul>
+                        <li>CRUD applications</li>
+                        <li>Reporting personnalisé</li>
+                        <li>Data visualization</li>
+                        <li>Export/import massifs</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Collaboration</h3>
+                    <ul>
+                        <li>Portails départementaux</li>
+                        <li>Gestion documentaire</li>
+                        <li>Workflows collaboratifs</li>
+                        <li>Tableaux de bord partagés</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Administration</h3>
+                    <ul>
+                        <li>Gestion des accès</li>
+                        <li>Audit et conformité</li>
+                        <li>Configuration système</li>
+                        <li>Monitoring activité</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="automation-section" id="benefits">
+            <h2>Avantages Clés</h2>
+            
+            <div class="automation-grid">
+                <div class="automation-card">
+                    <h3>Efficacité</h3>
+                    <ul>
+                        <li>Réduction des tâches manuelles</li>
+                        <li>Élimination des erreurs</li>
+                        <li>Traitement 24/7</li>
+                        <li>Standardisation des processus</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Visibilité</h3>
+                    <ul>
+                        <li>Tracking en temps réel</li>
+                        <li>Analytics des processus</li>
+                        <li>Alertes proactives</li>
+                        <li>Reporting automatisé</li>
+                    </ul>
+                </div>
+                
+                <div class="automation-card">
+                    <h3>Flexibilité</h3>
+                    <ul>
+                        <li>Adaptation rapide aux changements</li>
+                        <li>Low-code/no-code</li>
+                        <li>Scalabilité élastique</li>
+                        <li>Intégration facile</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </div>
-    
-    <div class="project-info">
-        <h2>À Propos de ce Projet</h2>
-        <p>L'idée de ce projet est née d'une passion pour le fitness et d'un désir de créer une application simple, intuitive et efficace pour suivre les progrès et motiver les utilisateurs à atteindre leurs objectifs de remise en forme. L'inspiration est venue de diverses applications de fitness existantes, ainsi que des témoignages de personnes ayant réussi à transformer leur vie grâce à un suivi régulier et à un engagement personnel.</p>
-        <p>L'application a été développée en utilisant les technologies suivantes :</p>
-        <ul>
-            <li><strong>Front-end :</strong> HTML, CSS, JavaScript pour l'interface utilisateur, avec un accent sur un design moderne et responsive.</li>
-            <li><strong>Back-end :</strong> (Si applicable) Node.js avec Express pour gérer les données et l'API.</li>
-            <li><strong>Base de données :</strong> (Si applicable) MongoDB pour stocker les informations des utilisateurs, les données d'entraînement, etc.</li>
-        </ul>
-        <p>Durant le développement, plusieurs défis ont été rencontrés :</p>
-        <ul>
-            <li><strong>Optimisation de la performance :</strong> Assurer que l'application reste rapide et fluide même avec une grande quantité de données.</li>
-            <li><strong>Design responsive :</strong> Créer une interface utilisateur qui fonctionne bien sur différents appareils (ordinateurs, tablettes, smartphones).</li>
-            <li><strong>Gestion des données :</strong> Mettre en place une structure de base de données efficace et sécurisée.</li>
-        </ul>
-        <p>Malgré ces défis, le projet a permis d'acquérir une précieuse expérience en développement web et en gestion de projet, et a abouti à une application fonctionnelle et esthétiquement agréable.</p>
+
+     
+    <div class="back-to-top">
+        <button class="btn-back" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <i class="fas fa-arrow-up"></i> Retour au menu
+        </button>
     </div>
+
+    <script>
+        // Ajout d'un effet de défilement fluide pour tous les liens
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>

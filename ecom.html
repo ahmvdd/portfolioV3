@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ecom</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>AI/ML Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --pr-color: #ffffff;
             --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
             --cubicbz: cubic-bezier(.9, 0, .1, 1);
             --fz-big: 60px;
-            --thre-color: #007074;
+            --thre-color: #FF6B6B;
             --nav-bg: rgba(251, 251, 251, 0.051);
             --nav-blur: blur(10px);
             --nav-shadow: rgba(0, 0, 0, 0.2);
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
-
+        /* Styles de base */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--second-color);
             color: var(--pr-color);
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
+        /* Navigation */
         nav {
             position: fixed;
             top: 20px;
@@ -44,11 +41,10 @@
             justify-content: space-between;
             background: var(--nav-bg);
             backdrop-filter: var(--nav-blur);
-            -webkit-backdrop-filter: var(--nav-blur);
             border-radius: 12px;
-            box-shadow: 0px 4px 15px var(--nav-shadow);
-            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);       
-        z-index: 1000; }
+            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);
+            z-index: 1000;
+        }
 
         nav ul {
             list-style-type: none;
@@ -73,7 +69,7 @@
             color: var(--thre-color);
         }
 
-        .btn-download {
+        .btn-download, .btn-back {
             background-color: var(--pr-color);
             color: black;
             padding: 8px 15px;
@@ -81,148 +77,381 @@
             font-size: 14px;
             font-weight: bold;
             text-decoration: none;
-            transition:
-                background-color 0.3s ease-in-out,
-                transform 0.3s ease-in-out,
-                color 0.3s ease-in-out;
-
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-download:hover {
+        .btn-download:hover, .btn-back:hover {
             background-color: var(--thre-color);
             color: var(--pr-color);
             transform: scale(1.05);
         }
 
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Contenu principal */
+        .main-content {
             max-width: 1200px;
-            margin: 0 auto;
-            min-height: calc(100vh - 80px);
-            padding-top: 80px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
         }
 
-        .image {
-            flex: 0 0 55%;
-            position: relative;
-            right: -50px;
+        /* Section AI/ML */
+        .ai-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .image img {
-            width: 80%;
-            height: auto;
-            border-radius: 30px;
-             transition: transform 0.5s var(--cubicbz);
-        }
-        .image img:hover{
-            filter: brightness(105%); /* Rend l'image plus lumineuse */
-
-        }
-
-        .text {
-            flex: 0 0 45%;
-            padding-left: 50px;
-        }
-
-        h1 {
-            font-size: var(--fz-big);
+        .ai-section h2 {
             color: var(--thre-color);
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s var(--cubicbz) forwards;
-            animation-delay: 0.3s;
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(20px);
-            }
-        }
-
-        .project-info {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            color: var(--pr-color);
+        .ai-card {
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--thre-color);
+            backdrop-filter: blur(2px);
         }
 
-        .project-info h2 {
-            font-size: 24px;
+        .ai-card:hover {
+            backdrop-filter: blur(8px);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .ai-card h3 {
             color: var(--thre-color);
-            margin-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.5rem;
         }
 
-        .project-info p {
-            font-size: 16px;
-            line-height: 1.8;
+        .ai-card ul {
+            padding-left: 20px;
         }
 
+        .ai-card li {
+            margin-bottom: 10px;
+        }
+
+        /* Diagramme */
+        .ai-diagram {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .ai-diagram img {
+            height: 400px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Bouton Retour */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        /* Menu Burger */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .menu-toggle i {
+            font-size: 24px;
+            color: var(--pr-color);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
                 flex-direction: column;
-                padding: 100px 20px 20px;
+                width: 100%;
+                margin-bottom: 15px;
             }
-            .image, .text {
-                flex: 0 0 100%;
-                right: 0;
-                padding-left: 0;
+
+            nav ul.show {
+                display: flex;
             }
-            .image {
-                margin-bottom: 30px;
+
+            nav {
+                flex-direction: column;
+                padding: 15px;
+                top: 10px;
+                width: calc(100% - 20px);
+            }
+
+            nav ul li {
+                margin: 10px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .btn-download {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .main-content {
+                margin-top: 150px;
+            }
+
+            .ai-section {
+                padding: 20px 15px;
+            }
+
+            .ai-section h2 {
+                font-size: 2rem;
+            }
+
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ai-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .ai-card {
+                padding: 15px;
+            }
+
+            .main-content {
+                margin-top: 180px;
             }
         }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="#magasin">intro</a></li>
-            <li><a href="#pro">Pro</a></li>
-            <li><a href="#equipes">inspiration</a></li>
-            <li><a href="#developpeurs">Explication</a></li>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul id="nav-menu">
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#workflow">Workflow</a></li>
+            <li><a href="#models">Modèles</a></li>
+            <li><a href="#benefits">Avantages</a></li>
         </ul>
-        <a href="index.html" class="btn-download">Home</a>
+        <a href="index.html" class="btn-download">Accueil</a>
     </nav>
 
-    <div class="container">
-        <div class="text">
-            <h1>Site E-Commerce Moderne</h1>
-            <p>Bienvenue sur notre plateforme e-commerce, où design épuré et fonctionnalités innovantes se rencontrent pour offrir une expérience d'achat exceptionnelle.</p>
-            <p>Découvrez comment nous pouvons transformer votre boutique en ligne en un outil puissant pour atteindre vos clients et booster vos ventes.</p>
-        </div>
-        <div class="image">
-            <img src="img/cccc.jpg" alt="Site E-Commerce">
-        </div>
+    <div class="main-content">
+        <section class="ai-section" id="features">
+            <h2>Plateforme IA/ML</h2>
+            
+            <p>Notre plateforme d'Intelligence Artificielle et Machine Learning offre des outils puissants pour développer, entraîner et déployer des modèles avancés.</p>
+            
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <h3>Développement de Modèles</h3>
+                    <ul>
+                        <li>Environnement Jupyter intégré</li>
+                        <li>AutoML pour l'automatisation</li>
+                        <li>Bibliothèques pré-installées</li>
+                        <li>Versioning des expériences</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Entraînement Distribué</h3>
+                    <ul>
+                        <li>GPU/TPU clusters</li>
+                        <li>Hyperparameter tuning</li>
+                        <li>Suivi des métriques en temps réel</li>
+                        <li>Optimisation automatique</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Déploiement</h3>
+                    <ul>
+                        <li>API endpoints scalables</li>
+                        <li>Conteneurisation automatique</li>
+                        <li>Monitoring des performances</li>
+                        <li>A/B testing des modèles</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="ai-diagram">
+                <img src="img/sulitions.jpeg" alt="Architecture IA/ML">
+            </div>
+        </section>
+        
+        <section class="ai-section" id="workflow">
+            <h2>Workflow IA/ML</h2>
+            
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <h3>Préparation des Données</h3>
+                    <ul>
+                        <li>Nettoyage et transformation</li>
+                        <li>Feature engineering</li>
+                        <li>Augmentation des données</li>
+                        <li>Gestion des datasets</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Expérimentation</h3>
+                    <ul>
+                        <li>Notebooks collaboratifs</li>
+                        <li>Visualisation des données</li>
+                        <li>Comparaison des modèles</li>
+                        <li>Reproductibilité</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Production</h3>
+                    <ul>
+                        <li>Pipeline CI/CD</li>
+                        <li>Détection de drift</li>
+                        <li>Re-entraînement automatique</li>
+                        <li>Gouvernance des modèles</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="ai-section" id="models">
+            <h2>Types de Modèles</h2>
+            
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <h3>Apprentissage Supervisé</h3>
+                    <ul>
+                        <li>Régression</li>
+                        <li>Classification</li>
+                        <li>Time series forecasting</li>
+                        <li>Détection d'anomalies</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Apprentissage Non Supervisé</h3>
+                    <ul>
+                        <li>Clustering</li>
+                        <li>Réduction de dimension</li>
+                        <li>Association rules</li>
+                        <li>Autoencoders</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Deep Learning</h3>
+                    <ul>
+                        <li>Réseaux neuronaux</li>
+                        <li>Computer Vision</li>
+                        <li>NLP (Traitement du langage)</li>
+                        <li>Reinforcement Learning</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="ai-section" id="benefits">
+            <h2>Avantages Clés</h2>
+            
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <h3>Efficacité</h3>
+                    <ul>
+                        <li>Réduction du time-to-market</li>
+                        <li>Automatisation des tâches répétitives</li>
+                        <li>Optimisation des ressources</li>
+                        <li>Collaboration simplifiée</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Scalabilité</h3>
+                    <ul>
+                        <li>De la POC à la production</li>
+                        <li>Gestion des gros volumes</li>
+                        <li>Calcul élastique</li>
+                        <li>Multi-cloud</li>
+                    </ul>
+                </div>
+                
+                <div class="ai-card">
+                    <h3>Sécurité</h3>
+                    <ul>
+                        <li>Chiffrement des données</li>
+                        <li>Contrôle d'accès granulaire</li>
+                        <li>Audit trail complet</li>
+                        <li>Conformité RGPD</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </div>
-    
-    <div class="project-info">
-        <h2>À Propos des Sites Web E-Commerce</h2>
-        <p>Les sites web e-commerce sont des plateformes essentielles pour les entreprises souhaitant vendre leurs produits ou services en ligne. Ils offrent une vitrine digitale accessible 24/7, permettant d'élargir la portée des ventes et d'améliorer l'expérience client grâce à des fonctionnalités avancées et une interface intuitive.</p>       
-        <h3 id="ecommerce">Les applications sont développées de manière à :</h3>
-        <p>Un site e-commerce est conçu pour offrir une expérience d'achat fluide et sécurisée, tout en répondant aux besoins spécifiques des entreprises et de leurs clients. Voici quelques-uns de ses avantages :</p>
-        <ul>
-            <li><strong>Facilité de navigation :</strong> Une interface utilisateur intuitive permet aux clients de trouver rapidement les produits qu'ils recherchent.</li>
-            <li><strong>Personnalisation :</strong> Des fonctionnalités telles que les recommandations de produits et les filtres avancés améliorent l'expérience d'achat.</li>
-            <li><strong>Gestion simplifiée :</strong> Un back-end robuste permet aux administrateurs de gérer facilement les stocks, les commandes et les promotions.</li>
-        </ul>
-        <p>Durant le développement, plusieurs défis ont été identifiés et résolus :</p>
-        <ul>
-            <li><strong>Optimisation des performances :</strong> Assurer que le site reste rapide et réactif, même lors de pics de trafic importants.</li>
-            <li><strong>Sécurité des transactions :</strong> Mettre en place des protocoles de paiement sécurisés (SSL, cryptage) pour protéger les données des clients.</li>
-            <li><strong>Expérience utilisateur :</strong> Concevoir une interface responsive et accessible sur tous les appareils (ordinateurs, tablettes, smartphones).</li>
-            <li><strong>Intégration des outils :</strong> Connecter le site à des systèmes de gestion de stocks, de logistique et de CRM pour une gestion centralisée.</li>
-        </ul>
+
+    <!-- Bouton Retour en haut -->
+    <div class="back-to-top">
+        <button class="btn-back" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <i class="fas fa-arrow-up"></i> Retour au menu
+        </button>
     </div>
+
+    <script>
+        // Menu Burger
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // Fermer le menu quand un lien est cliqué
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // Effet de défilement fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>

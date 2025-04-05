@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHAT Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Collaborative Management Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --pr-color: #ffffff;
             --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
             --cubicbz: cubic-bezier(.9, 0, .1, 1);
             --fz-big: 60px;
-            --thre-color: #007074;
+            --thre-color: #630ce5;
             --nav-bg: rgba(251, 251, 251, 0.051);
             --nav-blur: blur(10px);
             --nav-shadow: rgba(0, 0, 0, 0.2);
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
-
+        /* Styles de base */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--second-color);
             color: var(--pr-color);
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
+        /* Navigation */
         nav {
             position: fixed;
             top: 20px;
@@ -44,10 +41,8 @@
             justify-content: space-between;
             background: var(--nav-bg);
             backdrop-filter: var(--nav-blur);
-            -webkit-backdrop-filter: var(--nav-blur);
             border-radius: 12px;
-            box-shadow: 0px 4px 15px var(--nav-shadow);
-            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);       
+            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);
             z-index: 1000;
         }
 
@@ -74,7 +69,7 @@
             color: var(--thre-color);
         }
 
-        .btn-download {
+        .btn-download, .btn-back {
             background-color: var(--pr-color);
             color: black;
             padding: 8px 15px;
@@ -82,145 +77,381 @@
             font-size: 14px;
             font-weight: bold;
             text-decoration: none;
-            transition:
-                background-color 0.3s ease-in-out,
-                transform 0.3s ease-in-out,
-                color 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-download:hover {
+        .btn-download:hover, .btn-back:hover {
             background-color: var(--thre-color);
             color: var(--pr-color);
             transform: scale(1.05);
         }
 
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Contenu principal */
+        .main-content {
             max-width: 1200px;
-            margin: 0 auto;
-            min-height: calc(100vh - 80px);
-            padding-top: 80px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
         }
 
-        .image {
-            flex: 0 0 55%;
-            position: relative;
-            right: -50px;
+        /* Section Architecture */
+        .platform-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(99, 12, 229, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .image img {
-            width: 80%;
-            height: auto;
-            border-radius: 30px;
-             transition: transform 0.5s var(--cubicbz);
-        }
-        .image img:hover{
-            filter: brightness(150%); /* Rend l'image plus lumineuse */
-
-        }
-        .text {
-            flex: 0 0 45%;
-            padding-left: 50px;
-        }
-
-        h1 {
-            font-size: var(--fz-big);
+        .platform-section h2 {
             color: var(--thre-color);
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s var(--cubicbz) forwards;
-            animation-delay: 0.3s;
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .project-info {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            color: var(--pr-color);
+        .platform-card {
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--thre-color);
+            backdrop-filter: blur(2px);
         }
 
-        .project-info h2 {
-            font-size: 24px;
+        .platform-card:hover {
+            backdrop-filter: blur(8px);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(99, 12, 229, 0.2);
+        }
+
+        .platform-card h3 {
             color: var(--thre-color);
-            margin-bottom: 15px;
+            margin-top: 0;
+            font-size: 1.5rem;
         }
 
-        .project-info p {
-            font-size: 16px;
-            line-height: 1.8;
+        .platform-card ul {
+            padding-left: 20px;
         }
 
+        .platform-card li {
+            margin-bottom: 10px;
+        }
+
+        /* Diagramme */
+        .platform-diagram {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .platform-diagram img {
+            height: 400px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Bouton Retour */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        /* Menu Burger */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .menu-toggle i {
+            font-size: 24px;
+            color: var(--pr-color);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
                 flex-direction: column;
-                padding: 100px 20px 20px;
+                width: 100%;
+                margin-bottom: 15px;
             }
-            .image, .text {
-                flex: 0 0 100%;
-                right: 0;
-                padding-left: 0;
+
+            nav ul.show {
+                display: flex;
             }
-            .image {
-                margin-bottom: 30px;
+
+            nav {
+                flex-direction: column;
+                padding: 15px;
+                top: 10px;
+                width: calc(100% - 20px);
+            }
+
+            nav ul li {
+                margin: 10px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .btn-download {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .main-content {
+                margin-top: 150px;
+            }
+
+            .platform-section {
+                padding: 20px 15px;
+            }
+
+            .platform-section h2 {
+                font-size: 2rem;
+            }
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .platform-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .platform-card {
+                padding: 15px;
+            }
+
+            .main-content {
+                margin-top: 180px;
             }
         }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="#magasin">Intro</a></li>
-            <li><a href="#pro">Pro</a></li>
-            <li><a href="#equipes">Inspiration</a></li>
-            <li><a href="#developpeurs">Explication</a></li>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul id="nav-menu">
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#components">Modules</a></li>
+            <li><a href="#integration">Intégration</a></li>
+            <li><a href="#benefits">Avantages</a></li>
         </ul>
-        <a href="index.html" class="btn-download">Home</a>
+        <a href="index.html" class="btn-download">Accueil</a>
     </nav>
 
-    <div class="container">
-        <div class="text">
-            <h1>Plateforme de Communication Moderne</h1>
-            <p>Bienvenue sur notre plateforme de chat, conçue pour faciliter les échanges et la collaboration. Nous allions design intuitif et fonctionnalités avancées pour une communication fluide et efficace.</p>
-            <p>Explorez nos outils et découvrez comment nous pouvons améliorer les interactions au sein de votre équipe ou communauté.</p>
-        </div>
-        <div class="image">
-            <img src="img/rr.png" alt="Plateforme de Communication">
-        </div>
+    <div class="main-content">
+        <section class="platform-section" id="features">
+            <h2>Plateforme Collaborative de Management</h2>
+            
+            <p>Notre solution de Collaborative Management System révolutionne la façon dont les équipes travaillent ensemble, combinant gestion de projet, communication et analyse de données en une plateforme unifiée.</p>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Collaboration en Temps Réel</h3>
+                    <ul>
+                        <li>Éditeur de documents collaboratif</li>
+                        <li>Tableaux blancs virtuels interactifs</li>
+                        <li>Messagerie instantanée intégrée</li>
+                        <li>Gestion des commentaires et annotations</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Gestion de Projets Avancée</h3>
+                    <ul>
+                        <li>Tableaux Kanban personnalisables</li>
+                        <li>Suivi des dépendances entre tâches</li>
+                        <li>Gestion des ressources et planning</li>
+                        <li>Automatisation des workflows</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Analyse et Reporting</h3>
+                    <ul>
+                        <li>Tableaux de bord personnalisables</li>
+                        <li>Analyse des performances d'équipe</li>
+                        <li>Rapports automatiques et exportables</li>
+                        <li>Indicateurs clés en temps réel</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="platform-diagram">
+                <img src="img/Build a virtual AI workforce using AutoGen and GPT-4.jpeg" alt="Diagramme de la plateforme collaborative">
+            </div>
+        </section>
+        
+        <section class="platform-section" id="components">
+            <h2>Modules Principaux</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Communication Unifiée</h3>
+                    <ul>
+                        <li>Chat d'équipe et canaux thématiques</li>
+                        <li>Vidéoconférence intégrée</li>
+                        <li>Gestion centralisée des documents</li>
+                        <li>Calendrier partagé intelligent</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Gestion des Tâches</h3>
+                    <ul>
+                        <li>Création et assignation de tâches</li>
+                        <li>Suivi du temps et des échéances</li>
+                        <li>Notifications et rappels automatisés</li>
+                        <li>Intégration avec outils externes</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Gestion des Connaissances</h3>
+                    <ul>
+                        <li>Base de connaissances collaborative</li>
+                        <li>Moteur de recherche intelligent</li>
+                        <li>Versioning des documents</li>
+                        <li>Contrôle d'accès granulaire</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="platform-section" id="integration">
+            <h2>Intégration et Extensibilité</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Connecteurs d'Entreprise</h3>
+                    <ul>
+                        <li>Intégration avec Microsoft 365</li>
+                        <li>Connexion à Google Workspace</li>
+                        <li>Synchronisation avec Salesforce</li>
+                        <li>API pour systèmes ERP/CRM</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Écosystème d'Applications</h3>
+                    <ul>
+                        <li>Marketplace d'applications tierces</li>
+                        <li>Outils de développement low-code</li>
+                        <li>Webhooks et notifications</li>
+                        <li>Connecteurs API standards</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Personnalisation</h3>
+                    <ul>
+                        <li>Branding et thèmes personnalisés</li>
+                        <li>Workflows adaptables</li>
+                        <li>Champs et formulaires personnalisés</li>
+                        <li>Rôles et permissions flexibles</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="platform-section" id="benefits">
+            <h2>Avantages Clés</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Productivité</h3>
+                    <ul>
+                        <li>Réduction des réunions inutiles</li>
+                        <li>Centralisation des informations</li>
+                        <li>Automatisation des processus</li>
+                        <li>Accès mobile et hors ligne</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Collaboration</h3>
+                    <ul>
+                        <li>Transparence accrue</li>
+                        <li>Alignement des équipes</li>
+                        <li>Résolution rapide des problèmes</li>
+                        <li>Capitalisation sur le savoir collectif</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card">
+                    <h3>Gouvernance</h3>
+                    <ul>
+                        <li>Conformité et sécurité renforcées</li>
+                        <li>Audit trail complet</li>
+                        <li>Gestion des accès fine</li>
+                        <li>Sauvegarde et récupération des données</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </div>
-    
-    <div class="project-info">
-        <h2>À Propos de ce Projet</h2>
-        <p>L'idée de cette plateforme est née de la nécessité de centraliser et de simplifier la communication au sein d'une école de tech. L'objectif est de créer un outil intuitif et efficace pour faciliter les échanges entre étudiants, enseignants et personnel administratif, tout en permettant de gérer facilement les demandes et les projets collaboratifs.</p>
-        <p>La plateforme a été développée en utilisant les technologies suivantes :</p>
-        <ul>
-            <li><strong>Front-end :</strong> React pour une interface utilisateur moderne, intuitive et responsive.</li>
-            <li><strong>Back-end :</strong>laravel / php pour gérer les communications en temps réel et les API.</li>
-            <li><strong>Base de données :</strong> mysql pour stocker les messages, les demandes et les informations des utilisateurs de manière sécurisée.</li>
-        </ul>
-        <p>Durant le développement, plusieurs défis ont été relevés :</p>
-        <ul>
-            <li><strong>Communication en temps réel :</strong> Mettre en place un système de messagerie instantanée fluide et fiable.</li>
-            <li><strong>Gestion des demandes :</strong> Créer un système de tickets pour suivre et résoudre les demandes de manière organisée.</li>
-            <li><strong>Expérience utilisateur :</strong> Concevoir une interface simple et accessible pour tous les utilisateurs, quel que soit leur niveau technique.</li>
-        </ul>
-        <p>Malgré ces défis, le projet a permis de développer une plateforme robuste et intuitive, qui améliore significativement la communication et la collaboration au sein de l'école. Cette expérience a également renforcé nos compétences en développement web et en gestion de projet.</p>
+
+    <!-- Bouton Retour en haut -->
+    <div class="back-to-top">
+        <button class="btn-back" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <i class="fas fa-arrow-up"></i> Retour au menu
+        </button>
     </div>
+
+    <script>
+        // Menu Burger
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // Fermer le menu quand un lien est cliqué
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // Effet de défilement fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
