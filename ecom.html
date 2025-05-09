@@ -3,454 +3,658 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI/ML Platform</title>
+    <title>Projets IA Simples | Présentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pr-color: #ffffff;
-            --second-color: linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%);
-            --cubicbz: cubic-bezier(.9, 0, .1, 1);
-            --fz-big: 60px;
-            --thre-color: #FF6B6B;
-            --nav-bg: rgba(251, 251, 251, 0.051);
-            --nav-blur: blur(10px);
-            --nav-shadow: rgba(0, 0, 0, 0.2);
+            --bg-color: #0a0a0a;
+            --bg-secondary: #111111;
+            --text-color: #ffffff;
+            --text-secondary: #aaaaaa;
+            --primary: #6C63FF;
+            --primary-light: rgba(108, 99, 255, 0.1);
+            --primary-dark: #554dd1;
+            --card-bg: #111111;
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --section-spacing: 8rem;
         }
-
-        /* Styles de base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--second-color);
-            color: var(--pr-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            overflow-x: hidden;
         }
-
-        /* Navigation */
-        nav {
+        .navbar {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 1200px;
-            padding: 10px 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background: var(--nav-bg);
-            backdrop-filter: var(--nav-blur);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(131, 113, 230, 0.5);
+            align-items: center;
             z-index: 1000;
+            background-color: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transform: translateY(0);
+            transition: var(--transition);
         }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        .navbar.hidden { transform: translateY(-100%); }
+        .navbar.scrolled {
+            padding: 1rem 5%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-color);
+            text-decoration: none;
             display: flex;
             align-items: center;
+            transition: var(--transition);
         }
-
-        nav ul li {
-            margin: 0 15px;
+        .navbar-brand:hover { transform: translateX(5px); }
+        .navbar-brand i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+            font-size: 1.6rem;
         }
-
-        nav ul li a {
-            color: var(--pr-color);
+        .navbar-brand span { color: var(--primary); font-weight: 700; }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-item { margin-left: 2rem; position: relative; }
+        .nav-link {
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s var(--cubicbz);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
         }
-
-        nav ul li a:hover {
-            color: var(--thre-color);
+        .nav-link:hover, .nav-link.active { color: var(--text-color); }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+            border-radius: 2px;
         }
-
-        .btn-download, .btn-back {
-            background-color: var(--pr-color);
-            color: black;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            border: none;
             cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            border: none;
+            outline: none;
+            gap: 0.5rem;
         }
-
-        .btn-download:hover, .btn-back:hover {
-            background-color: var(--thre-color);
-            color: var(--pr-color);
-            transform: scale(1.05);
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-
-        /* Contenu principal */
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
+            background-color: var(--primary-dark);
+        }
+        .btn-primary:active { transform: translateY(0); }
         .main-content {
             max-width: 1200px;
-            margin: 100px auto 50px;
-            padding: 0 20px;
+            margin: 8rem auto 4rem;
+            padding: 0 5%;
         }
-
-        /* Section AI/ML */
-        .ai-section {
-            margin: 50px 0;
-            padding: 30px;
-            background: rgba(255, 107, 107, 0.1);
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .ai-section h2 {
-            color: var(--thre-color);
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+        .hero {
+            padding: 8rem 0 6rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-
-        .ai-grid {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 150%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 70%);
+            z-index: -1;
+            animation: pulse 15s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #ffffff, #d4d1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s 0.2s forwards;
+        }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s 0.4s forwards;
+        }
+        .hero .btn {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s 0.6s forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section {
+            margin: var(--section-spacing) 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section-header {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, #ffffff, #d4d1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
         }
-
-        .ai-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 25px;
-            transition: all 0.4s ease;
-            border-left: 4px solid var(--thre-color);
-            backdrop-filter: blur(2px);
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2.5rem 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
         }
-
-        .ai-card:hover {
-            backdrop-filter: blur(8px);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 107, 107, 0.2);
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        .ai-card h3 {
-            color: var(--thre-color);
-            margin-top: 0;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        .card:hover::before { opacity: 1; }
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
             font-size: 1.5rem;
+            transition: var(--transition);
         }
-
-        .ai-card ul {
-            padding-left: 20px;
+        .card:hover .card-icon {
+            transform: rotate(10deg) scale(1.1);
+            background-color: var(--primary);
+            color: white;
         }
-
-        .ai-card li {
-            margin-bottom: 10px;
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--text-color);
+            transition: var(--transition);
         }
-
-        /* Diagramme */
-        .ai-diagram {
-            margin: 40px auto;
+        .card:hover .card-title { color: var(--primary); }
+        .card-body {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        .card-body ul {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        .card-body li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.8rem;
+            transition: var(--transition);
+        }
+        .card-body li:hover {
+            color: var(--text-color);
+            transform: translateX(5px);
+        }
+        .card-body li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .diagram-container {
+            margin: 5rem 0;
             text-align: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
         }
-
-        .ai-diagram img {
-            height: 400px;
+        .diagram-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .diagram-container img {
             max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
         }
-
-        /* Bouton Retour */
+        .diagram-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
         .back-to-top {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-        }
-
-        /* Menu Burger */
-        .menu-toggle {
-            display: none;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            padding: 10px;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+            z-index: 999;
+            border: none;
+            outline: none;
         }
-
-        .menu-toggle i {
-            font-size: 24px;
-            color: var(--pr-color);
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
         }
-
-        /* Responsive */
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
+            background-color: var(--primary-dark);
+        }
+        @media (max-width: 992px) {
+            :root { --section-spacing: 6rem; }
+            .hero { padding: 6rem 0 4rem; }
+        }
         @media (max-width: 768px) {
+            :root { --section-spacing: 5rem; --border-radius: 12px; }
+            .navbar { padding: 1.2rem 5%; }
+            .navbar-nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-secondary);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                clip-path: circle(0px at 90% -10%);
+                -webkit-clip-path: circle(0px at 90% -10%);
+                transition: var(--transition);
+                pointer-events: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .navbar-nav.open {
+                clip-path: circle(1000px at 90% -10%);
+                -webkit-clip-path: circle(1000px at 90% -10%);
+                pointer-events: all;
+            }
+            .nav-item { margin: 1rem 0; }
             .menu-toggle {
                 display: block;
+                font-size: 1.5rem;
+                cursor: pointer;
+                z-index: 1001;
+                transition: var(--transition);
             }
-
-            nav ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                margin-bottom: 15px;
-            }
-
-            nav ul.show {
-                display: flex;
-            }
-
-            nav {
-                flex-direction: column;
-                padding: 15px;
-                top: 10px;
-                width: calc(100% - 20px);
-            }
-
-            nav ul li {
-                margin: 10px 0;
-                width: 100%;
-                text-align: center;
-            }
-
-            .btn-download {
-                width: 100%;
-                text-align: center;
-                margin-top: 10px;
-            }
-
-            .main-content {
-                margin-top: 150px;
-            }
-
-            .ai-section {
-                padding: 20px 15px;
-            }
-
-            .ai-section h2 {
-                font-size: 2rem;
-            }
-
-            .ai-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-            }
+            .menu-toggle.open { transform: rotate(90deg); }
+            .hero { padding: 5rem 0 3rem; }
+            .section-header { margin-bottom: 3rem; }
+            .card { padding: 2rem 1.5rem; }
         }
-
         @media (max-width: 480px) {
-            .ai-section h2 {
-                font-size: 1.8rem;
-            }
-
-            .ai-card {
-                padding: 15px;
-            }
-
-            .main-content {
-                margin-top: 180px;
-            }
+            :root { --section-spacing: 4rem; }
+            .hero { padding: 4rem 0 2rem; }
+            .btn { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
+            .card { padding: 1.8rem 1.2rem; }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="menu-toggle" id="mobile-menu">
-            <i class="fas fa-bars"></i>
-        </div>
-        <ul id="nav-menu">
-            <li><a href="#features">Fonctionnalités</a></li>
-            <li><a href="#workflow">Workflow</a></li>
-            <li><a href="#models">Modèles</a></li>
-            <li><a href="#benefits">Avantages</a></li>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+       
+        
+        <ul class="navbar-nav" id="navbarNav">
+            <li class="nav-item"><a href="#projets" class="nav-link active">projets</a></li>
+            <li class="nav-item"><a href="#fonctionnement" class="nav-link">fonctionnement</a></li>
+            <li class="nav-item"><a href="#apprentissage" class="nav-link">apprentissage</a></li>
+            <li class="nav-item"><a href="#avantages-bot-ia" class="nav-link">Avantages</a></li>
         </ul>
-        <a href="index.html" class="btn-download">Accueil</a>
+        
+        <div class="menu-toggle" id="menuToggle">
+            <!-- <i class="fas fa-bars"></i> -->
+        </div>
+        
+        <a href="index.html" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Retour
+        </a>
     </nav>
 
-    <div class="main-content">
-        <section class="ai-section" id="features">
-            <h2>Plateforme IA/ML</h2>
-            
-            <p>Notre plateforme d'Intelligence Artificielle et Machine Learning offre des outils puissants pour développer, entraîner et déployer des modèles avancés.</p>
-            
-            <div class="ai-grid">
-                <div class="ai-card">
-                    <h3>Développement de Modèles</h3>
-                    <ul>
-                        <li>Environnement Jupyter intégré</li>
-                        <li>AutoML pour l'automatisation</li>
-                        <li>Bibliothèques pré-installées</li>
-                        <li>Versioning des expériences</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Entraînement Distribué</h3>
-                    <ul>
-                        <li>GPU/TPU clusters</li>
-                        <li>Hyperparameter tuning</li>
-                        <li>Suivi des métriques en temps réel</li>
-                        <li>Optimisation automatique</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Déploiement</h3>
-                    <ul>
-                        <li>API endpoints scalables</li>
-                        <li>Conteneurisation automatique</li>
-                        <li>Monitoring des performances</li>
-                        <li>A/B testing des modèles</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- <div class="ai-diagram">
-                <img src="img/sulitions.jpeg" alt="Architecture IA/ML">
-            </div> -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero" >
+            <h1>Présentation de Projets IA Simples</h1>
+            <p>Découvrez des exemples concrets de projets d’intelligence artificielle faciles à réaliser, parfaits pour débuter et comprendre les bases du Machine Learning et de l’IA !</p>
+            <a href="#projets" class="btn btn-primary">Découvrir</a>
         </section>
-        
-        <section class="ai-section" id="workflow">
-            <h2>Workflow IA/ML</h2>
-            
-            <div class="ai-grid">
-                <div class="ai-card">
-                    <h3>Préparation des Données</h3>
-                    <ul>
-                        <li>Nettoyage et transformation</li>
-                        <li>Feature engineering</li>
-                        <li>Augmentation des données</li>
-                        <li>Gestion des datasets</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Expérimentation</h3>
-                    <ul>
-                        <li>Notebooks collaboratifs</li>
-                        <li>Visualisation des données</li>
-                        <li>Comparaison des modèles</li>
-                        <li>Reproductibilité</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Production</h3>
-                    <ul>
-                        <li>Pipeline CI/CD</li>
-                        <li>Détection de drift</li>
-                        <li>Re-entraînement automatique</li>
-                        <li>Gouvernance des modèles</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <section class="ai-section" id="models">
-            <h2>Types de Modèles</h2>
-            
-            <div class="ai-grid">
-                <div class="ai-card">
-                    <h3>Apprentissage Supervisé</h3>
-                    <ul>
-                        <li>Régression</li>
-                        <li>Classification</li>
-                        <li>Time series forecasting</li>
-                        <li>Détection d'anomalies</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Apprentissage Non Supervisé</h3>
-                    <ul>
-                        <li>Clustering</li>
-                        <li>Réduction de dimension</li>
-                        <li>Association rules</li>
-                        <li>Autoencoders</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Deep Learning</h3>
-                    <ul>
-                        <li>Réseaux neuronaux</li>
-                        <li>Computer Vision</li>
-                        <li>NLP (Traitement du langage)</li>
-                        <li>Reinforcement Learning</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <section class="ai-section" id="benefits">
-            <h2>Avantages Clés</h2>
-            
-            <div class="ai-grid">
-                <div class="ai-card">
-                    <h3>Efficacité</h3>
-                    <ul>
-                        <li>Réduction du time-to-market</li>
-                        <li>Automatisation des tâches répétitives</li>
-                        <li>Optimisation des ressources</li>
-                        <li>Collaboration simplifiée</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Scalabilité</h3>
-                    <ul>
-                        <li>De la POC à la production</li>
-                        <li>Gestion des gros volumes</li>
-                        <li>Calcul élastique</li>
-                        <li>Multi-cloud</li>
-                    </ul>
-                </div>
-                
-                <div class="ai-card">
-                    <h3>Sécurité</h3>
-                    <ul>
-                        <li>Chiffrement des données</li>
-                        <li>Contrôle d'accès granulaire</li>
-                        <li>Audit trail complet</li>
-                        <li>Conformité RGPD</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </div>
 
-    <!-- Bouton Retour en haut -->
-    <div class="back-to-top">
-        <button class="btn-back" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            <i class="fas fa-arrow-up"></i> Retour au menu
-        </button>
-    </div>
+        <!-- Section Projets -->
+        <section class="section" id="projets" >
+            <div class="section-header">
+                <h2 class="section-title">Nos Projets IA Simples</h2>
+                <p class="section-subtitle">Voici trois exemples de projets IA accessibles à tous, idéals pour s’initier à l’intelligence artificielle.</p>
+            </div>
+            <div class="cards-grid">
+                <!-- Projet 1 -->
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-robot"></i></div>
+                    <div class="card-title">Reconnaissance d’Images</div>
+                    <div class="card-body">
+                        <p>Un projet qui permet à l’ordinateur de reconnaître des objets simples (ex : chats, chiens) à partir de photos.</p>
+                        <ul>
+                            <li>Utilise un petit jeu de données d’images</li>
+                            <li>Entraîne un modèle de classification</li>
+                            <li>Affiche le résultat en temps réel</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Projet 2 -->
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-language"></i></div>
+                    <div class="card-title">Chatbot Basique</div>
+                    <div class="card-body">
+                        <p>Un assistant virtuel qui répond à des questions simples sur un sujet donné (ex : météo, horaires, etc.).</p>
+                        <ul>
+                            <li>Réponses programmées ou via IA</li>
+                            <li>Interface simple type messagerie</li>
+                            <li>Peut être intégré sur un site web</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Projet 3 -->
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="card-title">Prédiction de Valeurs</div>
+                    <div class="card-body">
+                        <p>Un modèle qui prédit une valeur simple (ex : prix d’une maison selon la surface) à partir de quelques données d’exemple.</p>
+                        <ul>
+                            <li>Utilise la régression linéaire</li>
+                            <li>Affiche la prédiction en direct</li>
+                            <li>Explication visuelle du modèle</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Section Fonctionnement -->
+        <section class="section" id="fonctionnement">
+            <div class="section-header">
+                <h2 class="section-title">Comment ça marche ?</h2>
+                <p class="section-subtitle">Chaque projet utilise des techniques simples de Machine Learning, accessibles même sans expérience préalable.</p>
+            </div>
+            <div class="diagram-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Artificial_intelligence_diagram.png" alt="Schéma IA simple">
+            </div>
+        </section>
+
+        <!-- Section Apprentissage -->
+        <section class="section" id="apprentissage">
+            <div class="section-header">
+                <h2 class="section-title">Pourquoi apprendre avec ces projets ?</h2>
+                <p class="section-subtitle">Ces projets permettent de comprendre les bases de l’IA tout en s’amusant et en voyant des résultats concrets rapidement.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="card-title">Pédagogique</div>
+                    <div class="card-body">
+                        <p>Des exemples concrets pour apprendre en pratiquant.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="card-title">Rapide à mettre en place</div>
+                    <div class="card-body">
+                        <p>Des projets réalisables en quelques heures ou quelques jours.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <div class="card-title">Accessible à tous</div>
+                    <div class="card-body">
+                        <p>Pas besoin d’être expert : tout le monde peut essayer !</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section Avantages d'un bot IA -->
+    <section class="section" id="avantages-bot-ia">
+        <div class="section-header">
+            <h2 class="section-title">Les avantages d'avoir un bot IA</h2>
+            <p class="section-subtitle">Découvrez pourquoi intégrer un chatbot IA est un atout majeur pour toute organisation.</p>
+        </div>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-clock"></i></div>
+                <div class="card-title">Disponibilité 24/7</div>
+                <div class="card-body">
+                    <p>Un bot IA répond instantanément aux demandes, à toute heure, sans interruption, améliorant ainsi la satisfaction et l’expérience client.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                <div class="card-title">Réponses rapides et cohérentes</div>
+                <div class="card-body">
+                    <p>Il fournit des réponses immédiates, précises et standardisées, garantissant une qualité de service constante à chaque interaction.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <div class="card-title">Automatisation des tâches répétitives</div>
+                <div class="card-body">
+                    <p>Le bot prend en charge les requêtes simples et fréquentes, permettant aux équipes humaines de se concentrer sur les demandes à forte valeur ajoutée.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-globe"></i></div>
+                <div class="card-title">Support multilingue et évolutif</div>
+                <div class="card-body">
+                    <p>Il peut dialoguer dans plusieurs langues et gérer un grand nombre d’utilisateurs simultanément, sans perte de qualité de service.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-user-check"></i></div>
+                <div class="card-title">Personnalisation de l’expérience</div>
+                <div class="card-body">
+                    <p>Grâce à l’IA, le bot adapte ses réponses selon le profil et l’historique de chaque utilisateur, offrant un accompagnement sur-mesure.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="card-title">Optimisation des coûts</div>
+                <div class="card-body">
+                    <p>L’automatisation permet de réduire les coûts opérationnels tout en assurant un service client de qualité, accessible en continu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop" aria-label="Retour en haut"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Script pour le menu mobile, l'animation des sections, etc. -->
     <script>
-        // Menu Burger
-        const menuToggle = document.getElementById('mobile-menu');
-        const navMenu = document.getElementById('nav-menu');
-
+        // Menu mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarNav = document.getElementById('navbarNav');
         menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('show');
+            menuToggle.classList.toggle('open');
+            navbarNav.classList.toggle('open');
         });
 
-        // Fermer le menu quand un lien est cliqué
-        document.querySelectorAll('#nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('show');
+        // Navigation active link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
-        // Effet de défilement fluide
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Animation des sections lors du scroll
+        const sections = document.querySelectorAll('.section, .diagram-container, .card');
+        function revealOnScroll() {
+            const triggerBottom = window.innerHeight * 0.9;
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
             });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Navbar hide on scroll down
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
