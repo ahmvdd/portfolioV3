@@ -2,12 +2,12 @@
 /****************************************************/
 
 :root {
-	--pr-color: #ffffff; /* Blanc - Primaire */
+	--pr-color: #ede8e8; /* Blanc - Primaire */
 	/* --second-color:linear-gradient(180deg, rgba(0,0,0,1) 13%, rgba(1,7,32,1) 74%, rgba(2,17,80,1) 100%); */
 	--second-color:#101010;
 	--cubicbz: cubic-bezier(.9, 0, .1, 1);
 	--fz-big: 60px;
-	--thre-color: #5247f1; 
+	--thre-color: #645aed; 
 }
 
 * {
@@ -532,9 +532,9 @@ section {
 
 }
 ::selection {
-	/* background-color: #000000b8;   */
-	color: #ffffff; 
-  }
+    background-color: #4624df; 
+    color: white;  
+}
 
 .cc p {
     color: var(--thre-color);
