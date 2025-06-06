@@ -1,150 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Card Carousel</title>
+  <title>Lumière LED CSS</title>
   <style>
     body {
+      background: #000;
+      min-height: 100vh;
       margin: 0;
-      background: black;
-      font-family: Arial, sans-serif;
-      color: white;
-    }
-
-    .carousel {
       display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      padding: 40px;
-      scroll-snap-type: x mandatory;
+      justify-content: center;
+      align-items: center;
     }
-
-    .card {
-      flex: 0 0 auto;
-      width: 250px;
-      height: 400px;
-      border-radius: 20px;
-      background-size: cover;
-      background-position: center;
+    .spotlight-container {
       position: relative;
+      width: 340px;
+      height: 340px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      scroll-snap-align: start;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .card h3 {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .info-box {
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      justify-content: flex-start;
     }
-
-    .left-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .icon-text {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dots {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .dot {
-      display: inline-block;
-      width: 8px;
+    .led-bar {
+      position: absolute;
+      top: 60px;
+      left: 30px;
+      width: 280px;
       height: 8px;
-      margin: 0 5px;
-      border-radius: 50%;
-      background-color: #666;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        #ffae42 20%,
+        #ffd180 50%,
+        #ffae42 80%,
+        transparent 100%
+      );
+      border-radius: 4px;
+      box-shadow: 0 0 32px 8px #ffae4280, 0 0 64px 16px #ffae4210;
+      z-index: 2;
     }
-
-    .dot.active {
-      background-color: #fff;
+    .led-glow {
+      position: absolute;
+      top: 68px;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center top,
+        #ffae4280 0%,
+        #ffae4230 40%,
+        transparent 100%);
+      filter: blur(2px);
+      opacity: 0.95;
+      z-index: 1;
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    }
+    .text-focus {
+      position: absolute;
+      top: 170px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Orbitron', Arial, sans-serif;
+      font-size: 2.5rem;
+      color: #fff3e0;
+      letter-spacing: 0.2em;
+      text-shadow:
+        0 2px 16px #ffae4260,
+        0 0 4px #ffae42,
+        0 0 32px #ffae4220;
+      z-index: 3;
     }
   </style>
+  <!-- Pour un rendu optimal, tu peux utiliser la police Orbitron de Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700" rel="stylesheet">
 </head>
 <body>
-
-<div class="carousel">
-  <div class="card" style="background-image: url('card1.jpg')">
-    <h3>Accept payments easily, anywhere</h3>
-    <div class="info-box">
-      <div class="left-info">
-        <div class="icon-text">💳 Iced latte -0034</div>
-        <div style="font-size: 12px; opacity: 0.7;">07:15</div>
-      </div>
-      <div><strong>+5,50 €</strong></div>
-    </div>
+  <div class="spotlight-container">
+    <div class="led-bar"></div>
+    <div class="led-glow"></div>
+    <div class="text-focus">Focus</div>
   </div>
-
-  <div class="card" style="background-image: url('card2.jpg')">
-    <h3>Put your money to work</h3>
-    <div class="info-box">
-      <div class="left-info">
-        <div class="icon-text">📁 Future projects</div>
-      </div>
-      <div><strong>10.000 €</strong></div>
-    </div>
-  </div>
-
-  <div class="card" style="background-image: url('card3.jpg')">
-    <h3>Manage money in multiple currencies</h3>
-    <div class="info-box">
-      <div class="left-info">
-        <div class="icon-text">🌐 US sales</div>
-        <div style="font-size: 12px; opacity: 0.7;">11:05</div>
-      </div>
-      <div><strong>+120.600 $</strong></div>
-    </div>
-  </div>
-
-  <div class="card" style="background-image: url('/img/vchaticon.jpg')">
-    <h3>Transfer to 150+ destinations</h3>
-    <div class="info-box">
-      <div class="left-info">
-        <div class="icon-text">💱 EUR → JPY</div>
-        <div style="font-size: 12px; opacity: 0.7;">09:34 - C. Perez</div>
-      </div>
-      <div><strong>+172.836 ¥</strong></div>
-    </div>
-  </div>
-
-  <div class="card" style="background-image: url('card5.jpg')">
-    <h3>Make your spend stress-free</h3>
-    <div class="info-box">
-      <div class="left-info">
-        <div class="icon-text">💳 Spending limit</div>
-      </div>
-      <div><strong>2.200 € monthly</strong></div>
-    </div>
-  </div>
-</div>
-
-<div class="dots">
-  <span class="dot"></span>
-  <span class="dot"></span>
-  <span class="dot active"></span>
-  <span class="dot"></span>
-  <span class="dot"></span>
-</div>
-
 </body>
 </html>
