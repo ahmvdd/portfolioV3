@@ -20,21 +20,37 @@
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             --section-spacing: 8rem;
         }
+        html.light-mode {
+            --bg-color: #f8f9fb;
+            --bg-secondary: #ffffff;
+            --text-color: #181818;
+            --text-secondary: #4d4d4d;
+            --primary: #6C63FF;
+            --primary-light: rgba(108, 99, 255, 0.08);
+            --primary-dark: #554dd1;
+            --card-bg: #f3f5fa;
+            --border-radius: 16px;
+        }
+        html, body {
+            min-height: 100%;
+            background: var(--bg-color) !important;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
         }
+        ::selection { background-color: #4624df; color: white; }
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1.5rem 3rem 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -46,27 +62,15 @@
             transform: translateY(0);
             transition: var(--transition);
         }
+        html.light-mode .navbar {
+            background-color: rgba(255,255,255,0.92);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
         .navbar.hidden { transform: translateY(-100%); }
         .navbar.scrolled {
-            padding: 1rem 5%;
+            padding: 1rem 3rem 1rem 5%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-        .navbar-brand:hover { transform: translateX(5px); }
-        .navbar-brand i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-            font-size: 1.6rem;
-        }
-        .navbar-brand span { color: var(--primary); font-weight: 700; }
         .navbar-nav {
             display: flex;
             list-style: none;
@@ -121,6 +125,53 @@
             background-color: var(--primary-dark);
         }
         .btn-primary:active { transform: translateY(0); }
+        .mode-switch {
+            margin-left: 1.5rem;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.45rem;
+            color: var(--primary);
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.6rem;
+            border-radius: 50%;
+        }
+        .mode-switch:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        html.light-mode .mode-switch { color: #f7b500; }
+        .mode-switch .fa-sun { display: none; }
+        html.light-mode .mode-switch .fa-moon { display: none; }
+        html.light-mode .mode-switch .fa-sun { display: inline; }
+        .menu-toggle {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                left: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: var(--primary);
+                font-size: 1.7rem;
+                z-index: 1001;
+                padding: 0.3rem 0.7rem;
+                border-radius: 50%;
+                transition: var(--transition);
+            }
+            .navbar {
+                padding: 1.2rem 1.5rem 1.2rem 5%;
+                justify-content: flex-end;
+            }
+        }
         .main-content {
             max-width: 1200px;
             margin: 8rem auto 4rem;
@@ -160,6 +211,13 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.2s forwards;
+        }
+        html.light-mode .hero h1, html.light-mode .section-title {
+            background: linear-gradient(90deg, #181818, #6C63FF 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
         }
         .hero p {
             font-size: clamp(1rem, 2vw, 1.25rem);
@@ -239,6 +297,9 @@
             overflow: hidden;
             opacity: 0;
             transform: translateY(20px);
+        }
+        html.light-mode .card {
+            border: 1px solid rgba(0,0,0,0.04);
         }
         .card.visible {
             opacity: 1;
@@ -373,7 +434,7 @@
         }
         @media (max-width: 768px) {
             :root { --section-spacing: 5rem; --border-radius: 12px; }
-            .navbar { padding: 1.2rem 5%; }
+            .navbar { padding: 1.2rem 1.5rem 1.2rem 5%; }
             .navbar-nav {
                 position: fixed;
                 top: 80px;
@@ -395,14 +456,6 @@
                 pointer-events: all;
             }
             .nav-item { margin: 1rem 0; }
-            .menu-toggle {
-                display: block;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 1001;
-                transition: var(--transition);
-            }
-            .menu-toggle.open { transform: rotate(90deg); }
             .hero { padding: 5rem 0 3rem; }
             .section-header { margin-bottom: 3rem; }
             .card { padding: 2rem 1.5rem; }
@@ -418,19 +471,19 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
-       
-        
+        <div class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+            <i class="fas fa-bars"></i>
+        </div>
         <ul class="navbar-nav" id="navbarNav">
             <li class="nav-item"><a href="#projets" class="nav-link active">projets</a></li>
             <li class="nav-item"><a href="#fonctionnement" class="nav-link">fonctionnement</a></li>
             <li class="nav-item"><a href="#apprentissage" class="nav-link">apprentissage</a></li>
             <li class="nav-item"><a href="#avantages-bot-ia" class="nav-link">Avantages</a></li>
         </ul>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <!-- <i class="fas fa-bars"></i> -->
-        </div>
-        
+        <button class="mode-switch" id="modeSwitch" aria-label="Changer le mode">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
         <a href="index.html" class="btn btn-primary">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
@@ -443,7 +496,7 @@
             <p>Découvrez des exemples concrets de projets d’intelligence artificielle faciles à réaliser, parfaits pour débuter et comprendre les bases du Machine Learning et de l’IA !</p>
             <a href="#projets" class="btn btn-primary">Découvrir</a>
         </section>
-
+        <!-- ... reste du contenu inchangé ... -->
         <!-- Section Projets -->
         <section class="section" id="projets" >
             <div class="section-header">
@@ -492,7 +545,6 @@
                 </div>
             </div>
         </section>
-
         <!-- Section Fonctionnement -->
         <section class="section" id="fonctionnement">
             <div class="section-header">
@@ -503,7 +555,6 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Artificial_intelligence_diagram.png" alt="Schéma IA simple">
             </div>
         </section>
-
         <!-- Section Apprentissage -->
         <section class="section" id="apprentissage">
             <div class="section-header">
@@ -534,67 +585,82 @@
                 </div>
             </div>
         </section>
-
-
         <!-- Section Avantages d'un bot IA -->
-    <section class="section" id="avantages-bot-ia">
-        <div class="section-header">
-            <h2 class="section-title">Les avantages d'avoir un bot IA</h2>
-            <p class="section-subtitle">Découvrez pourquoi intégrer un chatbot IA est un atout majeur pour toute organisation.</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-clock"></i></div>
-                <div class="card-title">Disponibilité 24/7</div>
-                <div class="card-body">
-                    <p>Un bot IA répond instantanément aux demandes, à toute heure, sans interruption, améliorant ainsi la satisfaction et l’expérience client.</p>
+        <section class="section" id="avantages-bot-ia">
+            <div class="section-header">
+                <h2 class="section-title">Les avantages d'avoir un bot IA</h2>
+                <p class="section-subtitle">Découvrez pourquoi intégrer un chatbot IA est un atout majeur pour toute organisation.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-clock"></i></div>
+                    <div class="card-title">Disponibilité 24/7</div>
+                    <div class="card-body">
+                        <p>Un bot IA répond instantanément aux demandes, à toute heure, sans interruption, améliorant ainsi la satisfaction et l’expérience client.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="card-title">Réponses rapides et cohérentes</div>
+                    <div class="card-body">
+                        <p>Il fournit des réponses immédiates, précises et standardisées, garantissant une qualité de service constante à chaque interaction.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-robot"></i></div>
+                    <div class="card-title">Automatisation des tâches répétitives</div>
+                    <div class="card-body">
+                        <p>Le bot prend en charge les requêtes simples et fréquentes, permettant aux équipes humaines de se concentrer sur les demandes à forte valeur ajoutée.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-globe"></i></div>
+                    <div class="card-title">Support multilingue et évolutif</div>
+                    <div class="card-body">
+                        <p>Il peut dialoguer dans plusieurs langues et gérer un grand nombre d’utilisateurs simultanément, sans perte de qualité de service.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-user-check"></i></div>
+                    <div class="card-title">Personnalisation de l’expérience</div>
+                    <div class="card-body">
+                        <p>Grâce à l’IA, le bot adapte ses réponses selon le profil et l’historique de chaque utilisateur, offrant un accompagnement sur-mesure.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="card-title">Optimisation des coûts</div>
+                    <div class="card-body">
+                        <p>L’automatisation permet de réduire les coûts opérationnels tout en assurant un service client de qualité, accessible en continu.</p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-bolt"></i></div>
-                <div class="card-title">Réponses rapides et cohérentes</div>
-                <div class="card-body">
-                    <p>Il fournit des réponses immédiates, précises et standardisées, garantissant une qualité de service constante à chaque interaction.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-robot"></i></div>
-                <div class="card-title">Automatisation des tâches répétitives</div>
-                <div class="card-body">
-                    <p>Le bot prend en charge les requêtes simples et fréquentes, permettant aux équipes humaines de se concentrer sur les demandes à forte valeur ajoutée.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-globe"></i></div>
-                <div class="card-title">Support multilingue et évolutif</div>
-                <div class="card-body">
-                    <p>Il peut dialoguer dans plusieurs langues et gérer un grand nombre d’utilisateurs simultanément, sans perte de qualité de service.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-user-check"></i></div>
-                <div class="card-title">Personnalisation de l’expérience</div>
-                <div class="card-body">
-                    <p>Grâce à l’IA, le bot adapte ses réponses selon le profil et l’historique de chaque utilisateur, offrant un accompagnement sur-mesure.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                <div class="card-title">Optimisation des coûts</div>
-                <div class="card-body">
-                    <p>L’automatisation permet de réduire les coûts opérationnels tout en assurant un service client de qualité, accessible en continu.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+        </section>
     </main>
 
     <!-- Back to top button -->
     <button class="back-to-top" id="backToTop" aria-label="Retour en haut"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- Script pour le menu mobile, l'animation des sections, etc. -->
     <script>
+        // Mode Switch
+        const modeSwitch = document.getElementById('modeSwitch');
+        const html = document.documentElement;
+        function setMode(light) {
+            if (light) {
+                html.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('theme') === 'light') {
+            setMode(true);
+        }
+        modeSwitch.addEventListener('click', () => {
+            setMode(!html.classList.contains('light-mode'));
+        });
+
         // Menu mobile
         const menuToggle = document.getElementById('menuToggle');
         const navbarNav = document.getElementById('navbarNav');
@@ -609,6 +675,8 @@
             link.addEventListener('click', function() {
                 navLinks.forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
+                navbarNav.classList.remove('open');
+                menuToggle.classList.remove('open');
             });
         });
 

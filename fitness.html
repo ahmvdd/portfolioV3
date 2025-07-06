@@ -20,32 +20,37 @@
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             --section-spacing: 8rem;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        html.light-mode {
+            --bg-color: #f8f9fb;
+            --bg-secondary: #ffffff;
+            --text-color: #181818;
+            --text-secondary: #4d4d4d;
+            --primary: #6C63FF;
+            --primary-light: rgba(108, 99, 255, 0.08);
+            --primary-dark: #554dd1;
+            --card-bg: #f3f5fa;
+            --border-radius: 16px;
         }
-
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            min-height: 100%;
+            background: var(--bg-color) !important;
+            color: var(--text-color);
+            transition: var(--transition);
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
         }
-
-        /* Navigation */
+        ::selection { background-color: #4624df; color: white; }
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1.5rem 3rem 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,52 +62,21 @@
             transform: translateY(0);
             transition: var(--transition);
         }
-
-        .navbar.hidden {
-            transform: translateY(-100%);
+        html.light-mode .navbar {
+            background-color: rgba(255,255,255,0.92);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-
+        .navbar.hidden { transform: translateY(-100%); }
         .navbar.scrolled {
-            padding: 1rem 5%;
+            padding: 1rem 3rem 1rem 5%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .navbar-brand:hover {
-            transform: translateX(5px);
-        }
-
-        .navbar-brand i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-            font-size: 1.6rem;
-        }
-
-        .navbar-brand span {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
         .navbar-nav {
             display: flex;
             list-style: none;
             align-items: center;
         }
-
-        .nav-item {
-            margin-left: 2rem;
-            position: relative;
-        }
-
+        .nav-item { margin-left: 2rem; position: relative; }
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
@@ -112,11 +86,7 @@
             position: relative;
             padding: 0.5rem 0;
         }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--text-color);
-        }
-
+        .nav-link:hover, .nav-link.active { color: var(--text-color); }
         .nav-link::after {
             content: '';
             position: absolute;
@@ -128,11 +98,7 @@
             transition: var(--transition);
             border-radius: 2px;
         }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -148,38 +114,75 @@
             outline: none;
             gap: 0.5rem;
         }
-
         .btn-primary {
             background-color: var(--primary);
             color: white;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
             background-color: var(--primary-dark);
         }
-
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-primary:active { transform: translateY(0); }
+        .mode-switch {
+            margin-left: 1.5rem;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.45rem;
+            color: var(--primary);
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.6rem;
+            border-radius: 50%;
         }
-
-        /* Main Content */
+        .mode-switch:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        html.light-mode .mode-switch { color: #f7b500; }
+        .mode-switch .fa-sun { display: none; }
+        html.light-mode .mode-switch .fa-moon { display: none; }
+        html.light-mode .mode-switch .fa-sun { display: inline; }
+        .menu-toggle {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                left: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: var(--primary);
+                font-size: 1.7rem;
+                z-index: 1001;
+                padding: 0.3rem 0.7rem;
+                border-radius: 50%;
+                transition: var(--transition);
+            }
+            .navbar {
+                padding: 1.2rem 1.5rem 1.2rem 5%;
+                justify-content: flex-end;
+            }
+        }
         .main-content {
             max-width: 1200px;
             margin: 8rem auto 4rem;
             padding: 0 5%;
         }
-
-        /* Hero Section */
         .hero {
             padding: 8rem 0 6rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-
         .hero::before {
             content: '';
             position: absolute;
@@ -191,16 +194,10 @@
             z-index: -1;
             animation: pulse 15s infinite alternate;
         }
-
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.2);
-            }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
         }
-
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 1.5rem;
@@ -215,7 +212,13 @@
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.2s forwards;
         }
-
+        html.light-mode .hero h1, html.light-mode .section-title {
+            background: linear-gradient(90deg, #181818, #6C63FF 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
         .hero p {
             font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-secondary);
@@ -226,38 +229,31 @@
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.4s forwards;
         }
-
         .hero .btn {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.6s forwards;
         }
-
         @keyframes fadeInUp {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        /* Section */
         .section {
             margin: var(--section-spacing) 0;
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-
         .section.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .section-header {
             margin-bottom: 4rem;
             position: relative;
         }
-
         .section-title {
             font-size: clamp(1.8rem, 3vw, 2.5rem);
             font-weight: 800;
@@ -270,7 +266,6 @@
             background-clip: text;
             text-fill-color: transparent;
         }
-
         .section-title::after {
             content: '';
             position: absolute;
@@ -281,21 +276,17 @@
             background-color: var(--primary);
             border-radius: 2px;
         }
-
         .section-subtitle {
             font-size: clamp(1rem, 2vw, 1.1rem);
             color: var(--text-secondary);
             max-width: 600px;
             line-height: 1.8;
         }
-
-        /* Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
-
         .card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -307,12 +298,13 @@
             opacity: 0;
             transform: translateY(20px);
         }
-
+        html.light-mode .card {
+            border: 1px solid rgba(0,0,0,0.04);
+        }
         .card.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .card::before {
             content: '';
             position: absolute;
@@ -325,17 +317,12 @@
             opacity: 0;
             transition: var(--transition);
         }
-
         .card:hover {
             transform: translateY(-10px) !important;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
+        .card:hover::before { opacity: 1; }
         .card-icon {
             width: 60px;
             height: 60px;
@@ -349,13 +336,11 @@
             font-size: 1.5rem;
             transition: var(--transition);
         }
-
         .card:hover .card-icon {
             transform: rotate(10deg) scale(1.1);
             background-color: var(--primary);
             color: white;
         }
-
         .card-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -363,34 +348,26 @@
             color: var(--text-color);
             transition: var(--transition);
         }
-
-        .card:hover .card-title {
-            color: var(--primary);
-        }
-
+        .card:hover .card-title { color: var(--primary); }
         .card-body {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.8;
         }
-
         .card-body ul {
             list-style: none;
             margin-top: 1.5rem;
         }
-
         .card-body li {
             margin-bottom: 1rem;
             position: relative;
             padding-left: 1.8rem;
             transition: var(--transition);
         }
-
         .card-body li:hover {
             color: var(--text-color);
             transform: translateX(5px);
         }
-
         .card-body li::before {
             content: '▹';
             position: absolute;
@@ -398,8 +375,6 @@
             color: var(--primary);
             font-size: 1.1rem;
         }
-
-        /* Diagram */
         .diagram-container {
             margin: 5rem 0;
             text-align: center;
@@ -408,12 +383,10 @@
             transform: translateY(30px);
             transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
         }
-
         .diagram-container.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .diagram-container img {
             max-width: 100%;
             border-radius: var(--border-radius);
@@ -421,13 +394,10 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition);
         }
-
         .diagram-container img:hover {
             transform: scale(1.02);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
-
-        /* Back to top */
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -449,39 +419,22 @@
             border: none;
             outline: none;
         }
-
         .back-to-top.visible {
             opacity: 1;
             visibility: visible;
         }
-
         .back-to-top:hover {
             transform: translateY(-5px) scale(1.1);
             box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
             background-color: var(--primary-dark);
         }
-
-        /* Responsive */
         @media (max-width: 992px) {
-            :root {
-                --section-spacing: 6rem;
-            }
-            
-            .hero {
-                padding: 6rem 0 4rem;
-            }
+            :root { --section-spacing: 6rem; }
+            .hero { padding: 6rem 0 4rem; }
         }
-
         @media (max-width: 768px) {
-            :root {
-                --section-spacing: 5rem;
-                --border-radius: 12px;
-            }
-            
-            .navbar {
-                padding: 1.2rem 5%;
-            }
-            
+            :root { --section-spacing: 5rem; --border-radius: 12px; }
+            .navbar { padding: 1.2rem 1.5rem 1.2rem 5%; }
             .navbar-nav {
                 position: fixed;
                 top: 80px;
@@ -497,82 +450,43 @@
                 pointer-events: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-            
             .navbar-nav.open {
                 clip-path: circle(1000px at 90% -10%);
                 -webkit-clip-path: circle(1000px at 90% -10%);
                 pointer-events: all;
             }
-            
-            .nav-item {
-                margin: 1rem 0;
-            }
-            
-            .menu-toggle {
-                display: block;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 1001;
-                transition: var(--transition);
-            }
-            
-            .menu-toggle.open {
-                transform: rotate(90deg);
-            }
-            
-            .hero {
-                padding: 5rem 0 3rem;
-            }
-            
-            .section-header {
-                margin-bottom: 3rem;
-            }
-            
-            .card {
-                padding: 2rem 1.5rem;
-            }
+            .nav-item { margin: 1rem 0; }
+            .hero { padding: 5rem 0 3rem; }
+            .section-header { margin-bottom: 3rem; }
+            .card { padding: 2rem 1.5rem; }
         }
-
         @media (max-width: 480px) {
-            :root {
-                --section-spacing: 4rem;
-            }
-            
-            .hero {
-                padding: 4rem 0 2rem;
-            }
-            
-            .btn {
-                padding: 0.7rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .card {
-                padding: 1.8rem 1.2rem;
-            }
+            :root { --section-spacing: 4rem; }
+            .hero { padding: 4rem 0 2rem; }
+            .btn { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
+            .card { padding: 1.8rem 1.2rem; }
         }
     </style>
 </head>
 <body>
 
-     <nav class="navbar" id="navbar">
-       
-        
-        <ul class="navbar-nav">
+    <nav class="navbar" id="navbar">
+        <div class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="navbar-nav" id="navbarNav">
             <li class="nav-item"><a href="#intro" class="nav-link active">Accueil</a></li>
             <li class="nav-item"><a href="#modules" class="nav-link">Modules</a></li>
             <li class="nav-item"><a href="#diagram" class="nav-link">Schéma</a></li>
         </ul>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <!-- <i class="fas fa-bars"></i> -->
-        </div>
-        
+        <button class="mode-switch" id="modeSwitch" aria-label="Changer le mode">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
         <a href="index.html" class="btn btn-primary">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
     </nav>
-    
 
     <main class="main-content">
         <section class="hero" id="intro">
@@ -584,7 +498,7 @@
         <section class="section" id="modules">
             <div class="section-header">
                 <h2 class="section-title">Modules Inclus</h2>
-                <p class="section-subtitle">Voici les piliers de l'acquisition digitale que vous allez découvrir et maîtriser au fil de la formation.</p>
+                <p class="section-subtitle">Voici les piliers de l'acquisition digitale dont vous avez besoin.</p>
             </div>
             <div class="cards-grid">
                 <div class="card">
@@ -648,47 +562,108 @@
                     <h3 class="card-title">Optimisation des Médias Sociaux (SMO)</h3>
                     <div class="card-body">
                         <ul>
-                            <li><strong>Analyse des tendances </li>
-                            <li><strong>Engagement communautaire </li>
-                            <li><strong>Publicités ciblées </li>
-                            <li><strong>Collaboration avec des influenceurs </li>
-                            <li><strong>Analyse des performances </li>
+                            <li>Analyse des tendances</li>
+                            <li>Engagement communautaire</li>
+                            <li>Publicités ciblées</li>
+                            <li>Collaboration avec des influenceurs</li>
+                            <li>Analyse des performances</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-        
-
-
-            
 
         <section class="diagram-container" id="diagram">
-            <h2 class="section-title">Schéma de l'Écosystème Digital</h2>
-            <img src="https://via.placeholder.com/1000x600?text=Sch%C3%A9ma+Digital+Marketing" alt="Schéma Digital Marketing">
+            <h2 class="section-title">Schéma d'uen demonstration de l'Écosystème Digital</h2>
+            <img src="img/moseo.png" alt="Schéma Digital Marketing">
         </section>
     </main>
 
-    <div class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
-        <i class="fas fa-chevron-up"></i>
-    </div>
+    <button class="back-to-top" id="backToTop" aria-label="Retour en haut"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // Animation de scroll pour les sections et cartes
-        const sections = document.querySelectorAll('.section, .card, .diagram-container');
-        const options = {
-            threshold: 0.2
-        };
+        // Mode Switch
+        const modeSwitch = document.getElementById('modeSwitch');
+        const html = document.documentElement;
+        function setMode(light) {
+            if (light) {
+                html.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('theme') === 'light') {
+            setMode(true);
+        }
+        modeSwitch.addEventListener('click', () => {
+            setMode(!html.classList.contains('light-mode'));
+        });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // Menu mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarNav = document.getElementById('navbarNav');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            navbarNav.classList.toggle('open');
+        });
+
+        // Navigation active link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                navbarNav.classList.remove('open');
+                menuToggle.classList.remove('open');
+            });
+        });
+
+        // Animation des sections lors du scroll
+        const sections = document.querySelectorAll('.section, .diagram-container, .card');
+        function revealOnScroll() {
+            const triggerBottom = window.innerHeight * 0.9;
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
                 }
             });
-        }, options);
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
 
-        sections.forEach(section => observer.observe(section));
+        // Navbar hide on scroll down
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>

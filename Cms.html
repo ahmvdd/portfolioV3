@@ -20,24 +20,31 @@
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             --section-spacing: 8rem;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        html.light-mode {
+            --bg-color: #f8f9fb;
+            --bg-secondary: #ffffff;
+            --text-color: #181818;
+            --text-secondary: #4d4d4d;
+            --primary: #6C63FF;
+            --primary-light: rgba(108, 99, 255, 0.08);
+            --primary-dark: #554dd1;
+            --card-bg: #f3f5fa;
+            --border-radius: 16px;
         }
-
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            min-height: 100%;
+            background: var(--bg-color) !important;
+            color: var(--text-color);
+            transition: var(--transition);
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
         }
+        ::selection { background-color: #4624df; color: white; }
 
         /* Navigation */
         .navbar {
@@ -45,7 +52,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1.5rem 3rem 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,56 +64,21 @@
             transform: translateY(0);
             transition: var(--transition);
         }
-        ::selection {
-            background-color: #4624df; /* ou la couleur bleue de ton choix */
-            color: white; /* couleur du texte sélectionné */
+        html.light-mode .navbar {
+            background-color: rgba(255,255,255,0.92);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-
-        .navbar.hidden {
-            transform: translateY(-100%);
-        }
-
+        .navbar.hidden { transform: translateY(-100%); }
         .navbar.scrolled {
-            padding: 1rem 5%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 1rem 3rem 1rem 5%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
         }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .navbar-brand:hover {
-            transform: translateX(5px);
-        }
-
-        .navbar-brand i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-            font-size: 1.6rem;
-        }
-
-        .navbar-brand span {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
         .navbar-nav {
             display: flex;
             list-style: none;
             align-items: center;
         }
-
-        .nav-item {
-            margin-left: 2rem;
-            position: relative;
-        }
-
+        .nav-item { margin-left: 2rem; position: relative; }
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
@@ -116,11 +88,7 @@
             position: relative;
             padding: 0.5rem 0;
         }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--text-color);
-        }
-
+        .nav-link:hover, .nav-link.active { color: var(--text-color); }
         .nav-link::after {
             content: '';
             position: absolute;
@@ -132,11 +100,7 @@
             transition: var(--transition);
             border-radius: 2px;
         }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -152,24 +116,69 @@
             outline: none;
             gap: 0.5rem;
         }
-
         .btn-primary {
             background-color: var(--primary);
             color: white;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
             background-color: var(--primary-dark);
         }
+        .btn-primary:active { transform: translateY(0); }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        /* Mode Switch Button */
+        .mode-switch {
+            margin-left: 1.5rem;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1.45rem;
+            color: var(--primary);
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.6rem;
+            border-radius: 50%;
+        }
+        .mode-switch:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        html.light-mode .mode-switch { color: #f7b500; }
+        .mode-switch .fa-sun { display: none; }
+        html.light-mode .mode-switch .fa-moon { display: none; }
+        html.light-mode .mode-switch .fa-sun { display: inline; }
+
+        /* MENU TOGGLE (hamburger) */
+        .menu-toggle {
+            display: none; /* Masqué par défaut (desktop) */
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                left: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: var(--primary);
+                font-size: 1.7rem;
+                z-index: 1001;
+                padding: 0.3rem 0.7rem;
+                border-radius: 50%;
+                transition: var(--transition);
+            }
+            .navbar {
+                padding: 1.2rem 1.5rem 1.2rem 5%;
+                justify-content: flex-end;
+            }
         }
 
-        /* Main Content */
         .main-content {
             max-width: 1200px;
             margin: 8rem auto 4rem;
@@ -183,7 +192,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .hero::before {
             content: '';
             position: absolute;
@@ -195,16 +203,7 @@
             z-index: -1;
             animation: pulse 15s infinite alternate;
         }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.2);
-            }
-        }
-
+        @keyframes pulse { 0% { transform: scale(1);} 100% { transform: scale(1.2);} }
         .hero h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 1.5rem;
@@ -219,7 +218,13 @@
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.2s forwards;
         }
-
+        html.light-mode .hero h1, html.light-mode .section-title {
+            background: linear-gradient(90deg, #181818, #6C63FF 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
         .hero p {
             font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-secondary);
@@ -230,19 +235,12 @@
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.4s forwards;
         }
-
         .hero .btn {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s 0.6s forwards;
         }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0);} }
 
         /* Section */
         .section {
@@ -251,17 +249,11 @@
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-
         .section.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        .section-header {
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
+        .section-header { margin-bottom: 4rem; position: relative; }
         .section-title {
             font-size: clamp(1.8rem, 3vw, 2.5rem);
             font-weight: 800;
@@ -274,7 +266,6 @@
             background-clip: text;
             text-fill-color: transparent;
         }
-
         .section-title::after {
             content: '';
             position: absolute;
@@ -285,7 +276,6 @@
             background-color: var(--primary);
             border-radius: 2px;
         }
-
         .section-subtitle {
             font-size: clamp(1rem, 2vw, 1.1rem);
             color: var(--text-secondary);
@@ -299,7 +289,6 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
-
         .card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -311,12 +300,13 @@
             opacity: 0;
             transform: translateY(20px);
         }
-
+        html.light-mode .card {
+            border: 1px solid rgba(0,0,0,0.04);
+        }
         .card.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .card::before {
             content: '';
             position: absolute;
@@ -329,17 +319,12 @@
             opacity: 0;
             transition: var(--transition);
         }
-
         .card:hover {
             transform: translateY(-10px) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.11);
             border-color: var(--primary);
         }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
+        .card:hover::before { opacity: 1; }
         .card-icon {
             width: 60px;
             height: 60px;
@@ -353,13 +338,11 @@
             font-size: 1.5rem;
             transition: var(--transition);
         }
-
         .card:hover .card-icon {
             transform: rotate(10deg) scale(1.1);
             background-color: var(--primary);
             color: white;
         }
-
         .card-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -367,34 +350,23 @@
             color: var(--text-color);
             transition: var(--transition);
         }
-
-        .card:hover .card-title {
-            color: var(--primary);
-        }
-
+        .card:hover .card-title { color: var(--primary); }
         .card-body {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.8;
         }
-
-        .card-body ul {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
+        .card-body ul { list-style: none; margin-top: 1.5rem;}
         .card-body li {
             margin-bottom: 1rem;
             position: relative;
             padding-left: 1.8rem;
             transition: var(--transition);
         }
-
         .card-body li:hover {
             color: var(--text-color);
             transform: translateX(5px);
         }
-
         .card-body li::before {
             content: '▹';
             position: absolute;
@@ -412,12 +384,10 @@
             transform: translateY(30px);
             transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
         }
-
         .diagram-container.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         .diagram-container img {
             max-width: 100%;
             border-radius: var(--border-radius);
@@ -425,7 +395,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition);
         }
-
         .diagram-container img:hover {
             transform: scale(1.02);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
@@ -453,12 +422,10 @@
             border: none;
             outline: none;
         }
-
         .back-to-top.visible {
             opacity: 1;
             visibility: visible;
         }
-
         .back-to-top:hover {
             transform: translateY(-5px) scale(1.1);
             box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
@@ -467,25 +434,12 @@
 
         /* Responsive */
         @media (max-width: 992px) {
-            :root {
-                --section-spacing: 6rem;
-            }
-            
-            .hero {
-                padding: 6rem 0 4rem;
-            }
+            :root { --section-spacing: 6rem;}
+            .hero { padding: 6rem 0 4rem;}
         }
-
         @media (max-width: 768px) {
-            :root {
-                --section-spacing: 5rem;
-                --border-radius: 12px;
-            }
-            
-            .navbar {
-                padding: 1.2rem 5%;
-            }
-            
+            :root { --section-spacing: 5rem; --border-radius: 12px;}
+            .navbar { padding: 1.2rem 1.5rem 1.2rem 5%; }
             .navbar-nav {
                 position: fixed;
                 top: 80px;
@@ -501,78 +455,40 @@
                 pointer-events: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-            
             .navbar-nav.open {
                 clip-path: circle(1000px at 90% -10%);
                 -webkit-clip-path: circle(1000px at 90% -10%);
                 pointer-events: all;
             }
-            
-            .nav-item {
-                margin: 1rem 0;
-            }
-            
-            .menu-toggle {
-                display: block;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 1001;
-                transition: var(--transition);
-            }
-            
-            .menu-toggle.open {
-                transform: rotate(90deg);
-            }
-            
-            .hero {
-                padding: 5rem 0 3rem;
-            }
-            
-            .section-header {
-                margin-bottom: 3rem;
-            }
-            
-            .card {
-                padding: 2rem 1.5rem;
-            }
+            .nav-item { margin: 1rem 0;}
+            .hero { padding: 5rem 0 3rem;}
+            .section-header { margin-bottom: 3rem;}
+            .card { padding: 2rem 1.5rem;}
         }
-
         @media (max-width: 480px) {
-            :root {
-                --section-spacing: 4rem;
-            }
-            
-            .hero {
-                padding: 4rem 0 2rem;
-            }
-            
-            .btn {
-                padding: 0.7rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .card {
-                padding: 1.8rem 1.2rem;
-            }
+            :root { --section-spacing: 4rem;}
+            .hero { padding: 4rem 0 2rem;}
+            .btn { padding: 0.7rem 1.5rem; font-size: 0.9rem;}
+            .card { padding: 1.8rem 1.2rem;}
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
-       
-        
+        <div class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+            <i class="fas fa-bars"></i>
+        </div>
         <ul class="navbar-nav" id="navbarNav">
             <li class="nav-item"><a href="#architecture" class="nav-link active">Architecture</a></li>
             <li class="nav-item"><a href="#components" class="nav-link">Composants</a></li>
             <li class="nav-item"><a href="#patterns" class="nav-link">Modèles</a></li>
             <li class="nav-item"><a href="#benefits" class="nav-link">Avantages</a></li>
         </ul>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <!-- <i class="fas fa-bars"></i> -->
-        </div>
-        
+        <button class="mode-switch" id="modeSwitch" aria-label="Changer le mode">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
         <a href="index.html" class="btn btn-primary">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
@@ -588,14 +504,13 @@
                 <i class="fas fa-arrow-down"></i> Explorer
             </a>
         </section>
-
+        <!-- ... (le reste de tes sections, inchangé) ... -->
         <!-- Architecture Section -->
         <section class="section" id="architecture">
             <div class="section-header">
                 <h2 class="section-title">Concepts Fondamentaux</h2>
                 <p class="section-subtitle">Les piliers d'une architecture logicielle solide et durable</p>
             </div>
-            
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-icon">
@@ -612,7 +527,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-shapes"></i>
@@ -629,7 +543,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-cubes"></i>
@@ -640,24 +553,21 @@
                         <ul>
                             <li><strong>S</strong>ingle Responsibility</li>
                             <li><strong>O</strong>pen/Closed</li>
-                            <li><strong>L</strong>iskov Substitution</li>
+                            <li><strong>L</strong>Liskov Substitution</li>
                             <li><strong>I</strong>nterface Segregation</li>
                             <li><strong>D</strong>ependency Inversion</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            
-           
         </section>
-        
+        <!-- ... (les autres sections restent identiques) ... -->
         <!-- Components Section -->
         <section class="section" id="components">
             <div class="section-header">
                 <h2 class="section-title">Composants Principaux</h2>
                 <p class="section-subtitle">Les éléments clés d'une architecture bien conçue</p>
             </div>
-            
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-icon">
@@ -675,7 +585,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-cogs"></i>
@@ -692,7 +601,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-database"></i>
@@ -711,14 +619,12 @@
                 </div>
             </div>
         </section>
-        
         <!-- Patterns Section -->
         <section class="section" id="patterns">
             <div class="section-header">
                 <h2 class="section-title">Modèles Architecturaux</h2>
                 <p class="section-subtitle">Solutions éprouvées pour des défis récurrents</p>
             </div>
-            
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-icon">
@@ -735,7 +641,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-plug"></i>
@@ -751,7 +656,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-rocket"></i>
@@ -769,14 +673,12 @@
                 </div>
             </div>
         </section>
-        
         <!-- Benefits Section -->
         <section class="section" id="benefits">
             <div class="section-header">
                 <h2 class="section-title">Avantages Clés</h2>
                 <p class="section-subtitle">Pourquoi investir dans une bonne architecture ?</p>
             </div>
-            
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-icon">
@@ -793,7 +695,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-expand"></i>
@@ -809,7 +710,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-icon">
                         <i class="fas fa-bolt"></i>
@@ -827,6 +727,50 @@
                 </div>
             </div>
         </section>
+
+
+        <section class="section" id="benefits">
+    <div class="section-header">
+        <h2 class="section-title">Schéma de démonstration</h2>
+        <p class="section-subtitle">Visualisation des differents applications</p>
+    </div>
+    <div class="cards-grid">
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-flag-checkered"></i>
+            </div>
+            <h3 class="card-title">gestion de rdv</h3>
+            <div class="card-body">
+                <img src="img/do-dashboard-ui-design.png" alt="Architecture en couches" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                <p>Schéma illustrant la séparation des responsabilités entre les différentes couches d'une application.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-flag-checkered"></i>
+            </div>
+            <h3 class="card-title">gestion d'emploi du temps et de notes</h3>
+            <div class="card-body">
+                <img src="img/Design sans titre (2).png" alt="Architecture Microservices" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                <p>Diagramme montrant comment les microservices communiquent entre eux via des API.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-flag-checkered"></i>
+            </div>
+            <h3 class="card-title">gestion de tiskets</h3>
+            <div class="card-body">
+                <img src="img/Frame 1.png" alt="Flux de données" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                <p>Représentation du flux de données dans une architecture hexagonale.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
     </div>
 
     <!-- Back to Top Button -->
@@ -835,16 +779,33 @@
     </button>
 
     <script>
+        // Mode Switch
+        const modeSwitch = document.getElementById('modeSwitch');
+        const html = document.documentElement;
+        function setMode(light) {
+            if (light) {
+                html.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('theme') === 'light') {
+            setMode(true);
+        }
+        modeSwitch.addEventListener('click', () => {
+            setMode(!html.classList.contains('light-mode'));
+        });
+
         // Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
         const navbarNav = document.getElementById('navbarNav');
-        
         menuToggle.addEventListener('click', () => {
             navbarNav.classList.toggle('open');
             menuToggle.classList.toggle('open');
             document.querySelector('.fa-bars').classList.toggle('fa-times');
         });
-
         // Close mobile menu when clicking on a link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
@@ -853,20 +814,16 @@
                 document.querySelector('.fa-bars').classList.remove('fa-times');
             });
         });
-
         // Smooth Scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
-                
                 // Update active link
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.remove('active');
@@ -874,57 +831,45 @@
                 this.classList.add('active');
             });
         });
-
         // Back to Top Button
         const backToTop = document.getElementById('backToTop');
-        
-        // window.addEventListener('scroll', () => {
-        //     if (window.pageYOffset > 300) {
-        //         backToTop.classList.add('visible');
-        //     } else {
-        //         backToTop.classList.remove('visible');
-        //     }
-        // });
-        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
         backToTop.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-
         // Navbar scroll effects
         const navbar = document.getElementById('navbar');
         let lastScrollY = window.scrollY;
-        
         window.addEventListener('scroll', () => {
             if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                // Scroll down
                 navbar.classList.add('hidden');
             } else {
-                // Scroll up
                 navbar.classList.remove('hidden');
             }
-            
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
-            
             lastScrollY = window.scrollY;
         });
-
         // Intersection Observer for animations
         const sections = document.querySelectorAll('.section');
         const cards = document.querySelectorAll('.card');
         const diagram = document.querySelector('.diagram-container');
-        
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
         };
-        
         const sectionObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -933,11 +878,9 @@
                 }
             });
         }, observerOptions);
-        
         sections.forEach(section => {
             sectionObserver.observe(section);
         });
-        
         const cardObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
@@ -948,30 +891,23 @@
                 }
             });
         }, observerOptions);
-        
         cards.forEach(card => {
             cardObserver.observe(card);
         });
-        
         if (diagram) {
             sectionObserver.observe(diagram);
         }
-
         // Highlight active section in navigation
         const navLinks = document.querySelectorAll('.nav-link');
-        
         window.addEventListener('scroll', () => {
             let current = '';
-            
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-                
                 if (pageYOffset >= (sectionTop - 150)) {
                     current = section.getAttribute('id');
                 }
             });
-            
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) {
