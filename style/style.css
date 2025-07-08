@@ -1,7 +1,7 @@
 
 
 :root {
-	--pr-color: #938ef3; 
+	--pr-color: #d4eb24; 
 	--second-color:linear-gradient(180deg, rgba(0,0,0,1) 13%, rgb(27, 8, 47) 74%, rgb(1, 6, 28) 100%);
 	/* --second-color:#010101; */
 	--cubicbz: cubic-bezier(.9, 0, .1, 1);
