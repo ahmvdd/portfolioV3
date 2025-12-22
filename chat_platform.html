@@ -1,689 +1,413 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plateforme Collaborative de Management | Présentation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>SaaS & Enterprise Platforms | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <style>
+        /* --- DESIGN IDENTIQUE (BENTO GRID DARK) --- */
         :root {
-            --bg-color: #0a0a0a;
-            --bg-secondary: #111111;
-            --text-color: #ffffff;
-            --text-secondary: #aaaaaa;
-            --primary: #6C63FF;
-            --primary-light: rgba(108, 99, 255, 0.1);
-            --primary-dark: #554dd1;
-            --card-bg: #111111;
-            --border-radius: 16px;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            --section-spacing: 8rem;
+            --bg: #030303;
+            --surface: rgba(255, 255, 255, 0.03);
+            --primary: #7c4dff;
+            --secondary: #00f2fe;
+            --primary-glow: rgba(124, 77, 255, 0.2);
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #7c4dff 0%, #00f2fe 100%);
+            --nav-bg: rgba(10, 10, 10, 0.7);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .light-mode {
+            --bg: #f5f7fa;
+            --surface: rgba(255, 255, 255, 0.7);
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --primary-glow: rgba(79, 70, 229, 0.1);
+            --text: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+            --nav-bg: rgba(255, 255, 255, 0.6);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: pointer;}
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; 
         }
 
-        /* Navigation */
+        .blob {
+            position: fixed;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.6rem 2rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--border);
+            border-radius: 100px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background-color: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transform: translateY(0);
-            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .navbar.hidden {
-            transform: translateY(-100%);
-        }
-
-        .navbar.scrolled {
-            padding: 1rem 5%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-color);
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .navbar-brand:hover {
-            transform: translateX(5px);
-        }
-
-        .navbar-brand i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-            font-size: 1.6rem;
-        }
-
-        .navbar-brand span {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-item {
-            margin-left: 2rem;
-            position: relative;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
+            color: var(--text-dim);
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
         }
+        .nav-links a:hover { color: var(--primary); transform: translateY(-1px); }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--text-color);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: var(--transition);
-            border-radius: 2px;
-        }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.8rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            text-decoration: none;
+        .theme-toggle {
+            margin-left: 1.5rem;
+            width: 40px; height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
             cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.95rem;
-            border: none;
-            outline: none;
-            gap: 0.5rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
-            background-color: var(--primary-dark);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 1200px;
-            margin: 8rem auto 4rem;
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             padding: 0 5%;
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 8rem 0 6rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 150%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 70%);
-            z-index: -1;
-            animation: pulse 15s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(1.2);
-            }
-        }
-
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            background: linear-gradient(90deg, #ffffff, #d4d1ff);
+            font-size: clamp(3.5rem, 12vw, 7.5rem);
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            line-height: 0.85;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.2s forwards;
         }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.4s forwards;
-        }
-
-        .hero .btn {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.6s forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Section */
-        .section {
-            margin: var(--section-spacing) 0;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-            background: linear-gradient(90deg, #ffffff, #d4d1ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary);
-            border-radius: 2px;
-        }
-
-        .section-subtitle {
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.8;
-        }
-
-        /* Cards Grid */
-        .cards-grid {
+        .section { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 2.5rem 2rem;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 2.5rem;
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
         }
 
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .card-large { grid-column: span 2; }
+        .card-tall { grid-row: span 2; }
+        .card-white { background: #ffffff; color: #000000; border: none; }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 100%);
-            z-index: -1;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-10px) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .tag {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            display: inline-block;
             margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-size: 1.5rem;
-            transition: var(--transition);
         }
 
-        .card:hover .card-icon {
-            transform: rotate(10deg) scale(1.1);
-            background-color: var(--primary);
-            color: white;
+        .code-block {
+            background: black;
+            padding: 1.2rem;
+            border-radius: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #d1d1d1;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
         }
 
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-            transition: var(--transition);
-        }
+        .stat-val { font-size: 4rem; font-weight: 900; letter-spacing: -3px; line-height: 1; }
 
-        .card:hover .card-title {
-            color: var(--primary);
-        }
-
-        .card-body {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
-
-        .card-body ul {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .card-body li {
-            margin-bottom: 1rem;
-            position: relative;
-            padding-left: 1.8rem;
-            transition: var(--transition);
-        }
-
-        .card-body li:hover {
-            color: var(--text-color);
-            transform: translateX(5px);
-        }
-
-        .card-body li::before {
-            content: '▹';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-
-        /* Diagram */
-        .diagram-container {
-            margin: 5rem 0;
+        .interaction-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 4rem 2rem;
             text-align: center;
+            max-width: 900px;
+            margin: 6rem auto;
             position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+            overflow: hidden;
         }
 
-        .diagram-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .diagram-container img {
-            max-width: 100%;
-            border-radius: var(--border-radius);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-        }
-
-        .diagram-container img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Back to top */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
+        .input-group {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            opacity: 0;
-            visibility: hidden;
-            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
-            z-index: 999;
-            border: none;
-            outline: none;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 8px;
+            margin: 2.5rem auto 0;
+            max-width: 600px;
         }
 
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
+        input {
+            background: none; border: none; color: var(--text);
+            padding: 15px 20px; flex: 1; outline: none; font-size: 1rem;
         }
 
-        .back-to-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
-            background-color: var(--primary-dark);
+        .send-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0 30px; border-radius: 18px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
         }
 
-        /* Responsive */
-        @media (max-width: 992px) {
-            :root {
-                --section-spacing: 6rem;
-            }
-            
-            .hero {
-                padding: 6rem 0 4rem;
-            }
+        #encrypt-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10;
         }
 
-        @media (max-width: 768px) {
-            :root {
-                --section-spacing: 5rem;
-                --border-radius: 12px;
-            }
-            
-            .navbar {
-                padding: 1.2rem 5%;
-            }
-            
-            .navbar-nav {
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background-color: var(--bg-secondary);
-                flex-direction: column;
-                align-items: center;
-                padding: 2rem 0;
-                clip-path: circle(0px at 90% -10%);
-                -webkit-clip-path: circle(0px at 90% -10%);
-                transition: var(--transition);
-                pointer-events: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            
-            .navbar-nav.open {
-                clip-path: circle(1000px at 90% -10%);
-                -webkit-clip-path: circle(1000px at 90% -10%);
-                pointer-events: all;
-            }
-            
-            .nav-item {
-                margin: 1rem 0;
-            }
-            
-            .menu-toggle {
-                display: block;
-                font-size: 1.5rem;
-                cursor: pointer;
-                z-index: 1001;
-                transition: var(--transition);
-            }
-            
-            .menu-toggle.open {
-                transform: rotate(90deg);
-            }
-            
-            .hero {
-                padding: 5rem 0 3rem;
-            }
-            
-            .section-header {
-                margin-bottom: 3rem;
-            }
-            
-            .card {
-                padding: 2rem 1.5rem;
-            }
+        .cipher-anim {
+            font-family: monospace; color: var(--secondary);
+            font-size: 1.1rem; word-break: break-all; width: 80%;
+            animation: pulse 0.1s infinite;
         }
 
-        @media (max-width: 480px) {
-            :root {
-                --section-spacing: 4rem;
-            }
-            
-            .hero {
-                padding: 4rem 0 2rem;
-            }
-            
-            .btn {
-                padding: 0.7rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .card {
-                padding: 1.8rem 1.2rem;
-            }
+        .success-badge {
+            margin-top: 2rem; color: #22c55e; font-weight: 700;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout { grid-template-columns: repeat(2, 1fr); }
+            .card-large { grid-column: span 2; }
+            .navbar { width: 95%; }
         }
     </style>
 </head>
 <body>
 
+    <div class="blob" id="blob"></div>
 
-
-    <nav class="navbar" id="navbar">
-       
-        
-        <ul class="navbar-nav">
-            <li class="nav-item"><a href="#intro" class="nav-link active">Accueil</a></li>
-            <li class="nav-item"><a href="#modules" class="nav-link">Modules</a></li>
-            <li class="nav-item"><a href="#diagram" class="nav-link">Schéma</a></li>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#logic">Business Logic</a></li>
+            <li><a href="#rbac">Permissions</a></li>
+            <li><a href="#api">Intégrations</a></li>
+            <li><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button></li>
         </ul>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <!-- <i class="fas fa-bars"></i> -->
-        </div>
-        
-        <a href="index.html" class="btn btn-primary">
-            <i class="fas fa-arrow-left"></i> Retour
-        </a>
     </nav>
 
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero" id="intro">
-            <h1>Plateforme Collaborative de Management</h1>
-            <p>
-                Optimisez la gestion de vos équipes et de vos projets grâce à une plateforme collaborative moderne, intuitive et sécurisée. Centralisez les échanges, facilitez la prise de décision et stimulez la productivité !
-            </p>
-            <a href="#modules" class="btn btn-primary"><i class="fas fa-rocket"></i> Découvrir</a>
-        </section>
+    <header class="hero">
+        <h1 class="animate-hero">SCALABLE<br><span class="gradient-text">PLATFORMS.</span></h1>
+        <p class="animate-hero-sub" style="color: var(--text-dim); margin-top: 2rem; font-weight: 500;">Développement de solutions B2B : Multi-tenant, Sécurisées & Connectées.</p>
+    </header>
 
-        <!-- Fonctionnalités Section -->
-        <section class="section" id="modules">
-            <div class="section-header">
-                <h2 class="section-title">Fonctionnalités clés</h2>
-                <p class="section-subtitle">
-                    Une plateforme tout-en-un pour le management collaboratif, adaptée à tous les secteurs.
-                </p>
+    <section class="section" id="logic">
+        <div class="grid-layout">
+            
+            <div class="card card-large tilt">
+                <span class="tag">Core SaaS Logic</span>
+                <h3>Tenant Isolation System</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem;">Architecture logique assurant l'étanchéité des données entre vos clients entreprises.</p>
+                <img src="img/Gemini_Generated_Image_p92ownp92ownp92o (1).png" alt="Tenant Isolation Diagram"
+     style="width:100%; height:240px; object-fit:cover; border-radius:30px; margin-top:1.5rem; opacity:0.8;">
             </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-comments"></i></div>
-                    <div class="card-title">Communication centralisée</div>
-                    <div class="card-body">
-                        <ul>
-                            <li>Messagerie instantanée et forums d’équipe</li>
-                            <li>Partage de documents et d’informations</li>
-                            <li>Notifications intelligentes</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-tasks"></i></div>
-                    <div class="card-title">Gestion de projets</div>
-                    <div class="card-body">
-                        <ul>
-                            <li>Tableaux Kanban et listes de tâches</li>
-                            <li>Suivi des deadlines et des livrables</li>
-                            <li>Assignation et suivi des responsabilités</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="card-title">Suivi de la performance</div>
-                    <div class="card-body">
-                        <ul>
-                            <li>Indicateurs et rapports personnalisés</li>
-                            <li>Feedback en temps réel</li>
-                            <li>Tableaux de bord dynamiques</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-lock"></i></div>
-                    <div class="card-title">Sécurité & confidentialité</div>
-                    <div class="card-body">
-                        <ul>
-                            <li>Gestion des accès et des droits</li>
-                            <li>Stockage sécurisé des données</li>
-                            <li>Conformité RGPD</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Schéma Section -->
-        <section class="section" id="diagram">
-            <div class="section-header">
-                <h2 class="section-title">Schéma de fonctionnement</h2>
-                <p class="section-subtitle">
-                    Visualisez l’architecture de la plateforme et l’interconnexion des modules.
-                </p>
+            <div class="card card-white tilt" id="api">
+                <div class="stat-val" style="font-size: 2.5rem;"><i class="fas fa-network-wired"></i> API</div>
+                <p style="font-weight: 800; margin-top: 1rem;">Interopérabilité</p>
+                <p style="font-size: 0.75rem; margin-top: 2rem; color: #4f46e5; font-weight: 700;">REST & GRAPHQL READY ●</p>
             </div>
-            <div class="diagram-container">
-                
+
+            <div class="card tilt">
+                <span class="tag">Deployment</span>
+                <div class="bars" style="display: flex; align-items: center; justify-content: space-between; height: 50px; margin: 1.5rem 0;">
+                    <span style="font-size:0.8rem; font-family:monospace;">Beta Users</span>
+                    <div style="height: 10px; width: 40px; background: #22c55e; border-radius: 10px;"></div>
+                </div>
+                <div class="bars" style="display: flex; align-items: center; justify-content: space-between; height: 20px; margin-bottom: 1.5rem;">
+                    <span style="font-size:0.8rem; font-family:monospace;">Global</span>
+                    <div style="height: 10px; width: 40px; background: #333; border-radius: 10px;"></div>
+                </div>
+                <p style="font-size: 0.8rem; font-weight: 700;">Feature Flagging System</p>
             </div>
-        </section>
-    </main>
 
-    <button class="back-to-top" id="backToTop" title="Retour en haut"><i class="fas fa-arrow-up"></i></button>
+            <div class="card card-tall tilt" id="rbac">
+                <div style="display:flex; gap:6px; margin-bottom:1.5rem;">
+                    <div style="width:10px; height:10px; background:#ff5f56; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#ffbd2e; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#27c93f; border-radius:50%;"></div>
+                </div>
+                <div class="code-block">
+                    <span style="color:#7c4dff;">const</span> <span style="color:#00f2fe;">verifyScope</span> = (user) => {<br>
+                    &nbsp;&nbsp;<span style="color:#c678dd;">if</span> (!user.permissions.has(<span style="color:#98c379;">'BILLING_WRITE'</span>))<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#e06c75;">return</span> <span style="color:#d19a66;">false</span>;<br>
+                    &nbsp;&nbsp;<span style="color:#e06c75;">return</span> <span style="color:#d19a66;">true</span>;<br>
+                    }
+                </div>
+                <h3 style="margin-top:2rem;">RBAC & Governance</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">Gestion granulaire des rôles (Admin, Editeur, Viewer) et conformité entreprise (SSO/SAML).</p>
+            </div>
 
-    <!-- JS pour le scroll et l’interactivité (optionnel, à adapter selon ton fichier d’origine) -->
+            <div class="card tilt">
+                <div class="stat-val"><i class="fas fa-cogs" style="font-size: 3rem;"></i></div>
+                <p style="color: var(--text-dim); margin-top:1rem;">Workflows Engine</p>
+            </div>
+
+            <div class="card card-large tilt">
+                <span class="tag">Decision Making</span>
+                <h3>Business Intelligence</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Tableaux de bord analytiques pour le pilotage de l'activité.</p>
+                <div class="code-block" style="background:black;">
+                    <span style="color:#c678dd;">SELECT</span> company_id, <span style="color:#61afef;">SUM</span>(mrr) <br>
+                    <span style="color:#c678dd;">FROM</span> subscriptions <br>
+                    <span style="color:#c678dd;">GROUP BY</span> quarter;
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section interaction-section">
+        <div class="interaction-container">
+            <h2 style="font-size: 2.2rem; letter-spacing: -1.5px;">User <span class="gradient-text">Provisioning</span></h2>
+            <p style="color: var(--text-dim); margin-top: 1rem;">Simulez le déploiement d'un nouvel accès sécurisé dans l'organisation.</p>
+            
+            <div class="input-group">
+                <input type="email" id="userInput" placeholder="user@enterprise.com">
+                <button class="send-btn" onclick="triggerEncryption()">PROVISIONNER</button>
+            </div>
+
+            <div id="encrypt-overlay">
+                <div style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1.5rem;">CONFIGURATION DE L'ENVIRONNEMENT...</div>
+                <div class="cipher-anim" id="cipherText">INIT_SSO_HANDSHAKE...</div>
+                <div class="success-badge" id="successMsg"><i class="fas fa-check-circle"></i> COMPTE ACTIF & SÉCURISÉ</div>
+                <button class="send-btn" onclick="resetSim()" style="margin-top:2rem; background:none; border:1px solid var(--border); font-size:0.8rem;">RETOURNER AU DASHBOARD</button>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // Back to top
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // --- SCRIPT IDENTIQUE À L'ORIGINAL POUR LES EFFETS ---
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("body", { opacity: 1, duration: 0.5 });
+            tl.from(".navbar", { y: -100, opacity: 0, duration: 1, ease: "expo.out" }, "-=0.2");
+            tl.from(".animate-hero", { y: 50, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.6");
+            tl.from(".animate-hero-sub", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8");
+            tl.from(".card", { y: 60, opacity: 0, scale: 0.9, duration: 0.8, stagger: 0.15, ease: "back.out(1.2)" }, "-=0.6");
+            tl.from(".blob", { scale: 0.5, opacity: 0, duration: 2, ease: "power2.out" }, "-=1.5");
         });
 
-        // Animation d’apparition des sections
-        const sections = document.querySelectorAll('.section, .card, .diagram-container');
-        window.addEventListener('scroll', () => {
-            sections.forEach(sec => {
-                const rect = sec.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    sec.classList.add('visible');
-                }
+        const blob = document.getElementById('blob');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(blob, { x: e.clientX - 350, y: e.clientY - 350, duration: 1.5, ease: "power2.out" });
+        });
+
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
             });
         });
-        // Apparition au chargement
-        window.dispatchEvent(new Event('scroll'));
+
+        // Simule le provisioning d'utilisateur SaaS
+        function triggerEncryption() {
+            const val = document.getElementById('userInput').value;
+            if(!val) return;
+            const overlay = document.getElementById('encrypt-overlay');
+            const cipher = document.getElementById('cipherText');
+            const msg = document.getElementById('successMsg');
+
+            overlay.style.display = 'flex';
+            gsap.from(overlay, { opacity: 0, duration: 0.4 });
+            
+            let ticks = 0;
+            const timer = setInterval(() => {
+                // Etapes d'un déploiement SaaS
+                const steps = ["VALIDATING_LICENSE...", "ASSIGNING_ROLE_ID...", "SYNCING_LDAP...", "GENERATING_API_KEYS..."];
+                cipher.innerText = steps[ticks % steps.length] || "PROCESSING...";
+                ticks++;
+                if(ticks > 12) {
+                    clearInterval(timer);
+                    cipher.innerText = "USER_PROVISIONED: " + val;
+                    msg.style.display = 'block';
+                    gsap.from(msg, { scale: 0.5, opacity: 0, duration: 0.5, ease: "back.out" });
+                }
+            }, 150);
+        }
+
+        function resetSim() {
+            gsap.to("#encrypt-overlay", { opacity: 0, duration: 0.3, onComplete: () => {
+                document.getElementById('encrypt-overlay').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'none';
+                document.getElementById('userInput').value = '';
+            }});
+        }
+
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            gsap.fromTo("body", { filter: "brightness(1.5)" }, { filter: "brightness(1)", duration: 0.8 });
+        });
     </script>
 </body>
 </html>

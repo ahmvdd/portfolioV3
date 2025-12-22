@@ -1,919 +1,456 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture Logicielle | Masterclass</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Software Architecture | Masterclass</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --bg-secondary: #111111;
-            --text-color: #ffffff;
-            --text-secondary: #aaaaaa;
-            --primary: #6C63FF;
-            --primary-light: rgba(108, 99, 255, 0.1);
-            --primary-dark: #554dd1;
-            --card-bg: #111111;
-            --border-radius: 16px;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            --section-spacing: 8rem;
+            --bg: #030303;
+            --surface: rgba(255, 255, 255, 0.03);
+            --primary: #7c4dff;
+            --secondary: #00f2fe;
+            --primary-glow: rgba(124, 77, 255, 0.2);
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #7c4dff 0%, #00f2fe 100%);
+            --nav-bg: rgba(10, 10, 10, 0.7);
         }
-        html.light-mode {
-            --bg-color: #f8f9fb;
-            --bg-secondary: #ffffff;
-            --text-color: #181818;
-            --text-secondary: #4d4d4d;
-            --primary: #6C63FF;
-            --primary-light: rgba(108, 99, 255, 0.08);
-            --primary-dark: #554dd1;
-            --card-bg: #f3f5fa;
-            --border-radius: 16px;
+
+        .light-mode {
+            --bg: #f5f7fa;
+            --surface: rgba(255, 255, 255, 0.7);
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --primary-glow: rgba(79, 70, 229, 0.1);
+            --text: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+            --nav-bg: rgba(255, 255, 255, 0.6);
         }
-        html, body {
-            min-height: 100%;
-            background: var(--bg-color) !important;
-            color: var(--text-color);
-            transition: var(--transition);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: pointer; }
+        
+        /* On cache initialement les éléments pour éviter le flash avant GSAP */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; 
         }
-        ::selection { background-color: #4624df; color: white; }
 
-        /* Navigation */
+        .blob {
+            position: fixed;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 3rem 1.5rem 5%;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.6rem 2rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--border);
+            border-radius: 100px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background-color: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transform: translateY(0);
-            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        html.light-mode .navbar {
-            background-color: rgba(255,255,255,0.92);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .navbar.hidden { transform: translateY(-100%); }
-        .navbar.scrolled {
-            padding: 1rem 3rem 1rem 5%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-        }
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-item { margin-left: 2rem; position: relative; }
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-        .nav-link:hover, .nav-link.active { color: var(--text-color); }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: var(--transition);
-            border-radius: 2px;
-        }
-        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1.8rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.95rem;
-            border: none;
-            outline: none;
-            gap: 0.5rem;
-        }
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
-            background-color: var(--primary-dark);
-        }
-        .btn-primary:active { transform: translateY(0); }
 
-        /* Mode Switch Button */
-        .mode-switch {
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); transform: translateY(-1px); }
+
+        .theme-toggle {
             margin-left: 1.5rem;
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            font-size: 1.45rem;
-            color: var(--primary);
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.4rem 0.6rem;
+            width: 40px; height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 50%;
-        }
-        .mode-switch:hover {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-        }
-        html.light-mode .mode-switch { color: #f7b500; }
-        .mode-switch .fa-sun { display: none; }
-        html.light-mode .mode-switch .fa-moon { display: none; }
-        html.light-mode .mode-switch .fa-sun { display: inline; }
-
-        /* MENU TOGGLE (hamburger) */
-        .menu-toggle {
-            display: none; /* Masqué par défaut (desktop) */
-        }
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-                position: absolute;
-                left: 1.5rem;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                color: var(--primary);
-                font-size: 1.7rem;
-                z-index: 1001;
-                padding: 0.3rem 0.7rem;
-                border-radius: 50%;
-                transition: var(--transition);
-            }
-            .navbar {
-                padding: 1.2rem 1.5rem 1.2rem 5%;
-                justify-content: flex-end;
-            }
+            color: var(--text);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .main-content {
-            max-width: 1200px;
-            margin: 8rem auto 4rem;
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             padding: 0 5%;
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 8rem 0 6rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 150%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 70%);
-            z-index: -1;
-            animation: pulse 15s infinite alternate;
-        }
-        @keyframes pulse { 0% { transform: scale(1);} 100% { transform: scale(1.2);} }
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            background: linear-gradient(90deg, #ffffff, #d4d1ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.2s forwards;
-        }
-        html.light-mode .hero h1, html.light-mode .section-title {
-            background: linear-gradient(90deg, #181818, #6C63FF 80%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.4s forwards;
-        }
-        .hero .btn {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s 0.6s forwards;
-        }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0);} }
-
-        /* Section */
-        .section {
-            margin: var(--section-spacing) 0;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .section-header { margin-bottom: 4rem; position: relative; }
-        .section-title {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-            background: linear-gradient(90deg, #ffffff, #d4d1ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary);
-            border-radius: 2px;
-        }
-        .section-subtitle {
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.8;
+            font-size: clamp(3.5rem, 12vw, 7.5rem);
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            line-height: 0.85;
         }
 
-        /* Cards Grid */
-        .cards-grid {
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
         }
+
         .card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 2.5rem 2rem;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 2.5rem;
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
         }
-        html.light-mode .card {
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 100%);
-            z-index: -1;
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .card:hover {
-            transform: translateY(-10px) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.11);
-            border-color: var(--primary);
-        }
-        .card:hover::before { opacity: 1; }
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .card-large { grid-column: span 2; }
+        .card-tall { grid-row: span 2; }
+        .card-white { background: #ffffff; color: #000000; border: none; }
+
+        .tag {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            display: inline-block;
             margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-size: 1.5rem;
-            transition: var(--transition);
-        }
-        .card:hover .card-icon {
-            transform: rotate(10deg) scale(1.1);
-            background-color: var(--primary);
-            color: white;
-        }
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-            transition: var(--transition);
-        }
-        .card:hover .card-title { color: var(--primary); }
-        .card-body {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
-        .card-body ul { list-style: none; margin-top: 1.5rem;}
-        .card-body li {
-            margin-bottom: 1rem;
-            position: relative;
-            padding-left: 1.8rem;
-            transition: var(--transition);
-        }
-        .card-body li:hover {
-            color: var(--text-color);
-            transform: translateX(5px);
-        }
-        .card-body li::before {
-            content: '▹';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-size: 1.1rem;
         }
 
-        /* Diagram */
-        .diagram-container {
-            margin: 5rem 0;
+        .code-block {
+            background: black;
+            padding: 1.2rem;
+            border-radius: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #d1d1d1;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        .stat-val { font-size: 4rem; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+
+        .interaction-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 4rem 2rem;
             text-align: center;
+            max-width: 900px;
+            margin: 6rem auto;
             position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
-        }
-        .diagram-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .diagram-container img {
-            max-width: 100%;
-            border-radius: var(--border-radius);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-        }
-        .diagram-container img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        /* Back to top */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
+        .input-group {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            opacity: 0;
-            visibility: hidden;
-            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
-            z-index: 999;
-            border: none;
-            outline: none;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        .back-to-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
-            background-color: var(--primary-dark);
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 8px;
+            margin: 2.5rem auto 0;
+            max-width: 600px;
         }
 
-        /* Responsive */
-        @media (max-width: 992px) {
-            :root { --section-spacing: 6rem;}
-            .hero { padding: 6rem 0 4rem;}
+        input {
+            background: none; border: none; color: var(--text);
+            padding: 15px 20px; flex: 1; outline: none; font-size: 1rem;
         }
-        @media (max-width: 768px) {
-            :root { --section-spacing: 5rem; --border-radius: 12px;}
-            .navbar { padding: 1.2rem 1.5rem 1.2rem 5%; }
-            .navbar-nav {
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background-color: var(--bg-secondary);
-                flex-direction: column;
-                align-items: center;
-                padding: 2rem 0;
-                clip-path: circle(0px at 90% -10%);
-                -webkit-clip-path: circle(0px at 90% -10%);
-                transition: var(--transition);
-                pointer-events: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            .navbar-nav.open {
-                clip-path: circle(1000px at 90% -10%);
-                -webkit-clip-path: circle(1000px at 90% -10%);
-                pointer-events: all;
-            }
-            .nav-item { margin: 1rem 0;}
-            .hero { padding: 5rem 0 3rem;}
-            .section-header { margin-bottom: 3rem;}
-            .card { padding: 2rem 1.5rem;}
+
+        .send-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0 30px; border-radius: 18px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
         }
-        @media (max-width: 480px) {
-            :root { --section-spacing: 4rem;}
-            .hero { padding: 4rem 0 2rem;}
-            .btn { padding: 0.7rem 1.5rem; font-size: 0.9rem;}
-            .card { padding: 1.8rem 1.2rem;}
+
+        #encrypt-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10;
+        }
+
+        .cipher-anim {
+            font-family: monospace; color: var(--secondary);
+            font-size: 1.1rem; word-break: break-all; width: 80%;
+            animation: pulse 0.1s infinite;
+        }
+
+        .success-badge {
+            margin-top: 2rem; color: #22c55e; font-weight: 700;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout { grid-template-columns: repeat(2, 1fr); }
+            .card-large { grid-column: span 2; }
+            .navbar { width: 95%; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
-            <i class="fas fa-bars"></i>
-        </div>
-        <ul class="navbar-nav" id="navbarNav">
-            <li class="nav-item"><a href="#architecture" class="nav-link active">Architecture</a></li>
-            <li class="nav-item"><a href="#components" class="nav-link">Composants</a></li>
-            <li class="nav-item"><a href="#patterns" class="nav-link">Modèles</a></li>
-            <li class="nav-item"><a href="#benefits" class="nav-link">Avantages</a></li>
+
+    <div class="blob" id="blob"></div>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#ecosystem">Écosystème</a></li>
+            <li><a href="#lab">Innovation</a></li>
+            <li><a href="#security">Sécurité</a></li>
+            <li><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button></li>
         </ul>
-        <button class="mode-switch" id="modeSwitch" aria-label="Changer le mode">
-            <i class="fas fa-moon"></i>
-            <i class="fas fa-sun"></i>
-        </button>
-        <a href="index.html" class="btn btn-primary">
-            <i class="fas fa-arrow-left"></i> Retour
-        </a>
     </nav>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>L'Art de l'<span>Architecture Logicielle</span></h1>
-            <p>Découvrez les principes fondamentaux et les modèles avancés pour concevoir des systèmes robustes, évolutifs et performants.</p>
-            <a href="#architecture" class="btn btn-primary">
-                <i class="fas fa-arrow-down"></i> Explorer
-            </a>
-        </section>
-        <!-- ... (le reste de tes sections, inchangé) ... -->
-        <!-- Architecture Section -->
-        <section class="section" id="architecture">
-            <div class="section-header">
-                <h2 class="section-title">Concepts Fondamentaux</h2>
-                <p class="section-subtitle">Les piliers d'une architecture logicielle solide et durable</p>
-            </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
-                    <h3 class="card-title">Architecture en Couches</h3>
-                    <div class="card-body">
-                        <p>Séparation claire des responsabilités pour une meilleure maintenabilité :</p>
-                        <ul>
-                            <li><strong>Présentation :</strong> Interface utilisateur</li>
-                            <li><strong>Logique métier :</strong> Cœur fonctionnel</li>
-                            <li><strong>Accès aux données :</strong> Persistance</li>
-                            <li><strong>Infrastructure :</strong> Services techniques</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-shapes"></i>
-                    </div>
-                    <h3 class="card-title">Styles Architecturaux</h3>
-                    <div class="card-body">
-                        <p>Différentes approches pour différents besoins :</p>
-                        <ul>
-                            <li>Monolithique (tout-en-un)</li>
-                            <li>Microservices (découplé)</li>
-                            <li>Événementiel (event-driven)</li>
-                            <li>Orienté service (SOA)</li>
-                            <li>Serverless (FaaS)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-cubes"></i>
-                    </div>
-                    <h3 class="card-title">Principes SOLID</h3>
-                    <div class="card-body">
-                        <p>Les 5 principes de conception objet :</p>
-                        <ul>
-                            <li><strong>S</strong>ingle Responsibility</li>
-                            <li><strong>O</strong>pen/Closed</li>
-                            <li><strong>L</strong>Liskov Substitution</li>
-                            <li><strong>I</strong>nterface Segregation</li>
-                            <li><strong>D</strong>ependency Inversion</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ... (les autres sections restent identiques) ... -->
-        <!-- Components Section -->
-        <section class="section" id="components">
-            <div class="section-header">
-                <h2 class="section-title">Composants Principaux</h2>
-                <p class="section-subtitle">Les éléments clés d'une architecture bien conçue</p>
-            </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <h3 class="card-title">Couche Présentation</h3>
-                    <div class="card-body">
-                        <p>L'interface avec l'utilisateur final :</p>
-                        <ul>
-                            <li>Applications web, mobiles, desktop</li>
-                            <li>Gestion des interactions</li>
-                            <li>Validation des entrées</li>
-                            <li>Adaptation multi-device</li>
-                            <li>Accessibilité</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <h3 class="card-title">Couche Métier</h3>
-                    <div class="card-body">
-                        <p>Le cœur fonctionnel de l'application :</p>
-                        <ul>
-                            <li>Règles métier centrales</li>
-                            <li>Workflows et processus</li>
-                            <li>Calculs et transformations</li>
-                            <li>Gestion des transactions</li>
-                            <li>Validation métier</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3 class="card-title">Couche Données</h3>
-                    <div class="card-body">
-                        <p>Gestion de la persistance :</p>
-                        <ul>
-                            <li>Bases de données (SQL/NoSQL)</li>
-                            <li>API externes et services</li>
-                            <li>Systèmes de cache</li>
-                            <li>Migration et versioning</li>
-                            <li>Optimisation des requêtes</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Patterns Section -->
-        <section class="section" id="patterns">
-            <div class="section-header">
-                <h2 class="section-title">Modèles Architecturaux</h2>
-                <p class="section-subtitle">Solutions éprouvées pour des défis récurrents</p>
-            </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-puzzle-piece"></i>
-                    </div>
-                    <h3 class="card-title">Modèles de Conception</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li><strong>MVC</strong> - Séparation Modèle/Vue/Contrôleur</li>
-                            <li><strong>MVVM</strong> - Pour applications riches</li>
-                            <li><strong>Clean Architecture</strong> - Indépendance des couches</li>
-                            <li><strong>Hexagonal</strong> - Ports et adaptateurs</li>
-                            <li><strong>Onion</strong> - Couches concentriques</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3 class="card-title">Modèles d'Intégration</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li><strong>API Gateway</strong> - Point d'entrée unique</li>
-                            <li><strong>Event Sourcing</strong> - Basé sur événements</li>
-                            <li><strong>CQRS</strong> - Séparation lecture/écriture</li>
-                            <li><strong>Pub/Sub</strong> - Communication découplée</li>
-                            <li><strong>BFF</strong> - Backend For Frontend</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3 class="card-title">Modèles de Déploiement</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li><strong>Conteneurisation</strong> - Docker</li>
-                            <li><strong>Orchestration</strong> - Kubernetes</li>
-                            <li><strong>Serverless</strong> - AWS Lambda, Azure Functions</li>
-                            <li><strong>Edge Computing</strong> - Traitement en périphérie</li>
-                            <li><strong>Blue-Green</strong> - Déploiement sans downtime</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Benefits Section -->
-        <section class="section" id="benefits">
-            <div class="section-header">
-                <h2 class="section-title">Avantages Clés</h2>
-                <p class="section-subtitle">Pourquoi investir dans une bonne architecture ?</p>
-            </div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3 class="card-title">Qualité Logicielle</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li>Code plus lisible et organisé</li>
-                            <li>Réduction des bugs et erreurs</li>
-                            <li>Meilleure couverture de tests</li>
-                            <li>Documentation implicite</li>
-                            <li>Facilité de débogage</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-expand"></i>
-                    </div>
-                    <h3 class="card-title">Évolutivité</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li>Extension facile des fonctionnalités</li>
-                            <li>Adaptation aux besoins changeants</li>
-                            <li>Montée en charge efficace</li>
-                            <li>Découplage des composants</li>
-                            <li>Maintenance simplifiée</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="card-title">Efficacité</h3>
-                    <div class="card-body">
-                        <ul>
-                            <li>Réutilisation des composants</li>
-                            <li>Développement parallèle</li>
-                            <li>Meilleure productivité</li>
-                            <li>Réduction des coûts long terme</li>
-                            <li>Meilleure collaboration</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <header class="hero">
+        <h1 class="animate-hero">BEYOND<br><span class="gradient-text">LIMITS.</span></h1>
+        <p class="animate-hero-sub" style="color: var(--text-dim); margin-top: 2rem; font-weight: 500;">Ingénierie de pointe pour architectures critiques.</p>
+    </header>
 
-
-        <section class="section" id="benefits">
-    <div class="section-header">
-        <h2 class="section-title">Schéma de démonstration</h2>
-        <p class="section-subtitle">Visualisation des differents applications</p>
-    </div>
-    <div class="cards-grid">
-        <div class="card">
-            <div class="card-icon">
-                <i class="fas fa-flag-checkered"></i>
+    <section class="section" id="ecosystem">
+        <div class="grid-layout">
+            
+            <div class="card card-large tilt">
+                <span class="tag">Release v4.2</span>
+                <h3>Distributed Architecture</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem;">Gestion des clusters mondiaux avec une latence de synchronisation ultra-faible.</p>
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" 
+                     style="width:100%; height:240px; object-fit:cover; border-radius:24px; margin-top:1.5rem;">
             </div>
-            <h3 class="card-title">gestion de rdv</h3>
-            <div class="card-body">
-                <img src="img/do-dashboard-ui-design.png" alt="Architecture en couches" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <p>Schéma illustrant la séparation des responsabilités entre les différentes couches d'une application.</p>
+
+            <div class="card card-white tilt">
+                <div class="stat-val">99.9%</div>
+                <p style="font-weight: 800; margin-top: 1rem;">Uptime garanti</p>
+                <p style="font-size: 0.75rem; margin-top: 2rem; color: #4f46e5; font-weight: 700;">PROD STABLE ●</p>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">System Health</span>
+                <div class="bars" style="display: flex; align-items: flex-end; gap: 6px; height: 50px; margin: 1.5rem 0;">
+                    <div style="height: 30%; width: 20%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 70%; width: 20%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 50%; width: 20%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 95%; width: 20%; background: var(--secondary); border-radius: 4px;"></div>
+                </div>
+                <p style="font-size: 0.8rem; font-weight: 700;">Traffic Load : Optimal</p>
+            </div>
+
+            <div class="card card-tall tilt">
+                <div style="display:flex; gap:6px; margin-bottom:1.5rem;">
+                    <div style="width:10px; height:10px; background:#ff5f56; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#ffbd2e; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#27c93f; border-radius:50%;"></div>
+                </div>
+                <div class="code-block">
+                    <span style="color:#7c4dff;">module</span> <span style="color:#00f2fe;">Security</span> {<br>
+                    &nbsp;&nbsp;key: <span style="color:#98c379;">"AES_256"</span>,<br>
+                    &nbsp;&nbsp;mode: <span style="color:#d19a66;">"GCM"</span><br>
+                    }
+                </div>
+                <h3 style="margin-top:2rem;">Full Traceability</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">Surveillance end-to-end de chaque octet transitant par nos passerelles API.</p>
+            </div>
+
+            <div class="card tilt">
+                <div class="stat-val">24/7</div>
+                <p style="color: var(--text-dim);">Automated Monitoring</p>
+            </div>
+
+            <div class="card card-large tilt" id="lab">
+                <span class="tag">Innovation R&D</span>
+                <h3>Predictive Scaling AI</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Auto-ajustement des ressources basé sur le machine learning.</p>
+                <div class="code-block" style="background:black;">
+                    <span style="color:#c678dd;">def</span> <span style="color:#61afef;">predict_load</span>(data):<br>
+                    &nbsp;&nbsp;return model.forecast(data)
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section interaction-section" id="security">
+        <div class="interaction-container">
+            <h2 style="font-size: 2.2rem; letter-spacing: -1.5px;">Security <span class="gradient-text">Gateway </span></h2>
+            <p style="color: var(--text-dim); margin-top: 1rem;">Simulez l'envoi d'une donnée sensible vers nos serveurs sécurisés.</p>
+            
+            <div class="input-group">
+                <input type="text" id="userInput" placeholder="Saisissez un secret...">
+                <button class="send-btn" onclick="triggerEncryption()">ENVOYER</button>
+            </div>
+
+            <div id="encrypt-overlay">
+                <div style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1.5rem;">PROTOCOLE DE CHIFFREMENT ACTIF...</div>
+                <div class="cipher-anim" id="cipherText">HEX_DATA_FLOW...</div>
+                <div class="success-badge" id="successMsg"><i class="fas fa-check-circle"></i> DONNÉES PERSISTÉES EN DB</div>
+                <button class="send-btn" onclick="resetSim()" style="margin-top:2rem; background:none; border:1px solid var(--border); font-size:0.8rem;">RETOURNER AU TERMINAL</button>
             </div>
         </div>
-        <div class="card">
-            <div class="card-icon">
-                <i class="fas fa-flag-checkered"></i>
-            </div>
-            <h3 class="card-title">gestion d'emploi du temps et de notes</h3>
-            <div class="card-body">
-                <img src="img/Design sans titre (2).png" alt="Architecture Microservices" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <p>Diagramme montrant comment les microservices communiquent entre eux via des API.</p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-icon">
-                <i class="fas fa-flag-checkered"></i>
-            </div>
-            <h3 class="card-title">gestion de tiskets</h3>
-            <div class="card-body">
-                <img src="img/Frame 1.png" alt="Flux de données" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-                <p>Représentation du flux de données dans une architecture hexagonale.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-    </div>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    </section>
 
     <script>
-        // Mode Switch
-        const modeSwitch = document.getElementById('modeSwitch');
-        const html = document.documentElement;
-        function setMode(light) {
-            if (light) {
-                html.classList.add('light-mode');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light-mode');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-        if (localStorage.getItem('theme') === 'light') {
-            setMode(true);
-        }
-        modeSwitch.addEventListener('click', () => {
-            setMode(!html.classList.contains('light-mode'));
+        // --- ANIMATIONS GSAP AU CHARGEMENT ---
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            // 1. On fait apparaître le body
+            tl.to("body", { opacity: 1, duration: 0.5 });
+
+            // 2. Animation de la Navbar (elle descend du haut)
+            tl.from(".navbar", { 
+                y: -100, 
+                opacity: 0, 
+                duration: 1, 
+                ease: "expo.out" 
+            }, "-=0.2");
+
+            // 3. Animation du Hero (le texte monte doucement)
+            tl.from(".animate-hero", { 
+                y: 50, 
+                opacity: 0, 
+                duration: 1.2, 
+                ease: "power4.out" 
+            }, "-=0.6");
+
+            tl.from(".animate-hero-sub", { 
+                y: 30, 
+                opacity: 0, 
+                duration: 1, 
+                ease: "power3.out" 
+            }, "-=0.8");
+
+            // 4. Animation des cartes Bento (apparition en cascade / stagger)
+            tl.from(".card", { 
+                y: 60, 
+                opacity: 0, 
+                scale: 0.9,
+                duration: 0.8, 
+                stagger: 0.15, 
+                ease: "back.out(1.2)" 
+            }, "-=0.6");
+
+            // 5. Animation du blob (il apparaît doucement)
+            tl.from(".blob", { 
+                scale: 0.5, 
+                opacity: 0, 
+                duration: 2, 
+                ease: "power2.out" 
+            }, "-=1.5");
         });
 
-        // Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navbarNav = document.getElementById('navbarNav');
-        menuToggle.addEventListener('click', () => {
-            navbarNav.classList.toggle('open');
-            menuToggle.classList.toggle('open');
-            document.querySelector('.fa-bars').classList.toggle('fa-times');
-        });
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navbarNav.classList.remove('open');
-                menuToggle.classList.remove('open');
-                document.querySelector('.fa-bars').classList.remove('fa-times');
+        // --- MOUSE TRACKING BLOB ---
+        const blob = document.getElementById('blob');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(blob, {
+                x: e.clientX - 350,
+                y: e.clientY - 350,
+                duration: 1.5,
+                ease: "power2.out"
             });
         });
-        // Smooth Scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                // Update active link
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        // Back to Top Button
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        // Navbar scroll effects
-        const navbar = document.getElementById('navbar');
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                navbar.classList.add('hidden');
-            } else {
-                navbar.classList.remove('hidden');
-            }
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-            lastScrollY = window.scrollY;
-        });
-        // Intersection Observer for animations
-        const sections = document.querySelectorAll('.section');
+
+        // --- BENTO CARD TILT ---
         const cards = document.querySelectorAll('.card');
-        const diagram = document.querySelector('.diagram-container');
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        const sectionObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        sections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-        const cardObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
         cards.forEach(card => {
-            cardObserver.observe(card);
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
         });
-        if (diagram) {
-            sectionObserver.observe(diagram);
+
+        // --- ENCRYPTION INTERACTION ---
+        function triggerEncryption() {
+            const val = document.getElementById('userInput').value;
+            if(!val) return;
+            const overlay = document.getElementById('encrypt-overlay');
+            const cipher = document.getElementById('cipherText');
+            const msg = document.getElementById('successMsg');
+
+            overlay.style.display = 'flex';
+            gsap.from(overlay, { opacity: 0, duration: 0.4 });
+            
+            let ticks = 0;
+            const timer = setInterval(() => {
+                cipher.innerText = Array.from({length: 80}, () => Math.floor(Math.random()*16).toString(16)).join('');
+                ticks++;
+                if(ticks > 15) {
+                    clearInterval(timer);
+                    cipher.innerText = "PAYLOAD_ENCRYPTED: " + btoa(val).substring(0, 30) + "...";
+                    msg.style.display = 'block';
+                    gsap.from(msg, { scale: 0.5, opacity: 0, duration: 0.5, ease: "back.out" });
+                }
+            }, 80);
         }
-        // Highlight active section in navigation
-        const navLinks = document.querySelectorAll('.nav-link');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= (sectionTop - 150)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
+
+        function resetSim() {
+            gsap.to("#encrypt-overlay", { opacity: 0, duration: 0.3, onComplete: () => {
+                document.getElementById('encrypt-overlay').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'none';
+                document.getElementById('userInput').value = '';
+            }});
+        }
+
+        // --- THEME TOGGLE ---
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            
+            // Animation flash au changement de thème
+            gsap.fromTo("body", { filter: "brightness(1.5)" }, { filter: "brightness(1)", duration: 0.8 });
         });
     </script>
 </body>
