@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMED SAYEH | Portfolio</title>
+    <link rel="icon" href="img/icon.jpg" type="icon/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pr-color: #d4eb24; 
+            --bg-dark: #050505;
+            --bg-gradient: radial-gradient(circle at 50% 50%, #150a24 0%, #050505 100%);
+            --thre-color: #ffffff; 
+            --cubicbz: cubic-bezier(.9, 0, .1, 1);
+            --line-grad-start: #b0c6e1; 
+            --line-grad-end: #3515d7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Syne', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--thre-color);
+            overflow-x: hidden;
+            line-height: 1.4;
+            width: 100%;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* NAVIGATION */
+        .nav-pro {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 25px 30px;
+            z-index: 2000;
+            mix-blend-mode: difference;
+        }
+        @media (min-width: 1024px) {
+            .nav-pro { padding: 40px 70px; }
+        }
+        .nav-pro .logo { font-weight: 800; color: #fff; letter-spacing: 2px; text-transform: uppercase; font-size: clamp(10px, 4vw, 14px); }
+        .nav-pro a { color: #fff; text-decoration: none; font-size: clamp(9px, 3vw, 12px); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* HEADER */
+        .header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            padding: 0 20px;
+            perspective: 2000px;
+        }
+
+        .title {
+            font-size: clamp(45px, 14vw, 150px);
+            text-align: center;
+            color: var(--pr-color);
+            text-transform: uppercase;
+            line-height: 0.85;
+            z-index: 2;
+        }
+
+        .char { display: inline-block; will-change: transform, opacity, filter; }
+        .stroke { color: transparent; -webkit-text-stroke: 1px var(--thre-color); }
+
+        /* IMAGE HOVER CONTAINER */
+        .hover-image-container {
+            position: fixed;
+            width: 220px;
+            height: 300px;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            will-change: transform, opacity;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            display: none; /* Désactivé sur mobile pour éviter les bugs tactiles */
+        }
+        @media (min-width: 1024px) { .hover-image-container { display: block; } }
+        .hover-image-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* MARQUEE */
+        .header__marq {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            background: #0a0a0a;
+            padding: 15px 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .header__marq-wrapp { display: flex; white-space: nowrap; }
+        .header__marq-txt { font-size: clamp(18px, 5vw, 30px); color: #333; padding-right: 60px; text-transform: uppercase; font-weight: 800; }
+
+        /* SECTION ABOUT */
+        .about { 
+            position: relative; 
+            width: 100%;
+            height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--bg-dark);
+        }
+
+        .speed-lines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(to top, var(--line-grad-start), var(--line-grad-end));
+            border-radius: 50px;
+            bottom: -20%;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .l-slow { height: clamp(40px, 10vh, 70px); width: 4px; filter: blur(2px); }
+        .l-med  { height: clamp(80px, 15vh, 150px); width: 8px; filter: blur(1px); }
+        .l-fast { height: clamp(120px, 20vh, 220px); width: 6px; filter: blur(0px); }
+
+        .content { width: 100%; padding: 0 30px; position: relative; z-index: 10;}
+        @media (min-width: 1024px) { .content { padding: 0 70px; } }
+
+        .about__p {
+            font-size: clamp(1.4rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* AVION EN PAPIER */
+        #paper-plane {
+            position: absolute;
+            width: clamp(25px, 6vw, 40px);
+            height: auto;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10000;
+        }
+
+        /* WORK */
+        .work { position: relative; z-index: 20; background: var(--bg-dark); padding: 80px 0; }
+        .work__wrapp { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 50px; 
+            padding: 50px 30px; 
+        }
+        @media (min-width: 1024px) {
+            .work { padding: 150px 0; }
+            .work__wrapp { grid-template-columns: repeat(2, 1fr); gap: 100px 50px; padding: 100px 70px; }
+        }
+        .work__item { opacity: 0; transform: translateY(50px); text-decoration: none; display: block; }
+        .work__item-img { width: 100%; height: clamp(300px, 60vh, 70vh); overflow: hidden; background: #111; }
+        .work__item-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.5); transition: 1s var(--cubicbz); }
+        .work__item:hover .work__item-img img { transform: scale(1.08); filter: grayscale(0); }
+        .work__item-num { display: block; margin-top: 25px; font-size: 14px; color: var(--pr-color); text-transform: uppercase; letter-spacing: 2px;}
+
+        /* SERVICES */
+        .serv { padding: 80px 0; }
+        .serv__item { position: relative; padding: clamp(40px, 8vh, 80px) 0; border-bottom: 1px solid rgba(255,255,255,0.1); overflow: hidden; display: flex; align-items: center; }
+        .serv-icon { position: absolute; left: -150px; font-size: clamp(40px, 10vw, 80px); color: var(--pr-color); opacity: 0.4; pointer-events: none; z-index: 1; }
+        .serv__item-txt { font-size: clamp(24px, 7vw, 80px); text-transform: uppercase; z-index: 2; transition: 0.4s; }
+        .serv__item:hover .serv__item-txt { color: var(--pr-color); padding-left: 20px; }
+
+        /* FOOTER */
+        .footer { height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 20px;}
+        .footer__div { font-size: clamp(30px, 9vw, 8vw); color: var(--pr-color); text-transform: uppercase; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; }
+        .footer__div span { display: inline-block; will-change: transform, opacity; }
+        .MAY { color: transparent; -webkit-text-stroke: 1px var(--pr-color); }
+
+        /* CONTACT */
+        .cc { text-align: center; padding: 0 20px 100px; opacity: 0; }
+        #email-trigger { font-size: clamp(18px, 5vw, 50px); color: #fff; margin-bottom: 40px; display: inline-block; cursor: pointer; transition: color 0.3s; font-weight: 800; word-break: break-all;}
+        #email-trigger:hover { color: var(--pr-color); }
+        .cc a { color: var(--pr-color); text-decoration: none; font-size: 14px; letter-spacing: 4px; border: 1px solid var(--pr-color); padding: 15px 40px; border-radius: 50px; transition: 0.3s; display: inline-block;}
+        .cc a:hover { background: var(--pr-color); color: #000; }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav-pro">
+        <div class="logo">AHMED SAYEH</div>
+        <div class="links"><a href="#work">Portfolio</a></div>
+    </nav>
+
+    <div id="paper-plane">
+        <svg viewBox="0 0 24 24" fill="#d4eb24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z"/>
+        </svg>
+    </div>
+
+    <div class="hover-image-container" id="hover-img">
+        <img src="img/c'estmoiwsh.jpg" alt="Ahmed Sayeh">
+    </div>
+
+    <div id="luxy">
+        <header class="header">
+            <h1 class="title">
+                <div class="line1">CREATIVE</div>
+                <div class="line2 stroke">ENGIN€€R</div>
+            </h1>
+            
+            <div class="header__marq">
+                <div class="header__marq-wrapp">
+                    <span class="header__marq-txt">FULL-STACK • PRODUCT MANAGER • TECH STRATEGIST • </span>
+                    <span class="header__marq-txt">FULL-STACK • PRODUCT MANAGER • TECH STRATEGIST • </span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="about" id="about">
+                <div class="speed-lines">
+                    <div class="line l-slow" style="left: 10%;" data-speed="1.2"></div>
+                    <div class="line l-fast" style="left: 22%;" data-speed="2.8"></div>
+                    <div class="line l-med"  style="left: 40%;" data-speed="1.9"></div>
+                    <div class="line l-fast" style="left: 58%;" data-speed="3.5"></div> 
+                    <div class="line l-slow" style="left: 75%;" data-speed="1.4"></div>
+                    <div class="line l-med"  style="left: 90%;" data-speed="2.3"></div>
+                </div>
+                <div class="content">
+                    <p class="about__p">Based in Paris, I build <span id="trigger-plane" style="color:var(--pr-color); cursor: pointer; position: relative; display: inline-block;">digital architectures</span> that bridge technical complexity and user needs. Focused on <span class="stroke">Scalable Systems.</span></p>
+                </div>
+            </section>
+
+            <section class="work" id="work">
+                <div class="content">
+                    <h2 class="section-title" style="text-align: right; margin-bottom: 50px;">Selected <span class="stroke">Works</span></h2>
+                </div>
+                <div class="work__wrapp">
+                    <a href="Cms.html" class="work__item">
+                        <div class="work__item-img"><img src="img/Gradient abstract wallpaper.jpeg" alt="Project 1"></div>
+                        <span class="work__item-num">/ Software Architecture</span>
+                    </a>
+                    <a href="chat_platform.html" class="work__item">
+                        <div class="work__item-img"><img src="img/téléchargé (4).jpeg" alt="Project 2"></div>
+                        <span class="work__item-num">/ Enterprise SaaS</span>
+                    </a>
+                    <a href="ecom.html" class="work__item">
+                        <div class="work__item-img"><img src="img/tttrs.jpeg" alt="Project 3"></div>
+                        <span class="work__item-num">/ Artificial Intelligence</span>
+                    </a>
+                    <a href="fitness.html" class="work__item">
+                        <div class="work__item-img"><img src="img/Standard Full HD.jpeg" alt="Project 4"></div>
+                        <span class="work__item-num">/ MarTech & Growth</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="serv">
+                <div class="content">
+                    <div class="serv__item">
+                        <span class="serv-icon">✦</span>
+                        <div class="serv__item-txt">/ Front-End Dev</div>
+                    </div>
+                    <div class="serv__item">
+                        <span class="serv-icon">⚙</span>
+                        <div class="serv__item-txt">/ Back-End Dev</div>
+                    </div>
+                    <div class="serv__item">
+                        <span class="serv-icon">◈</span>
+                        <div class="serv__item-txt">/ UX/UI Design</div>
+                    </div>
+                    <div class="serv__item">
+                        <span class="serv-icon">🚀</span>
+                        <div class="serv__item-txt">/ Tech Strategy</div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="footer__div">
+                    <span>A</span> <span>step</span> <span>towards</span> <span>a</span> <span>new</span> <span class="MAY">horizon</span>
+                </div>
+            </footer>
+
+            <div class="cc">
+                <p id="email-trigger">ahmed.sayeh67@gmail.com</p><br>
+                <a href="#">GET IN TOUCH ↗</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    <script src="js/luxy.js"></script>
+    
+    <script>
+        gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+        // 1. Smooth Scroll (Désactivé sur mobile pour la stabilité tactile)
+        if (window.innerWidth > 1024) {
+            luxy.init({ wrapper: '#luxy', targets: '.work__item, .footer__div span', wrapperSpeed: 0.08 });
+        }
+
+        // 2. Animation Titre Entrée
+        const splitText = (el) => {
+            el.innerHTML = el.textContent.split("").map(char => 
+                `<span class="char">${char === " " ? "&nbsp;" : char}</span>`
+            ).join("");
+        };
+        splitText(document.querySelector('.line1'));
+        splitText(document.querySelector('.line2'));
+
+        gsap.from(".char", {
+            duration: 1.8,
+            z: () => window.innerWidth > 1024 ? Math.random() * 1500 + 500 : 0,
+            y: () => (Math.random() - 0.5) * 500,
+            rotationX: () => Math.random() * 360,
+            rotationY: () => Math.random() * 360,
+            opacity: 0,
+            filter: "blur(20px)",
+            stagger: { each: 0.03, from: "center" },
+            ease: "expo.out"
+        });
+
+        // 3. Image Hover Magnétique (Desktop Only)
+        if (window.innerWidth > 1024) {
+            const triggerEmail = document.querySelector('#email-trigger');
+            const imgContainer = document.querySelector('#hover-img');
+            let mX = 0, mY = 0, dX = 0, dY = 0;
+            window.addEventListener('mousemove', (e) => { mX = e.clientX; mY = e.clientY; });
+            function updateHoverImg() {
+                dX += (mX - dX) * 0.1; dY += (mY - 200 - dY) * 0.1; 
+                const tilt = gsap.utils.clamp(-20, 20, (mX - dX) * 0.7);
+                gsap.set(imgContainer, { x: dX, y: dY, rotation: tilt });
+                requestAnimationFrame(updateHoverImg);
+            }
+            updateHoverImg();
+            triggerEmail.addEventListener('mouseenter', () => gsap.to(imgContainer, { opacity: 1, scale: 1, duration: 0.5 }));
+            triggerEmail.addEventListener('mouseleave', () => gsap.to(imgContainer, { opacity: 0, scale: 0.5, duration: 0.5 }));
+        }
+
+        // 4. Marquee
+        gsap.to(".header__marq-wrapp", { xPercent: -50, ease: "none", duration: 25, repeat: -1 });
+
+        // 5. ANIMATION AVION PAPIER
+        const plane = document.querySelector("#paper-plane");
+        const triggerPlane = document.querySelector("#trigger-plane");
+
+        const startPlane = () => {
+            const rect = triggerPlane.getBoundingClientRect();
+            const scrollY = window.scrollY;
+            const winW = window.innerWidth;
+
+            gsap.set(plane, { x: rect.left, y: rect.top + scrollY, opacity: 1, scale: 0.2, rotation: 0 });
+
+            const tl = gsap.timeline();
+            tl.to(plane, {
+                duration: 4,
+                ease: "power2.inOut",
+                motionPath: {
+                    path: [
+                        {x: rect.left + (winW * 0.3), y: rect.top + scrollY - 150},
+                        {x: rect.left + (winW * 0.5), y: rect.top + scrollY + 100},
+                        {x: rect.left - 100, y: rect.top + scrollY + 400},
+                        {x: winW / 2, y: document.body.scrollHeight - 100}
+                    ],
+                    autoRotate: true,
+                    curviness: 1.5
+                }
+            });
+            tl.to(plane, { duration: 1.5, scale: 3, repeat: 1, yoyo: true, ease: "sine.inOut" }, 0);
+            tl.to(plane, { opacity: 0, duration: 0.8 }, "-=0.8");
+        };
+
+        triggerPlane.addEventListener("mouseenter", startPlane);
+        triggerPlane.addEventListener("click", startPlane);
+
+        // 6. Section About Pinned + Speed Lines
+        const aboutTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".about",
+                start: "top top",
+                end: "+=150%", 
+                pin: true,
+                scrub: 1.2,
+                anticipatePin: 1
+            }
+        });
+
+        gsap.utils.toArray(".line").forEach(line => {
+            aboutTl.fromTo(line, 
+                { y: 0, opacity: 0, scaleY: 0.2 }, 
+                { y: "-150vh", opacity: 0.6, scaleY: 2, duration: 1, ease: "none" }, 0);
+        });
+
+        aboutTl.fromTo(".about__p", 
+            { opacity: 0, y: 50, scale: 0.9 }, 
+            { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }, 0.1
+        );
+
+        // 7. Reveal Work Items
+        gsap.utils.toArray(".work__item").forEach(item => {
+            gsap.to(item, { scrollTrigger: { trigger: item, start: "top 90%" }, opacity: 1, y: 0, duration: 1 });
+        });
+
+        // 8. Services
+        gsap.utils.toArray(".serv__item").forEach((item) => {
+            const icon = item.querySelector(".serv-icon");
+            gsap.to(icon, {
+                scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: 2 },
+                x: window.innerWidth + 300, rotate: 360
+            });
+        });
+
+        // 9. Footer
+        const words = document.querySelectorAll('.footer__div span');
+        words.forEach((word) => {
+            const rX = (Math.random() - 0.5) * 1600;
+            const rY = (Math.random() - 0.5) * 1200;
+            gsap.fromTo(word, 
+                { x: rX, y: rY, z: -1200, opacity: 0, filter: "blur(20px)", rotation: Math.random() * 90 },
+                {
+                    x: 0, y: 0, z: 0, opacity: 1, filter: "blur(0px)", rotation: 0,
+                    scrollTrigger: { trigger: ".footer", start: "top bottom", end: "center center", scrub: 2.5 },
+                    ease: "power2.inOut"
+                }
+            );
+        });
+
+        // 10. CC
+        gsap.to(".cc", { scrollTrigger: { trigger: ".cc", start: "top 90%" }, opacity: 1, duration: 1.5 });
+    </script>
+</body>
+</html>

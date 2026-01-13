@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarTech & Growth | Notions Engineering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        /* --- RETOUR AU DESIGN BENTO ORIGINAL --- */
+        :root {
+            --bg: #030303;
+            --surface: rgba(255, 255, 255, 0.03);
+            --primary: #7c4dff;
+            --secondary: #00f2fe;
+            --primary-glow: rgba(124, 77, 255, 0.2);
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #7c4dff 0%, #00f2fe 100%);
+            --nav-bg: rgba(10, 10, 10, 0.7);
+        }
+
+        .light-mode {
+            --bg: #f5f7fa;
+            --surface: rgba(255, 255, 255, 0.7);
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --primary-glow: rgba(79, 70, 229, 0.1);
+            --text: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+            --nav-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: pointer;}
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; 
+        }
+
+        .blob {
+            position: fixed;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.6rem 2rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        .theme-toggle {
+            margin-left: 1.5rem;
+            width: 40px; height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .hero {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            line-height: 0.85;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .card-large { grid-column: span 2; }
+        .card-tall { grid-row: span 2; }
+        .card-white { background: #ffffff; color: #000000; border: none; }
+
+        .tag {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-val { font-size: 4rem; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+
+        .interaction-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 6rem auto;
+            position: relative;
+        }
+
+        .input-group {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 8px;
+            margin: 2.5rem auto 0;
+            max-width: 600px;
+        }
+
+        input {
+            background: none; border: none; color: var(--text);
+            padding: 15px 20px; flex: 1; outline: none;
+        }
+
+        .send-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0 30px; border-radius: 18px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
+        }
+
+        #overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout { grid-template-columns: repeat(2, 1fr); }
+            .card-large { grid-column: span 2; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob" id="blob"></div>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#tracking">Tracking</a></li>
+            <li><a href="#data">Data</a></li>
+            <li><a href="#automation">Automation</a></li>
+            <li><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1 class="animate-hero">MARTECH<br><span class="gradient-text">& GROWTH.</span></h1>
+        <p class="animate-hero-sub" style="color: var(--text-dim); margin-top: 2rem; font-weight: 500;">Comprendre l'ingénierie au service du marketing de performance.</p>
+    </header>
+
+    <section class="section">
+        <div class="grid-layout">
+            
+            <div class="card card-large tilt" id="tracking">
+                <span class="tag">Digital Tracking</span>
+                <h3>La donnée à la source</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem;">Comprendre comment collecter proprement les interactions utilisateurs (via GTM ou Segment) pour nourrir les décisions business.</p>
+                <div style="background:rgba(0,0,0,0.2); height:150px; border-radius:20px; margin-top:1.5rem; display:flex; align-items:center; justify-content:center;">
+                    <i class="fas fa-chart-line" style="font-size: 4rem; opacity:0.3; color: var(--primary);"></i>
+                </div>
+            </div>
+
+            <div class="card card-white tilt">
+                <div class="stat-val">ROI</div>
+                <p style="font-weight: 800; margin-top: 1rem;">L'objectif final</p>
+                <p style="font-size: 0.75rem; margin-top: 2rem; color: #4f46e5; font-weight: 700;">OPTIMISATION DU FUNNEL ●</p>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Pourquoi ?</span>
+                <p style="font-size: 0.9rem; font-weight: 700;">Sans tracking précis, le marketing est une dépense. Avec la MarTech, c'est un investissement mesurable.</p>
+            </div>
+
+            <div class="card card-tall tilt" id="automation">
+                <div style="display:flex; gap:6px; margin-bottom:1.5rem;">
+                    <div style="width:10px; height:10px; background:#7c4dff; border-radius:50%;"></div>
+                </div>
+                <h3>Automatisation</h3>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">Éliminer les tâches répétitives : synchronisation CRM, envois d'emails basés sur le comportement et enrichissement de leads.</p>
+                <div style="margin-top:2rem; border-left: 2px solid var(--primary); padding-left: 1rem; font-family:monospace; font-size:0.7rem;">
+                    IF (user_clicked_pricing)<br>
+                    THEN (send_nurture_email)
+                </div>
+            </div>
+
+            <div class="card tilt">
+                <div class="stat-val"><i class="fas fa-layer-group" style="font-size: 3rem;"></i></div>
+                <p style="color: var(--text-dim); margin-top:1rem;">Modern Stack</p>
+                <p style="font-size: 0.7rem;">GTM, GA4, HubSpot, n8n.</p>
+            </div>
+
+            <div class="card card-large tilt" id="data">
+                <span class="tag">Data Engineering</span>
+                <h3>Single Source of Truth</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">L'importance d'avoir une donnée unifiée pour éviter les silos entre les ventes et le marketing.</p>
+                <div style="display:flex; gap:10px; margin-top:1.5rem;">
+                   <div style="flex:1; height:40px; background:var(--surface); border:1px solid var(--border); border-radius:10px;"></div>
+                   <div style="flex:1; height:40px; background:var(--primary); border-radius:10px;"></div>
+                   <div style="flex:1; height:40px; background:var(--surface); border:1px solid var(--border); border-radius:10px;"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+     <section class="section interaction-section">
+        <div class="interaction-container">
+            <h2 style="font-size: 2.2rem; letter-spacing: -1.5px;">oupss !!! c'est en cours de  <span class="gradient-text">developpement</span></h2>
+            <!-- <p style="color: var(--text-dim); margin-top: 1rem;">Envoyez une commande en langage naturel pour simuler l'analyse de l'IA.</p>
+            
+            <div class="input-group">
+                <input type="text" id="userInput" placeholder="Ex: Analyse les rapports de vente du Q3...">
+                <button class="send-btn" onclick="triggerEncryption()">ANALYSER</button>
+            </div>
+
+            <div id="encrypt-overlay">
+                <div style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1.5rem;">EXTRACTION DES VECTEURS...</div>
+                <div class="cipher-anim" id="cipherText">TOKENIZING_PROMPT...</div>
+                <div class="success-badge" id="successMsg"><i class="fas fa-microchip"></i> INTENTION DÉTECTÉE & AUTOMATISÉE</div>
+                <button class="send-btn" onclick="resetSim()" style="margin-top:2rem; background:none; border:1px solid var(--border); font-size:0.8rem;">RETOURNER AU NOYAU</button>
+            </div> -->
+        </div>
+    </section>
+
+    <script>
+        // Animations identiques à l'original
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("body", { opacity: 1, duration: 0.5 });
+            tl.from(".navbar", { y: -100, opacity: 0, duration: 1 });
+            tl.from(".animate-hero", { y: 50, opacity: 0, duration: 1 }, "-=0.5");
+            tl.from(".card", { y: 60, opacity: 0, duration: 0.8, stagger: 0.1 }, "-=0.5");
+        });
+
+        const blob = document.getElementById('blob');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(blob, { x: e.clientX - 350, y: e.clientY - 350, duration: 1.5 });
+        });
+
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const rotateX = (y - rect.height/2) / 15;
+                const rotateY = (rect.width/2 - x) / 15;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        function triggerSim() {
+            const val = document.getElementById('userInput').value;
+            if(!val) return;
+            const overlay = document.getElementById('overlay');
+            const cipher = document.getElementById('cipherText');
+            const msg = document.getElementById('successMsg');
+
+            overlay.style.display = 'flex';
+            let ticks = 0;
+            const timer = setInterval(() => {
+                const steps = ["CHECKING_DATALAYER...", "ENRICHING_META...", "DISPATCHING_WEBHOOK..."];
+                cipher.innerText = steps[ticks % steps.length];
+                ticks++;
+                if(ticks > 6) {
+                    clearInterval(timer);
+                    cipher.innerText = "EVENT_SENT: " + val;
+                    msg.style.display = 'block';
+                }
+            }, 300);
+        }
+
+        function resetSim() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'none';
+            document.getElementById('userInput').value = '';
+        }
+
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+    </script>
+</body>
+</html>
