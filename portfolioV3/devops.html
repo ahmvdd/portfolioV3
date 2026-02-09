@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture & Scalabilité | Portfolio Expert</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:italic@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f4f4f4;
+            --text-dim: #666;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.02;
+            pointer-events: none;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5c/Image_with_noise.png');
+            z-index: 100;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px 120px;
+        }
+
+        .nav-header {
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+            transform: translateX(-5px);
+        }
+
+        .page-title {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(3rem, 10vw, 7rem);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: 40px;
+        }
+
+        .expertise-intro {
+            max-width: 600px;
+            color: var(--text-dim);
+            margin-bottom: 80px;
+            font-size: 1.1rem;
+        }
+
+        /* Stats / Highlights */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        .stat-item {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .stat-value {
+            display: block;
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+
+        /* Projects Section */
+        .projects {
+            border-top: 1px solid var(--border);
+        }
+
+        .project-item {
+            border-bottom: 1px solid var(--border);
+            padding: 40px 0;
+            transition: var(--transition);
+        }
+
+        .project-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            cursor: pointer;
+            gap: 20px;
+        }
+
+        .project-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            font-weight: 400;
+            font-style: italic;
+            transition: var(--transition);
+        }
+
+        .project-date {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+        }
+
+        .project-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .project-item.is-open .project-content {
+            max-height: 800px;
+            opacity: 1;
+            margin-top: 30px;
+        }
+
+        .project-item.is-open .project-title {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding-bottom: 20px;
+        }
+
+        .detail-card {
+            border-left: 1px solid var(--border);
+            padding-left: 20px;
+        }
+
+        .detail-card h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            letter-spacing: 0.1em;
+        }
+
+        .detail-card ul {
+            list-style: none;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .detail-card li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .toggle-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .toggle-icon::before, .toggle-icon::after {
+            content: "";
+            position: absolute;
+            background: currentColor;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .toggle-icon::before { width: 16px; height: 1px; }
+        .toggle-icon::after { width: 1px; height: 16px; transition: var(--transition); }
+
+        .project-item.is-open .toggle-icon {
+            transform: rotate(135deg);
+        }
+
+        @media (max-width: 768px) {
+            .project-header { grid-template-columns: 1fr; }
+            .toggle-icon { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <nav class="nav-header">
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 8H1M1 8L8 15M1 8L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Retour
+            </a>
+        </nav>
+
+        <h1 class="page-title">Architecture &<br>Scalabilité</h1>
+        
+        <p class="expertise-intro">
+            Conception de systèmes distribués capables de supporter des charges critiques, 
+            optimisation des flux de données et automatisation complète des cycles de vie applicatifs.
+        </p>
+
+        
+
+        <section class="projects">
+
+            <div class="project-item">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <div class="project-info">
+                        <h2 class="project-title">CRM Distributed Architecture</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 30px;">
+                        <span class="project-date">En cours</span>
+                        <div class="toggle-icon"></div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <h4>Microservices (Go / Nest)</h4>
+                            <ul>
+                                <li><strong>Gateway Service :</strong> Développé en Go pour une gestion optimale des entrées.</li>
+                                <li><strong>NATS :</strong> Bus de messages asynchrone pour la communication inter-services.</li>
+                                <li><strong>NestJS :</strong> Logique métier orchestrée pour le User Service.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Data & Storage</h4>
+                            <ul>
+                                <li><strong>Redis Cache :</strong> Réduction drastique des lectures DB.</li>
+                                <li><strong>PostgreSQL :</strong> Sharding et haute cohérence.</li>
+                                <li><strong>S3 Media Engine :</strong> Gestion des assets distribuée.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <div class="project-info">
+                        <h2 class="project-title">CI/CD Pipeline</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 30px;">
+                        <span class="project-date">Juin 2025</span>
+                        <div class="toggle-icon"></div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <h4>Infrastructure</h4>
+                            <ul>
+                                <li>Terraform (IaC) pour multi-cloud.</li>
+                                <li>Kubernetes (EKS/GKE) Orchestration.</li>
+                                <li>Environnements éphémères automatisés.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Automation</h4>
+                            <ul>
+                                <li>GitOps via ArgoCD.</li>
+                                <li>Canary Deployments & Rollbacks.</li>
+                                <li>Analyse statique de code intégrée.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <div class="project-info">
+                        <h2 class="project-title">Observabilité Système</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 30px;">
+                        <span class="project-date">Fév 2025</span>
+                        <div class="toggle-icon"></div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <h4>Monitoring Stack</h4>
+                            <ul>
+                                <li>Prometheus métriques custom.</li>
+                                <li>Loki pour l'agrégation de logs.</li>
+                                <li>Jaeger pour le tracing distribué.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Fiabilité</h4>
+                            <ul>
+                                <li>Alerte basée sur les SLIs/SLOs.</li>
+                                <li>Dashboards Grafana exécutifs.</li>
+                                <li>Auto-scaling prédictif.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <div class="project-info">
+                        <h2 class="project-title">Core Engine Migration</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 30px;">
+                        <span class="project-date">Oct 2024</span>
+                        <div class="toggle-icon"></div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <h4>Legacy to Micro</h4>
+                            <ul>
+                                <li>Migration progressive d'un monolithe vers Go.</li>
+                                <li>Zero-downtime database migration.</li>
+                                <li>Refactoring des APIs critiques.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Résultats</h4>
+                            <ul>
+                                <li>Consommation ressources -30%.</li>
+                                <li>Vitesse de déploiement x4.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        function toggleProject(element) {
+            const item = element.parentElement;
+            item.classList.toggle('is-open');
+        }
+    </script>
+</body>
+</html>

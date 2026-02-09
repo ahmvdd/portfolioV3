@@ -148,6 +148,18 @@
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1;
+            background:
+                repeating-linear-gradient(115deg, rgba(100, 209, 255, 0.12) 0 2px, transparent 2px 20px),
+                repeating-linear-gradient(70deg, rgba(255, 137, 235, 0.12) 0 2px, transparent 2px 24px);
+            mix-blend-mode: screen;
+            opacity: 0.35;
+            animation: aboutShift 18s linear infinite;
+            filter: blur(0.5px);
+        }
+
+        @keyframes aboutShift {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 600px -400px, -500px 300px; }
         }
 
         .line {
@@ -155,9 +167,10 @@
             background: linear-gradient(180deg, #64d1ff 0%, #ff89eb 100%);
             border-radius: 100px;
             opacity: 1;
-            will-change: transform;
+            will-change: transform, height;
             filter: none !important;
             box-shadow: 0 0 30px rgba(100, 209, 255, 0.4);
+            transform-origin: top center;
         }
 
         .content { width: 100%; padding: 0 30px; position: relative; z-index: 10;}
@@ -172,6 +185,7 @@
             margin: 0 auto;
             text-align: center;
             text-shadow: 0 0 20px rgba(0,0,0,1);
+            will-change: transform, opacity;
         }
 
         /* AVION EN PAPIER */
@@ -228,7 +242,9 @@
 
     <nav class="nav-pro">
         <div class="logo">AHMED SAYEH</div>
-        <div class="links"><a href="#work">Portfolio</a></div>
+        <div class="links" style="display: flex; gap: 20px; align-items: center;">
+            <a href="#work">Portfolio</a>
+        </div>
     </nav>
 
     <div id="paper-plane">
@@ -268,22 +284,14 @@
                 <div class="content">
                     <h2 class="section-title" style="text-align: right; margin-bottom: 50px;">Selected <span class="stroke">Works</span></h2>
                 </div>
-                <div class="work__wrapp">
-                    <a href="Cms.html" class="work__item">
-                        <div class="work__item-img"><img src="img/Gradient abstract wallpaper.jpeg" alt="Project 1"></div>
-                        <span class="work__item-num">/ Software Architecture</span>
+                <div class="work__wrapp" id="projectsContainer">
+                    <a href="cms.html" class="work__item">
+                        <div class="work__item-img"><img src="img/Gradient abstract wallpaper.jpeg" alt="Integrations & API"></div>
+                        <span class="work__item-num">/ Integrations & API</span>
                     </a>
-                    <a href="chat_platform.html" class="work__item">
-                        <div class="work__item-img"><img src="img/téléchargé (4).jpeg" alt="Project 2"></div>
-                        <span class="work__item-num">/ Enterprise SaaS</span>
-                    </a>
-                    <a href="ecom.html" class="work__item">
-                        <div class="work__item-img"><img src="img/tttrs.jpeg" alt="Project 3"></div>
-                        <span class="work__item-num">/ Artificial Intelligence</span>
-                    </a>
-                    <a href="fitness.html" class="work__item">
-                        <div class="work__item-img"><img src="img/Standard Full HD.jpeg" alt="Project 4"></div>
-                        <span class="work__item-num">/ MarTech & Growth</span>
+                    <a href="devops.html" class="work__item">
+                        <div class="work__item-img"><img src="img/téléchargé (4).jpeg" alt="Architecture & Scalabilité"></div>
+                        <span class="work__item-num">/ Architecture & Scalabilité</span>
                     </a>
                 </div>
             </section>
@@ -328,6 +336,8 @@
     <script src="js/luxy.js"></script>
     
     <script>
+        // Projects are now static in the HTML (no localStorage override).
+
         gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
         // --- LUXURY SMOOTH SCROLL ---
@@ -384,55 +394,21 @@
         triggerPlane.addEventListener("mouseenter", startPlane);
         triggerPlane.addEventListener("click", startPlane);
 
-        // --- SECTION ABOUT : 6 CAPSULES RANDOM ---
-        const linesContainer = document.querySelector("#lines-container");
-        const lineCount = 6; 
-
-        for (let i = 0; i < lineCount; i++) {
-            const line = document.createElement("div");
-            line.className = "line";
-            const x = Math.random() * 85 + 5; 
-            const y = 130 + (Math.random() * 50); 
-            const h = 350; 
-            const w = Math.random() * 10 + 35; 
-            const zIndex = (i % 2 === 0) ? 15 : 5;
-            line.style.left = x + "%";
-            line.style.top = y + "%";
-            line.style.width = w + "px";
-            line.style.height = h + "px";
-            line.style.zIndex = zIndex;
-            line.dataset.depth = Math.random() * 0.8 + 1.2; 
-            linesContainer.appendChild(line);
-        }
-
-        const aboutTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".about",
-                start: "top top",
-                end: "+=350%", 
-                pin: true,
-                scrub: 1.5,
-                anticipatePin: 1
-            }
-        });
-
-        aboutTl.from(".about__p", {
-            y: 80,
-            opacity: 0,
-            scale: 0.9,
-            duration: 0.6,
-            ease: "power2.out"
-        }, 0.1);
-
-        gsap.utils.toArray(".line").forEach((line) => {
-            const depth = parseFloat(line.dataset.depth);
-            aboutTl.to(line, {
-                y: `-${600 * depth}vh`, 
+        // --- SECTION ABOUT ---
+        gsap.fromTo(".about__p",
+            { opacity: 0, y: 40, scale: 0.98 },
+            {
                 opacity: 1,
-                duration: 1.5,
-                ease: "none"
-            }, 0.2); 
-        });
+                y: 0,
+                scale: 1,
+                duration: 1.1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".about",
+                    start: "top 70%"
+                }
+            }
+        );
 
         // --- WORK ITEMS REVEAL ---
         gsap.utils.toArray(".work__item").forEach(item => {
