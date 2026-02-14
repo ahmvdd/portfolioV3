@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark-mode">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projets & Expériences | Architecte Solutions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:italic@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #0a0a0a;
-            --text: #f4f4f4;
-            --text-dim: #666;
-            --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.08);
+            --bg: #FFFFFF;
+            --text: #111111;
+            --text-dim: #888;
+            --accent: #0047FF;
+            --border: rgba(0, 0, 0, 0.08);
             --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Syne', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
@@ -29,7 +29,7 @@
             content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0.02; pointer-events: none;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5c/Image_with_noise.png');
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
             z-index: 100;
         }
 
@@ -46,7 +46,7 @@
 
         .header-content { margin-bottom: 80px; }
         .page-title {
-            font-family: 'Instrument Serif', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(3rem, 8vw, 6.5rem);
             line-height: 0.9; font-weight: 400;
         }
@@ -72,7 +72,7 @@
             transition: color 0.4s ease;
         }
         .project-name {
-            font-family: 'Instrument Serif', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.6rem, 4vw, 2.8rem);
             font-style: italic; transition: color 0.4s ease, font-style 0.4s ease;
         }
@@ -91,7 +91,7 @@
 
         .details-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px; padding: 30px; background: rgba(255,255,255,0.02);
+            gap: 40px; padding: 30px; background: #FAFAFA;
             border-radius: 4px;
         }
 
@@ -102,8 +102,8 @@
         }
 
         .detail-block ul { list-style: none; }
-        .detail-block li { 
-            margin-bottom: 12px; font-size: 0.95rem; color: #bbb;
+        .detail-block li {
+            margin-bottom: 12px; font-size: 0.95rem; color: #555;
             position: relative; padding-left: 15px;
         }
         .detail-block li::before {
@@ -117,11 +117,11 @@
         }
         .project-link-btn:hover { opacity: 0.7; }
 
-        .project-item:hover { background: rgba(255,255,255,0.02); }
-        .project-item:hover .project-name, 
+        .project-item:hover { background: #FAFAFA; }
+        .project-item:hover .project-name,
         .project-item:hover .role-tag { color: var(--accent); }
 
-        .project-item.is-active { background: rgba(255,255,255,0.03); }
+        .project-item.is-active { background: #F5F5F5; }
         .project-item.is-active .project-name { font-style: normal; color: var(--accent); }
         .project-item.is-active .toggle-icon { transform: rotate(45deg); color: var(--accent); }
 
@@ -182,7 +182,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="project-item">
                 <button class="project-trigger" onclick="toggleProject(this)">
                     <div class="project-meta">
@@ -338,7 +338,7 @@
         function toggleProject(button) {
             const currentItem = button.parentElement;
             const isActive = currentItem.classList.contains('is-active');
-            
+
             document.querySelectorAll('.project-item').forEach(item => {
                 item.classList.remove('is-active');
             });

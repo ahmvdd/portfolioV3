@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark-mode">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architecture & Scalabilité | Portfolio Expert</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:italic@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a;
-            --text: #f4f4f4;
-            --text-dim: #666;
-            --accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #FFFFFF;
+            --text: #111111;
+            --text-dim: #888;
+            --accent: #0047FF;
+            --border: rgba(0, 0, 0, 0.08);
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Syne', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
@@ -31,7 +31,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0.02;
             pointer-events: none;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5c/Image_with_noise.png');
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
             z-index: 100;
         }
 
@@ -53,6 +53,7 @@
             gap: 12px;
             color: var(--text-dim);
             text-decoration: none;
+            font-family: 'Syne', sans-serif;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
@@ -66,9 +67,9 @@
         }
 
         .page-title {
-            font-family: 'Instrument Serif', serif;
+            font-family: 'Syne', sans-serif;
             font-weight: 400;
-            font-size: clamp(3rem, 10vw, 7rem);
+            font-size: clamp(3rem, 8vw, 6.5rem);
             line-height: 0.9;
             letter-spacing: -0.03em;
             margin-bottom: 40px;
@@ -78,7 +79,8 @@
             max-width: 600px;
             color: var(--text-dim);
             margin-bottom: 80px;
-            font-size: 1.1rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
         }
 
         /* Stats / Highlights */
@@ -97,12 +99,13 @@
 
         .stat-value {
             display: block;
-            font-family: 'Instrument Serif', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 2.5rem;
             color: var(--accent);
         }
 
         .stat-label {
+            font-family: 'Syne', sans-serif;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -129,15 +132,15 @@
         }
 
         .project-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(1.8rem, 4vw, 3.2rem);
-            font-weight: 400;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
             font-style: italic;
             transition: var(--transition);
         }
 
         .project-date {
             color: var(--text-dim);
+            font-family: 'Syne', sans-serif;
             font-size: 0.85rem;
             font-variant-numeric: tabular-nums;
             letter-spacing: 1px;
@@ -174,17 +177,21 @@
         }
 
         .detail-card h4 {
+            font-family: 'Syne', sans-serif;
             font-size: 0.7rem;
             text-transform: uppercase;
             color: var(--text-dim);
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             letter-spacing: 0.1em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
         }
 
         .detail-card ul {
             list-style: none;
+            font-family: 'Syne', sans-serif;
             font-size: 0.95rem;
-            color: #ccc;
+            color: #555;
         }
 
         .detail-card li {
@@ -233,13 +240,13 @@
         </nav>
 
         <h1 class="page-title">Architecture &<br>Scalabilité</h1>
-        
+
         <p class="expertise-intro">
-            Conception de systèmes distribués capables de supporter des charges critiques, 
+            Conception de systèmes distribués capables de supporter des charges critiques,
             optimisation des flux de données et automatisation complète des cycles de vie applicatifs.
         </p>
 
-        
+
 
         <section class="projects">
 
@@ -274,7 +281,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="project-item">
                 <div class="project-header" onclick="toggleProject(this)">
                     <div class="project-info">
