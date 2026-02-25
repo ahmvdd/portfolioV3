@@ -112,6 +112,78 @@
             color: var(--text-dim);
         }
 
+        /* Notions Section — same style as Cms.html */
+        .notions {
+            border-top: 1px solid var(--border);
+            margin-bottom: 80px;
+        }
+
+        .notion-item {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s ease;
+        }
+
+        .notion-trigger {
+            width: 100%; background: none; border: none; color: inherit;
+            text-align: left; padding: 40px 0; cursor: pointer;
+            display: grid; grid-template-columns: 1fr auto auto;
+            align-items: center; gap: 40px;
+        }
+
+        .notion-meta { display: flex; flex-direction: column; gap: 6px; }
+
+        .notion-role {
+            font-size: 0.65rem; text-transform: uppercase;
+            letter-spacing: 0.2em; color: var(--text-dim);
+            transition: color 0.4s ease;
+        }
+
+        .notion-name {
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            font-style: italic; transition: color 0.4s ease, font-style 0.4s ease;
+        }
+
+        .notion-toggle { font-size: 1.2rem; color: var(--text-dim); transition: var(--transition); }
+
+        .notion-details {
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+        }
+
+        .notion-item.is-active .notion-details {
+            max-height: 600px; opacity: 1; padding-bottom: 50px;
+        }
+
+        .notion-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px; padding: 30px; background: #FAFAFA; border-radius: 4px;
+        }
+
+        .notion-block h4 {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--text-dim); margin-bottom: 15px;
+            border-bottom: 1px solid var(--border); padding-bottom: 8px;
+        }
+
+        .notion-block ul { list-style: none; }
+        .notion-block li {
+            margin-bottom: 12px; font-size: 0.95rem; color: #555;
+            position: relative; padding-left: 15px;
+        }
+        .notion-block li::before { content: "—"; position: absolute; left: 0; color: var(--text-dim); }
+
+        .notion-item:hover { background: #FAFAFA; }
+        .notion-item:hover .notion-name,
+        .notion-item:hover .notion-role { color: var(--accent); }
+        .notion-item.is-active { background: #F5F5F5; }
+        .notion-item.is-active .notion-name { font-style: normal; color: var(--accent); }
+        .notion-item.is-active .notion-toggle { transform: rotate(45deg); color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .notion-trigger { grid-template-columns: 1fr; gap: 10px; }
+            .notion-toggle { display: none; }
+        }
+
         /* Projects Section */
         .projects {
             border-top: 1px solid var(--border);
@@ -247,6 +319,186 @@
         </p>
 
 
+
+        <section class="notions">
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Qualité logicielle</span>
+                        <h2 class="notion-name">Testing</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Méthodes</h4>
+                            <ul>
+                                <li>Tests unitaires</li>
+                                <li>Tests d'intégration</li>
+                                <li>Tests End-to-End (E2E)</li>
+                                <li>Test-Driven Development (TDD)</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Outils</h4>
+                            <ul>
+                                <li>Jest</li>
+                                <li>Supertest</li>
+                                <li>Cypress</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Performance & Charge</span>
+                        <h2 class="notion-name">Scalabilité</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Patterns</h4>
+                            <ul>
+                                <li>Horizontal scaling</li>
+                                <li>Load balancing</li>
+                                <li>Database sharding</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Optimisation</h4>
+                            <ul>
+                                <li>Rate limiting</li>
+                                <li>Caching stratégies (Redis)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Conception système</span>
+                        <h2 class="notion-name">Architecture</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Patterns</h4>
+                            <ul>
+                                <li>Microservices</li>
+                                <li>Event-driven architecture</li>
+                                <li>CQRS</li>
+                                <li>Domain-Driven Design</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Résilience</h4>
+                            <ul>
+                                <li>API Gateway</li>
+                                <li>Circuit breaker</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Infrastructure</span>
+                        <h2 class="notion-name">Infra & DevOps</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Conteneurisation</h4>
+                            <ul>
+                                <li>Docker & Docker Compose</li>
+                                <li>Kubernetes</li>
+                                <li>Nginx</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Automatisation</h4>
+                            <ul>
+                                <li>GitHub Actions CI/CD</li>
+                                <li>Terraform (IaC)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Protection des données</span>
+                        <h2 class="notion-name">Sécurité</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Authentification</h4>
+                            <ul>
+                                <li>JWT + Refresh tokens</li>
+                                <li>OAuth2</li>
+                                <li>RBAC</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Défenses</h4>
+                            <ul>
+                                <li>CORS / CSRF</li>
+                                <li>Hashing (bcrypt)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-item">
+                <button class="notion-trigger" onclick="toggleNotion(this)">
+                    <div class="notion-meta">
+                        <span class="notion-role">Monitoring & Debugging</span>
+                        <h2 class="notion-name">Observabilité</h2>
+                    </div>
+                    <span class="notion-toggle">+</span>
+                </button>
+                <div class="notion-details">
+                    <div class="notion-grid">
+                        <div class="notion-block">
+                            <h4>Outils</h4>
+                            <ul>
+                                <li>Prometheus</li>
+                                <li>Grafana</li>
+                            </ul>
+                        </div>
+                        <div class="notion-block">
+                            <h4>Pratiques</h4>
+                            <ul>
+                                <li>Logs structurés</li>
+                                <li>Tracing distribué</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
 
         <section class="projects">
 
@@ -384,6 +636,13 @@
         function toggleProject(element) {
             const item = element.parentElement;
             item.classList.toggle('is-open');
+        }
+
+        function toggleNotion(button) {
+            const currentItem = button.parentElement;
+            const isActive = currentItem.classList.contains('is-active');
+            document.querySelectorAll('.notion-item').forEach(item => item.classList.remove('is-active'));
+            if (!isActive) currentItem.classList.add('is-active');
         }
     </script>
 </body>
