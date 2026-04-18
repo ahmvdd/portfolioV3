@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Hero | Ahmed Sayeh</title>
+    <link rel="icon" href="img/icon.jpg" type="icon/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            color: #fff;
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(251, 239, 118, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(251, 239, 118, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px 20px;
+        }
+
+        /* Animated elements */
+        .hero-tag {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(251, 239, 118, 0.1);
+            border: 1px solid rgba(251, 239, 118, 0.3);
+            border-radius: 50px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #FBEF76;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 10vw, 80px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #fff;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .hero-title span {
+            color: #FBEF76;
+            display: block;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .btn-primary {
+            background: #FBEF76;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(251, 239, 118, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #FBEF76;
+            border: 2px solid #FBEF76;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(251, 239, 118, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Animated background shapes */
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #FBEF76, transparent);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #FBEF76, transparent);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            animation: float 10s ease-in-out infinite 2s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #FBEF76, transparent);
+            border-radius: 50%;
+            top: 50%;
+            right: 10%;
+            animation: float 6s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+            }
+            50% {
+                transform: translateY(-30px) translateX(20px);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #FBEF76;
+        }
+
+        .header a {
+            padding: 10px 25px;
+            background: #FBEF76;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .header a:hover {
+            transform: scale(1.05);
+        }
+
+        /* Game section */
+        .game-section {
+            min-height: 100vh;
+            padding: 100px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-section h2 {
+            font-size: 60px;
+            font-weight: 800;
+            color: #FBEF76;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+        }
+
+        .game-container {
+            background: rgba(251, 239, 118, 0.05);
+            border: 2px solid rgba(251, 239, 118, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 32px;
+            color: #FBEF76;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: 800;
+            color: #FBEF76;
+            margin: 30px 0;
+        }
+
+        .clicker-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FBEF76, rgba(251, 239, 118, 0.8));
+            border: none;
+            color: #000;
+            font-size: 24px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.1s;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(251, 239, 118, 0.4);
+        }
+
+        .clicker-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 15px rgba(251, 239, 118, 0.2);
+        }
+
+        .clicker-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(251, 239, 118, 0.5);
+        }
+
+        .game-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .game-info p {
+            margin: 10px 0;
+        }
+
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: rgba(255, 68, 68, 0.8);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: 'Syne', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 68, 68, 1);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+            }
+
+            .game-section {
+                padding: 50px 20px;
+            }
+
+            .game-section h2 {
+                font-size: 40px;
+            }
+
+            .game-container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>PORTFOLIO</h1>
+        <a href="index.html">← Back</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">🚀 Interactive Experience</div>
+            
+            <h1 class="hero-title">
+                Welcome to
+                <span>the Experience</span>
+            </h1>
+            
+            <p class="hero-description">
+                Explore an animated hero section with smooth transitions and interactive elements. 
+                Scroll down to discover a fun clicker game built right into your portfolio.
+            </p>
+            
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.querySelector('.game-section').scrollIntoView({behavior: 'smooth'})">
+                    Play Game
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    Go Back
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section class="game-section">
+        <h2>🎮 Clicker Game</h2>
+        
+        <div class="game-container">
+            <div class="game-title">Score Clicker</div>
+            
+            <div class="score-display" id="score">0</div>
+            
+            <button class="clicker-btn" id="clickBtn" onclick="addScore()">
+                CLICK
+            </button>
+            
+            <div class="game-info">
+                <p><strong>Score:</strong> <span id="scoreInfo">0</span></p>
+                <p><strong>Clicks per second:</strong> <span id="cpsInfo">0</span></p>
+                <p><strong>Total Clicks:</strong> <span id="totalClicks">0</span></p>
+            </div>
+            
+            <button class="reset-btn" onclick="resetGame()">Reset</button>
+        </div>
+    </section>
+
+    <script>
+        let score = 0;
+        let totalClicks = 0;
+        let startTime = Date.now();
+
+        function addScore() {
+            score += 10;
+            totalClicks += 1;
+            updateDisplay();
+
+            // Animation effect
+            const btn = document.getElementById('clickBtn');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = '';
+            }, 100);
+
+            // Floating number effect
+            createFloatingNumber();
+        }
+
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('scoreInfo').textContent = score;
+            document.getElementById('totalClicks').textContent = totalClicks;
+
+            // Calculate CPS
+            const elapsed = (Date.now() - startTime) / 1000;
+            const cps = (totalClicks / elapsed).toFixed(2);
+            document.getElementById('cpsInfo').textContent = cps;
+        }
+
+        function createFloatingNumber() {
+            const container = document.querySelector('.game-container');
+            const number = document.createElement('div');
+            number.textContent = '+10';
+            number.style.position = 'absolute';
+            number.style.color = '#FBEF76';
+            number.style.fontWeight = '800';
+            number.style.fontSize = '24px';
+            number.style.pointerEvents = 'none';
+            number.style.top = '50%';
+            number.style.left = '50%';
+            number.style.transform = 'translate(-50%, -50%)';
+
+            container.appendChild(number);
+
+            let opacity = 1;
+            let y = 0;
+
+            const interval = setInterval(() => {
+                y -= 2;
+                opacity -= 0.02;
+                number.style.transform = `translate(-50%, calc(-50% + ${y}px))`;
+                number.style.opacity = opacity;
+
+                if (opacity <= 0) {
+                    clearInterval(interval);
+                    number.remove();
+                }
+            }, 20);
+        }
+
+        function resetGame() {
+            score = 0;
+            totalClicks = 0;
+            startTime = Date.now();
+            updateDisplay();
+        }
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>

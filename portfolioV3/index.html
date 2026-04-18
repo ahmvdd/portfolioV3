@@ -155,9 +155,10 @@
             background: linear-gradient(180deg, #64d1ff 0%, #ff89eb 100%);
             border-radius: 100px;
             opacity: 1;
-            will-change: transform;
+            will-change: transform, height;
             filter: none !important;
             box-shadow: 0 0 30px rgba(100, 209, 255, 0.4);
+            transform-origin: top center;
         }
 
         .content { width: 100%; padding: 0 30px; position: relative; z-index: 10;}
@@ -228,7 +229,10 @@
 
     <nav class="nav-pro">
         <div class="logo">AHMED SAYEH</div>
-        <div class="links"><a href="#work">Portfolio</a></div>
+        <div class="links" style="display: flex; gap: 20px; align-items: center;">
+            <a href="#work">Portfolio</a>
+            <a href="admin.html" style="font-size: 10px; opacity: 0.6; letter-spacing: 1px;">ADMIN</a>
+        </div>
     </nav>
 
     <div id="paper-plane">
@@ -268,23 +272,8 @@
                 <div class="content">
                     <h2 class="section-title" style="text-align: right; margin-bottom: 50px;">Selected <span class="stroke">Works</span></h2>
                 </div>
-                <div class="work__wrapp">
-                    <a href="Cms.html" class="work__item">
-                        <div class="work__item-img"><img src="img/Gradient abstract wallpaper.jpeg" alt="Project 1"></div>
-                        <span class="work__item-num">/ Software Architecture</span>
-                    </a>
-                    <a href="chat_platform.html" class="work__item">
-                        <div class="work__item-img"><img src="img/téléchargé (4).jpeg" alt="Project 2"></div>
-                        <span class="work__item-num">/ Enterprise SaaS</span>
-                    </a>
-                    <a href="ecom.html" class="work__item">
-                        <div class="work__item-img"><img src="img/tttrs.jpeg" alt="Project 3"></div>
-                        <span class="work__item-num">/ Artificial Intelligence</span>
-                    </a>
-                    <a href="fitness.html" class="work__item">
-                        <div class="work__item-img"><img src="img/Standard Full HD.jpeg" alt="Project 4"></div>
-                        <span class="work__item-num">/ MarTech & Growth</span>
-                    </a>
+                <div class="work__wrapp" id="projectsContainer">
+                    <!-- Projects loaded from localStorage -->
                 </div>
             </section>
 
@@ -328,6 +317,35 @@
     <script src="js/luxy.js"></script>
     
     <script>
+        // --- INIT DEFAULT PROJECTS ---
+        function initDefaultProjects() {
+            const existing = localStorage.getItem('portfolioProjects');
+            if (!existing) {
+                const defaultProjects = [
+                    { title: "Software Architecture", image: "img/Gradient abstract wallpaper.jpeg", category: "Software Architecture", link: "Cms.html", description: "" },
+                    { title: "Enterprise SaaS", image: "img/téléchargé (4).jpeg", category: "Enterprise SaaS", link: "chat_platform.html", description: "" },
+                    { title: "Artificial Intelligence", image: "img/tttrs.jpeg", category: "Artificial Intelligence", link: "ecom.html", description: "" },
+                    { title: "MarTech & Growth", image: "img/Standard Full HD.jpeg", category: "MarTech & Growth", link: "fitness.html", description: "" }
+                ];
+                localStorage.setItem('portfolioProjects', JSON.stringify(defaultProjects));
+            }
+        }
+
+        // --- LOAD PROJECTS FROM LOCALSTORAGE ---
+        function loadProjects() {
+            initDefaultProjects();
+            const projects = JSON.parse(localStorage.getItem('portfolioProjects') || '[]');
+            const container = document.getElementById('projectsContainer');
+            container.innerHTML = projects.map(p => `
+                <a href="${p.link}" class="work__item">
+                    <div class="work__item-img"><img src="${p.image}" alt="${p.title}"></div>
+                    <span class="work__item-num">/ ${p.category}</span>
+                </a>
+            `).join('');
+        }
+
+        loadProjects();
+
         gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
         // --- LUXURY SMOOTH SCROLL ---
@@ -392,16 +410,19 @@
             const line = document.createElement("div");
             line.className = "line";
             const x = Math.random() * 85 + 5; 
-            const y = 130 + (Math.random() * 50); 
-            const h = 350; 
+            const yStart = 130 + (Math.random() * 50); 
+            const finalHeight = 350; 
             const w = Math.random() * 10 + 35; 
             const zIndex = (i % 2 === 0) ? 15 : 5;
             line.style.left = x + "%";
-            line.style.top = y + "%";
+            line.style.top = yStart + "%";
             line.style.width = w + "px";
-            line.style.height = h + "px";
+            line.style.height = "10px"; // Taille initiale plus grande pour être visible
+            line.style.opacity = "0.8"; // Opacité initiale pour être visible dès le début
             line.style.zIndex = zIndex;
-            line.dataset.depth = Math.random() * 0.8 + 1.2; 
+            line.dataset.depth = Math.random() * 0.8 + 1.2;
+            line.dataset.finalHeight = finalHeight; // Stocke la hauteur finale
+            line.dataset.initialTop = yStart; // Stocke la position initiale
             linesContainer.appendChild(line);
         }
 
@@ -409,30 +430,61 @@
             scrollTrigger: {
                 trigger: ".about",
                 start: "top top",
-                end: "+=350%", 
+                end: "+=500%", // Augmenté pour avoir plus de scroll pendant l'animation plus longue
                 pin: true,
                 scrub: 1.5,
                 anticipatePin: 1
             }
         });
 
+        // ÉTAPE 1 : Le texte apparaît EN PREMIER et reste fixe
         aboutTl.from(".about__p", {
             y: 80,
             opacity: 0,
             scale: 0.9,
-            duration: 0.6,
+            duration: 0.4,
             ease: "power2.out"
-        }, 0.1);
+        }, 0); // Commence au début du scroll
 
+        // ÉTAPE 2 : Pendant que le texte reste visible/fixe, les lignes grandissent comme des gouttes
         gsap.utils.toArray(".line").forEach((line) => {
             const depth = parseFloat(line.dataset.depth);
+            const finalHeight = parseFloat(line.dataset.finalHeight);
+            
+            // Les lignes commencent à grandir après que le texte soit apparu (0.5)
+            // et pendant qu'il reste fixe au milieu - animation plus lente et visible
+            aboutTl.fromTo(line, 
+                {
+                    height: "10px", // Taille initiale plus grande pour être visible
+                    opacity: 0.8, // Déjà visible dès le début
+                    scaleY: 0.3 // Plus grand au départ pour être visible
+                },
+                {
+                    height: finalHeight + "px",
+                    opacity: 1,
+                    scaleY: 1,
+                    duration: 4.5, // Beaucoup plus lent : 4.5 secondes pour bien voir la longueur augmenter
+                    ease: "power1.out" // Easing plus doux pour une croissance plus visible
+                }, 
+                0.5 // Commence après l'apparition du texte
+            );
+            
+            // Mouvement vertical pendant qu'elles grandissent (effet de scroll parallax)
             aboutTl.to(line, {
-                y: `-${600 * depth}vh`, 
-                opacity: 1,
-                duration: 1.5,
+                y: `-${600 * depth}vh`,
+                duration: 4.5, // Même durée que la croissance pour rester synchronisé
                 ease: "none"
-            }, 0.2); 
+            }, 0.5);
         });
+
+        // ÉTAPE 3 : Après que les lignes aient fini de grandir, le texte disparaît
+        aboutTl.to(".about__p", {
+            y: -80,
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.4,
+            ease: "power2.in"
+        }, 5.4); // Commence après que les lignes aient fini de grandir (0.5 + 4.5 + 0.4)
 
         // --- WORK ITEMS REVEAL ---
         gsap.utils.toArray(".work__item").forEach(item => {

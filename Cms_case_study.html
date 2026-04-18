@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study — Content Platform & Architecture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(255, 255, 255, 0.03);
+            --primary: #7c4dff;
+            --secondary: #00f2fe;
+            --primary-glow: rgba(124, 77, 255, 0.2);
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #7c4dff 0%, #00f2fe 100%);
+            --nav-bg: rgba(10, 10, 10, 0.7);
+        }
+
+        .light-mode {
+            --bg: #f5f7fa;
+            --surface: rgba(255, 255, 255, 0.7);
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --primary-glow: rgba(79, 70, 229, 0.1);
+            --text: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+            --nav-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; 
+        }
+
+        .blob {
+            position: fixed;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.6rem 2rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .nav-links a:hover { color: var(--primary); transform: translateY(-1px); }
+
+        .theme-toggle {
+            margin-left: 1.5rem;
+            width: 40px; height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 7rem 5% 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 9vw, 5.2rem);
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            line-height: 0.9;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            color: var(--text-dim);
+            margin-top: 1.8rem;
+            font-weight: 500;
+            max-width: 640px;
+        }
+
+        /* Project snapshot */
+        .snapshot {
+            margin-top: 2.8rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+        @media (max-width: 960px) {
+            .snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 640px) {
+            .snapshot { grid-template-columns: 1fr; }
+        }
+
+        .snapshot-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.1rem 1.2rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .snapshot-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .snapshot-value-main {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .snapshot-value-sub {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+        }
+
+        .section { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header {
+            max-width: 900px;
+            margin: 0 auto 2.5rem;
+            text-align: left;
+        }
+        .section-kicker {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .section-body {
+            margin-top: 0.9rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 2.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .card-large { grid-column: span 2; }
+        .card-tall { grid-row: span 2; }
+        .card-white { background: #ffffff; color: #000000; border: none; }
+
+        .tag {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            display: inline-block;
+            margin-bottom: 1.3rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 0.6rem;
+        }
+
+        .card-list {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        .card-list li {
+            margin-bottom: 0.35rem;
+        }
+
+        .code-block {
+            background: black;
+            padding: 1.1rem;
+            border-radius: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #d1d1d1;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #4f46e5;
+            font-weight: 700;
+            margin-top: 1.7rem;
+        }
+
+        .stat-main {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 0.4rem;
+        }
+        .stat-sub {
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 220px;
+            border-radius: 24px;
+            margin-top: 1.4rem;
+            overflow: hidden;
+        }
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 50px;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .interaction-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 3.2rem 2.2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 5rem auto 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interaction-sub {
+            color: var(--text-dim);
+            margin-top: 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 8px;
+            margin: 2.2rem auto 0;
+            max-width: 600px;
+        }
+
+        input {
+            background: none; border: none; color: var(--text);
+            padding: 15px 20px; flex: 1; outline: none; font-size: 0.95rem;
+        }
+
+        .send-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0 26px; border-radius: 18px; cursor: pointer;
+            font-weight: 700; transition: 0.3s;
+            font-size: 0.85rem;
+        }
+
+        #encrypt-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10;
+        }
+
+        .cipher-anim {
+            font-family: monospace; color: var(--secondary);
+            font-size: 0.95rem; word-break: break-all; width: 80%;
+        }
+
+        .success-badge {
+            margin-top: 1.7rem; color: #22c55e; font-weight: 700;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-layout { grid-template-columns: repeat(2, 1fr); }
+            .card-large { grid-column: span 2; }
+            .navbar { width: 95%; }
+        }
+        @media (max-width: 720px) {
+            .grid-layout { grid-template-columns: 1fr; }
+            .card-large, .card-tall { grid-column: span 1; grid-row: auto; }
+            .hero { padding-top: 6.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob" id="blob"></div>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#reliability">Reliability</a></li>
+            <li><a href="#delivery">Delivery</a></li>
+            <li><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button></li>
+        </ul>
+    </nav>
+
+    <header class="hero" id="overview">
+        <h1 class="animate-hero">
+            CONTENT<br><span class="gradient-text">PLATFORM.</span>
+        </h1>
+        <p class="hero-sub animate-hero-sub">
+            Conception d’une plateforme de gestion de contenu interne pour plusieurs équipes,
+            avec une architecture orientée services, un modèle de permissions clair
+            et des garanties de fiabilité adaptées à la production.
+        </p>
+
+        <div class="snapshot">
+            <div class="snapshot-card">
+                <div class="snapshot-label">Contexte</div>
+                <div class="snapshot-value-main">Plateforme CMS interne</div>
+                <div class="snapshot-value-sub">Multi-équipes (marketing, produit, support)</div>
+            </div>
+            <div class="snapshot-card">
+                <div class="snapshot-label">Rôle</div>
+                <div class="snapshot-value-main">Architecture & Full‑stack</div>
+                <div class="snapshot-value-sub">Conception, mise en place et guidage des choix techniques</div>
+            </div>
+            <div class="snapshot-card">
+                <div class="snapshot-label">Stack</div>
+                <div class="snapshot-value-main">TypeScript, Node.js, PostgreSQL</div>
+                <div class="snapshot-value-sub">API REST, workers, CI/CD, monitoring</div>
+            </div>
+            <div class="snapshot-card">
+                <div class="snapshot-label">Impact</div>
+                <div class="snapshot-value-main">Unification des contenus</div>
+                <div class="snapshot-value-sub">Flux éditoriaux centralisés, moins de tâches manuelles</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section" id="architecture">
+        <div class="section-header">
+            <p class="section-kicker">Architecture & Domain Design</p>
+            <h2 class="section-title">Séparer clairement les responsabilités sans complexifier inutilement</h2>
+            <p class="section-body">
+                L’objectif principal était de sortir d’un historique “monolithe spaghetti” :
+                logique métier mélangée au rendu front et multiples sources de vérité côté contenu.
+                J’ai posé une architecture en couches avec un domaine “Content” bien défini,
+                des services d’accès uniformes et des points d’intégration explicites avec le reste du SI.
+            </p>
+        </div>
+
+        <div class="grid-layout">
+            
+            <div class="card card-large tilt">
+                <span class="tag">Domain & Services</span>
+                <h3 class="card-title">Modèle de contenu unifié</h3>
+                <p class="card-text">
+                    Définition d’agrégats simples (Page, Bloc, Média) avec des règles métier explicites
+                    pour la publication, la validation et la historisation.
+                </p>
+                <ul class="card-list">
+                    <li>Contrats d’API clairs entre front, back et outils internes</li>
+                    <li>Validation système des changements (au lieu de scripts ad‑hoc)</li>
+                    <li>Stratégie de versionning des contenus pour rollback simple</li>
+                </ul>
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" alt="Vue abstraite d’une architecture distribuée">
+                </div>
+            </div>
+
+            <div class="card card-white tilt">
+                <span class="tag">Scope projet</span>
+                <div class="stat-main">Core CMS + API</div>
+                <div class="stat-sub">
+                    Focalisation sur un noyau solide (contenu, publication, permissions) plutôt
+                    que sur la “feature factory”.
+                </div>
+                <p class="metric-label">Ce que j’ai livré</p>
+                <ul class="card-list">
+                    <li>Schémas de données & diagrammes d’architecture</li>
+                    <li>Implémentation des premiers services (content, media, auth)</li>
+                    <li>Documentation technique partageable avec les équipes</li>
+                </ul>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Migration</span>
+                <p class="card-text">
+                    Migration progressive depuis l’ancien système : coexistence des deux sources
+                    de contenu, feature flags et bascule contrôlée par type de page.
+                </p>
+                <ul class="card-list">
+                    <li>Stratégie “page par page” pour limiter le risque</li>
+                    <li>Scripts de migration répétables (idempotents)</li>
+                    <li>Suivi des erreurs de migration via logs structurés</li>
+                </ul>
+            </div>
+
+            <div class="card card-tall tilt">
+                <div style="display:flex; gap:6px; margin-bottom:1.3rem;">
+                    <div style="width:10px; height:10px; background:#ff5f56; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#ffbd2e; border-radius:50%;"></div>
+                    <div style="width:10px; height:10px; background:#27c93f; border-radius:50%;"></div>
+                </div>
+                <div class="code-block">
+                    // Exemple de contrat d’API simplifié<br>
+                    GET /contents/:id<br><br>
+                    &#123;<br>
+                    &nbsp;&nbsp;"id": "page_hero",<br>
+                    &nbsp;&nbsp;"type": "page",<br>
+                    &nbsp;&nbsp;"status": "published",<br>
+                    &nbsp;&nbsp;"blocks": [...],<br>
+                    &nbsp;&nbsp;"publishedAt": "2024-06-12T10:23:00Z"<br>
+                    &#125;
+                </div>
+                <h3 class="card-title" style="margin-top:1.8rem;">Contrats stables</h3>
+                <p class="card-text">
+                    Les fronts consomment un contrat stable, ce qui permet de faire évoluer
+                    la couche de persistance sans casser l’expérience utilisateur.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="reliability">
+        <div class="section-header">
+            <p class="section-kicker">Reliability & Observability</p>
+            <h2 class="section-title">Rendre visibles les défaillances plutôt que les cacher</h2>
+            <p class="section-body">
+                L’un des points clés du projet était de rendre l’infrastructure prévisible :
+                mieux vaut des erreurs explicites et tracées qu’un système silencieux
+                qui “fonctionne la plupart du temps”.
+            </p>
+        </div>
+
+        <div class="grid-layout">
+            <div class="card tilt">
+                <span class="tag">Health</span>
+                <div class="bars">
+                    <div style="height: 35%; width: 22%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 65%; width: 22%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 80%; width: 22%; background: var(--primary); border-radius: 4px;"></div>
+                    <div style="height: 95%; width: 22%; background: var(--secondary); border-radius: 4px;"></div>
+                </div>
+                <p class="card-text">
+                    Mise en place de probes de santé, timeouts raisonnables et
+                    gestion systématique des timeouts côté clients.
+                </p>
+            </div>
+
+            <div class="card card-large tilt">
+                <span class="tag">Monitoring</span>
+                <h3 class="card-title">Logs et métriques exploitables</h3>
+                <p class="card-text">
+                    J’ai structuré les logs autour de corrélations simples : id de requête, id de contenu,
+                    type d’action. Les erreurs sont regroupées par scénario métier, pas seulement par stacktrace.
+                </p>
+                <div class="code-block">
+                    log.info(&#123;<br>
+                    &nbsp; event: "content_published",<br>
+                    &nbsp; contentId, userId, channel, durationMs,<br>
+                    &nbsp; result: "success"<br>
+                    &#125;);
+                </div>
+                <ul class="card-list">
+                    <li>Dashboard simple pour suivre les temps de publication</li>
+                    <li>Alertes sur les erreurs récurrentes côté API</li>
+                    <li>Traces utiles pour les retours produit/marketing</li>
+                </ul>
+            </div>
+
+            <div class="card card-tall tilt">
+                <span class="tag">Permissions</span>
+                <div class="code-block">
+                    type Role = "viewer" | "editor" | "publisher" | "admin";<br><br>
+                    function canPublish(user, content) &#123;<br>
+                    &nbsp;&nbsp;return user.role === "publisher" || user.role === "admin";<br>
+                    &#125;
+                </div>
+                <h3 class="card-title" style="margin-top:1.7rem;">Modèle de rôles lisible</h3>
+                <p class="card-text">
+                    J’ai préféré un modèle RBAC simple, documenté pour les équipes métiers,
+                    plutôt qu’un système hyper granulaire impossible à maintenir.
+                </p>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Apprentissage</span>
+                <p class="card-text">
+                    Ce projet m’a surtout appris à trouver le bon niveau d’abstraction :
+                    suffisamment structuré pour être solide, mais assez simple pour que
+                    les équipes puissent se l’approprier sans lire 200 pages de docs.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="delivery">
+        <div class="section-header">
+            <p class="section-kicker">Delivery & Learnings</p>
+            <h2 class="section-title">Ce que j’ai réellement livré sur ce projet</h2>
+            <p class="section-body">
+                Au‑delà des schémas, l’enjeu était de livrer une base saine que les équipes pouvaient utiliser
+                rapidement : un noyau CMS exploitable, des outils pour le faire évoluer et des garde‑fous
+                pour éviter de retomber dans la dette technique précédente.
+            </p>
+        </div>
+
+        <div class="grid-layout">
+            <div class="card tilt">
+                <span class="tag">Livrables</span>
+                <h3 class="card-title">Base produit en production</h3>
+                <p class="card-text">
+                    Premier incrément mis en service pour une partie du site, avec de vrais utilisateurs métiers
+                    et un support minimal des équipes techniques.
+                </p>
+                <ul class="card-list">
+                    <li>Back‑office simple pour créer / publier des pages</li>
+                    <li>API de lecture consommée par le front existant</li>
+                    <li>Documentation succincte pour l’onboarding des nouveaux devs</li>
+                </ul>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Décisions clés</span>
+                <h3 class="card-title">Trade‑offs assumés</h3>
+                <ul class="card-list">
+                    <li>Privilégier un RBAC simple mais lisible plutôt qu’un système ultra granulaire</li>
+                    <li>Accepter quelques duplications temporaires pendant la phase de migration</li>
+                    <li>Limiter le nombre de technos pour faciliter la prise en main (un seul langage côté back)</li>
+                </ul>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Pour la suite</span>
+                <h3 class="card-title">Évolutions prévues</h3>
+                <p class="card-text">
+                    Une fois le noyau stabilisé, les prochains incréments se concentrent sur :
+                </p>
+                <ul class="card-list">
+                    <li>Internationalisation des contenus (multi‑locale)</li>
+                    <li>Workflows de validation plus riches (review, approbation)</li>
+                    <li>Connecteurs dédiés vers d’autres systèmes internes (CRM, analytics)</li>
+                </ul>
+            </div>
+
+            <div class="card tilt">
+                <span class="tag">Ce que ça dit de moi</span>
+                <h3 class="card-title">Mon rôle dans ce type de sujet</h3>
+                <p class="card-text">
+                    J’aime prendre des problèmes flous (contenu éparpillé, dette historique) et les transformer
+                    en architectures concrètes, documentées, qui tiennent la route dans la durée tout en restant
+                    compréhensibles par les équipes produit et métier.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ANIMATION D'ENTRÉE
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            tl.to("body", { opacity: 1, duration: 0.5 });
+
+            tl.from(".navbar", { 
+                y: -100, 
+                opacity: 0, 
+                duration: 1, 
+                ease: "expo.out" 
+            }, "-=0.2");
+
+            tl.from(".animate-hero", { 
+                y: 40, 
+                opacity: 0, 
+                duration: 1.1, 
+                ease: "power4.out" 
+            }, "-=0.5");
+
+            tl.from(".animate-hero-sub", { 
+                y: 25, 
+                opacity: 0, 
+                duration: 0.9, 
+                ease: "power3.out" 
+            }, "-=0.7");
+
+            tl.from(".snapshot-card", { 
+                y: 30, 
+                opacity: 0, 
+                duration: 0.7, 
+                stagger: 0.12,
+                ease: "power3.out" 
+            }, "-=0.4");
+
+            tl.from(".card", { 
+                y: 50, 
+                opacity: 0, 
+                scale: 0.96,
+                duration: 0.7, 
+                stagger: 0.12, 
+                ease: "back.out(1.2)" 
+            }, "-=0.2");
+
+            tl.from(".blob", { 
+                scale: 0.5, 
+                opacity: 0, 
+                duration: 2, 
+                ease: "power2.out" 
+            }, "-=1.5");
+        });
+
+        // MOUSE TRACKING BLOB
+        const blob = document.getElementById('blob');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(blob, {
+                x: e.clientX - 350,
+                y: e.clientY - 350,
+                duration: 1.5,
+                ease: "power2.out"
+            });
+        });
+
+        // BENTO CARD TILT
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // THEME TOGGLE
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            
+            gsap.fromTo("body", { filter: "brightness(1.5)" }, { filter: "brightness(1)", duration: 0.6 });
+        });
+    </script>
+</body>
+</html>
+
