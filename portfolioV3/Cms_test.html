@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Test — CMS & CRM (Minimal)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#ffffff;--text:#0b0b0b;--muted:#6b6b6b;--accent:#d4af37}
+    *{box-sizing:border-box}
+    body{font-family:'Syne',sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.5}
+    .wrap{max-width:980px;margin:48px auto;padding:32px}
+    header{margin-bottom:28px}
+    .hero-sub{color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:2px}
+    h1{font-weight:600;margin:8px 0 0;font-size:28px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:20px}
+    .card{background:transparent;border:0;padding:12px;border-radius:4px;box-shadow:none}
+    .card .label{font-size:11px;text-transform:uppercase;color:var(--accent);letter-spacing:1.5px;margin-bottom:8px;display:block}
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card strong{display:block;transition:transform .28s cubic-bezier(.2,.9,.2,1),font-style .28s}
+    .card:hover strong{font-style:italic;transform:translateX(6px)}
+    /* Stagger animation when hovering the whole grid */
+    .grid:hover .card strong{font-style:italic;transform:translateX(6px)}
+    .grid:hover .card:nth-child(1) strong{transition-delay:0s}
+    .grid:hover .card:nth-child(2) strong{transition-delay:0.05s}
+    .grid:hover .card:nth-child(3) strong{transition-delay:0.1s}
+    .grid:hover .card:nth-child(4) strong{transition-delay:0.15s}
+    .grid:hover .card:nth-child(5) strong{transition-delay:0.2s}
+    .grid:hover .card:nth-child(6) strong{transition-delay:0.25s}
+    .grid:hover .card:nth-child(7) strong{transition-delay:0.3s}
+    .grid:hover .card:nth-child(8) strong{transition-delay:0.35s}
+    .card ul{margin:0;padding-left:18px;color:var(--muted);font-size:14px}
+    .images{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    .images img{width:100%;height:140px;object-fit:cover;border-radius:6px}
+    .full{grid-column:1/-1}
+    a.small{color:var(--accent);font-size:13px;text-decoration:none}
+    @media(max-width:780px){.grid{grid-template-columns:1fr}.images img{height:120px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="hero-sub">Présentation rapide</p>
+      <h1>CMS & CRM — Synthèse</h1>
+    </header>
+
+    <section class="grid">
+      <div class="card">
+        <span class="label">Disponibilité</span>
+        <h3>Architecture CMS Headless</h3>
+        <ul>
+          <li>Sync API instantanée entre éditeur et front</li>
+          <li>Édition & publication 24/7 (versioning + rollback)</li>
+          <li>Editeur visuel, modèles et bibliothèque médias</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="label">Gestion Leads</span>
+        <h3>Pipeline CRM</h3>
+        <ul>
+          <li>Capture contacts via formulaires</li>
+          <li>Suivi du pipeline (qualification → proposition → clos)</li>
+          <li>Rapports et historique des échanges</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="label">Sécurité</span>
+        <h3>Rôles & sauvegardes</h3>
+        <ul>
+          <li>Accès éditeurs granulaires</li>
+          <li>Sauvegardes automatiques & rollbacks</li>
+          <li>Protection anti‑spam et conformité</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="label">Automatisation</span>
+        <h3>Workflows & Templates</h3>
+        <ul>
+          <li>Modèles réutilisables</li>
+          <li>Workflows d'approbation</li>
+          <li>Automatisation des tâches répétitives</li>
+        </ul>
+      </div>
+
+      <div class="card full">
+        <span class="label">Expériences & Projets</span>
+        <div style="display:grid;gap:10px">
+          <div>
+            <strong>Gestion de factures — déc. 2025</strong>
+            <div style="color:var(--muted);font-size:14px">Architecture scalable, génération PDF, dashboard paiements, gestion TVA — <a class="small" href="#">docu</a></div>
+          </div>
+
+          <div>
+            <strong>Gestion de tickets — fév. 2025</strong>
+            <div style="color:var(--muted);font-size:14px">CRM sur‑mesure, composants réutilisables, dashboard admin, intégration API</div>
+          </div>
+
+          <div>
+            <strong>Stage CTM — juil.–oct. 2024</strong>
+            <div style="color:var(--muted);font-size:14px">Monitoring bagages en temps réel, détection d'anomalies, gain ≈40%</div>
+          </div>
+
+          <div>
+            <strong>Projets FullStack — 2024–2025</strong>
+            <div style="color:var(--muted);font-size:14px">CMS de planning & prise de rendez‑vous, plateforme devoirs, site vitrine optimisé</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visuels supprimés pour un rendu minimaliste -->
+
+    </section>
+  </div>
+</body>
+</html>
