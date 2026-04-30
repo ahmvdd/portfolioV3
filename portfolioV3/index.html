@@ -88,15 +88,16 @@
         }
 
         .line-1 {
+            color: transparent;
+            -webkit-text-stroke: 2px #111111;
             transform: rotate(-3deg) skewX(-8deg);
             z-index: 3;
             position: relative;
         }
 
         .line-2 {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(0,0,0,0.2);
-            transform: rotate(2deg) skewX(4deg) translateY(30px);
+            color: #111111;
+            transform: rotate(2deg) skewX(4deg);
             z-index: 2;
         }
 
@@ -311,6 +312,19 @@
         .serv__item-txt { font-family: 'Syne', sans-serif; font-size: clamp(24px, 7vw, 80px); text-transform: uppercase; z-index: 2; transition: 0.4s; font-weight: 800; }
         .serv__item:hover .serv__item-txt { color: var(--pr-color); padding-left: 20px; }
 
+        /* ACHIEVEMENTS */
+        .achievements { padding: 80px 0; background: #fff; color: #111; }
+        @media (min-width: 1024px) { .achievements { padding: 100px 0; } }
+        .ach__list { display: flex; flex-direction: column; padding: 40px 30px 0; }
+        @media (min-width: 1024px) { .ach__list { padding: 40px 70px 0; } }
+        .ach__row { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4vw, 50px); padding: 30px 0; border-bottom: 1px solid rgba(0,0,0,0.08); opacity: 0; }
+        .ach__laurel { width: clamp(40px, 6vw, 70px); flex-shrink: 0; opacity: 0.9; }
+        .ach__laurel--right { transform: scaleX(-1); }
+        .ach__info { text-align: center; display: flex; flex-direction: column; gap: 6px; }
+        .ach__label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--pr-color); }
+        .ach__name { font-size: clamp(14px, 2.5vw, 22px); font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: #111; }
+        .ach__org { font-size: 13px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+
         /* FOOTER */
         .footer { height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 20px;}
         .footer__div { font-family: 'Syne', sans-serif; font-size: clamp(30px, 9vw, 8vw); color: var(--pr-color); text-transform: uppercase; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; font-weight: 800; }
@@ -342,7 +356,7 @@
     <div id="luxy">
         <header class="header">
             <div class="hero-container">
-                <h1 class="line-hero line-1">CREATIVE</h1>
+                <h1 class="line-hero line-1">SOFTWARE</h1>
                 <h1 class="line-hero line-2">ENGINEER</h1>
             </div>
 
@@ -358,7 +372,7 @@
             <section class="about" id="about">
                 <div class="about__sticky">
                     <div class="about__zoom">
-                        <p class="about__heading">Based in Paris, I build <span class="accent">digital architectures</span> that bridge technical complexity and user needs — Focused on <span class="accent">Scalable Systems.</span></p>
+                        <p class="about__heading">Master 1 at <span class="accent">Hetic</span> — Based in Paris, I build <span class="accent">digital architectures</span> that bridge technical complexity and user needs — Focused on <span class="accent">Scalable Systems.</span></p>
                         <div class="about__monitor">
                             <img src="img/tv-screen.png" alt="Monitor">
                         </div>
@@ -423,6 +437,50 @@
                     <div class="serv__item">
                         <span class="serv-icon">🚀</span>
                         <div class="serv__item-txt">/ Tech Strategy</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="achievements" id="achievements">
+                <div class="content">
+                    <h2 class="section-title" style="margin-bottom: 50px; color: #111; text-align: left;">Achievements <span class="stroke" style="-webkit-text-stroke: 1px var(--pr-color); color: transparent;">&</span> Credentials</h2>
+                </div>
+                <div class="ach__list">
+                    <div class="ach__row">
+                        <img src="image-removebg-preview.png" class="ach__laurel" alt="">
+                        <div class="ach__info">
+                            <span class="ach__label">Master CTO · Tech Lead</span>
+                            <span class="ach__name">La grande école de la tech et des métiers du digital</span>
+                            <span class="ach__org">HETIC – Paris · 2025 – 2027</span>
+                        </div>
+                        <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
+                    </div>
+                    <div class="ach__row">
+                        <img src="image-removebg-preview.png" class="ach__laurel" alt="">
+                        <div class="ach__info">
+                            <span class="ach__label">Prépa Master</span>
+                            <span class="ach__name">La grande école de la tech et des métiers du digital</span>
+                            <span class="ach__org">HETIC – Paris · 2024 – 2025</span>
+                        </div>
+                        <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
+                    </div>
+                    <div class="ach__row">
+                        <img src="image-removebg-preview.png" class="ach__laurel" alt="">
+                        <div class="ach__info">
+                            <span class="ach__label">Technicien Spécialisé · Développement Full Stack</span>
+                            <span class="ach__name">Office de la Formation Professionnelle et de la Promotion du Travail</span>
+                            <span class="ach__org">OFPPT – Oujda · 2021 – 2024</span>
+                        </div>
+                        <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
+                    </div>
+                    <div class="ach__row">
+                        <img src="image-removebg-preview.png" class="ach__laurel" alt="">
+                        <div class="ach__info">
+                            <span class="ach__label">Baccalauréat · Sciences Physiques</span>
+                            <span class="ach__name">Lycée André Gide</span>
+                            <span class="ach__org">Oujda · 2021</span>
+                        </div>
+                        <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
                     </div>
                 </div>
             </section>
@@ -553,6 +611,18 @@
                     x: 0, y: 0, z: 0, opacity: 1, filter: "blur(0px)", rotation: 0,
                     scrollTrigger: { trigger: ".footer", start: "top 60%", end: "center center", scrub: 2.5 },
                     ease: "power2.inOut"
+                }
+            );
+        });
+
+        // --- ACHIEVEMENTS REVEAL ---
+        gsap.utils.toArray(".ach__row").forEach((row, i) => {
+            gsap.fromTo(row,
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
+                    scrollTrigger: { trigger: row, start: "top 85%", toggleActions: "play none none none" },
+                    delay: i * 0.1
                 }
             );
         });
