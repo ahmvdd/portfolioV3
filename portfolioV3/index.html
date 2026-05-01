@@ -89,7 +89,7 @@
 
         .line-1 {
             color: transparent;
-            -webkit-text-stroke: 2px #111111;
+            -webkit-text-stroke: 2px var(--pr-color);
             transform: rotate(-3deg) skewX(-8deg);
             z-index: 3;
             position: relative;
@@ -349,7 +349,7 @@
         </div>
     </nav>
 
-    <div class="hover-image-container" id="hover-img">
+<div class="hover-image-container" id="hover-img">
         <img src="img/c'estmoiwsh.jpg" alt="Ahmed Sayeh">
     </div>
 
@@ -372,7 +372,7 @@
             <section class="about" id="about">
                 <div class="about__sticky">
                     <div class="about__zoom">
-                        <p class="about__heading">Master 1 at <span class="accent">Hetic</span> — Based in Paris, I build <span class="accent">digital architectures</span> that bridge technical complexity and user needs — Focused on <span class="accent">Scalable Systems.</span></p>
+                        <p class="about__heading">Master 1 à <span class="accent">Hetic</span> — Basé à Paris, je conçois des <span class="accent">architectures digitales</span> qui allient complexité technique et besoins utilisateurs — Axé sur les <span class="accent">Systèmes Scalables.</span></p>
                         <div class="about__monitor">
                             <img src="img/tv-screen.png" alt="Monitor">
                         </div>
@@ -382,7 +382,7 @@
 
             <section class="work" id="work">
                 <div class="content">
-                    <h2 class="section-title" style="text-align: right; margin-bottom: 50px;">Selected <span class="stroke">Works</span></h2>
+                    <h2 class="section-title" style="text-align: right; margin-bottom: 50px;">Projets <span class="stroke">Sélectionnés</span></h2>
                 </div>
                 <div class="work__stack">
 
@@ -391,13 +391,13 @@
                         <div class="work__card-info">
                             <span class="work__card-num">01</span>
                             <h3 class="work__card-title">Integrations & API</h3>
-                            <p class="work__card-desc">A headless CMS with seamless third-party integrations and a robust API layer for content distribution at scale.</p>
+                            <p class="work__card-desc">Un CMS headless avec des intégrations tierces fluides et une couche API robuste pour la distribution de contenu à grande échelle.</p>
                             <div class="work__card-tags">
                                 <span class="work__card-tag">Node.js</span>
                                 <span class="work__card-tag">REST API</span>
                                 <span class="work__card-tag">PostgreSQL</span>
                             </div>
-                            <span class="work__card-link">View project ↗</span>
+                            <span class="work__card-link">Voir le projet ↗</span>
                         </div>
                     </a>
 
@@ -406,13 +406,13 @@
                         <div class="work__card-info">
                             <span class="work__card-num">02</span>
                             <h3 class="work__card-title">Architecture & Scalabilité</h3>
-                            <p class="work__card-desc">Cloud-native architecture designed for horizontal scaling, with CI/CD pipelines and infrastructure as code.</p>
+                            <p class="work__card-desc">Architecture cloud-native conçue pour la scalabilité horizontale, avec des pipelines CI/CD et de l'infrastructure as code.</p>
                             <div class="work__card-tags">
                                 <span class="work__card-tag">AWS</span>
                                 <span class="work__card-tag">Docker</span>
                                 <span class="work__card-tag">CI/CD</span>
                             </div>
-                            <span class="work__card-link">View project ↗</span>
+                            <span class="work__card-link">Voir le projet ↗</span>
                         </div>
                     </a>
 
@@ -443,7 +443,7 @@
 
             <section class="achievements" id="achievements">
                 <div class="content">
-                    <h2 class="section-title" style="margin-bottom: 50px; color: #111; text-align: left;">Achievements <span class="stroke" style="-webkit-text-stroke: 1px var(--pr-color); color: transparent;">&</span> Credentials</h2>
+                    <h2 class="section-title" style="margin-bottom: 50px; color: #111; text-align: left;">Réalisations <span class="stroke" style="-webkit-text-stroke: 1px var(--pr-color); color: transparent;">&</span> Diplômes</h2>
                 </div>
                 <div class="ach__list">
                     <div class="ach__row">
@@ -482,6 +482,15 @@
                         </div>
                         <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
                     </div>
+                    <div class="ach__row">
+                        <img src="image-removebg-preview.png" class="ach__laurel" alt="">
+                        <div class="ach__info">
+                            <span class="ach__label">Collège</span>
+                            <span class="ach__name">Omar Ibn El Aziz</span>
+                            <span class="ach__org">Oujda · 2019 – 2020</span>
+                        </div>
+                        <img src="image-removebg-preview.png" class="ach__laurel ach__laurel--right" alt="">
+                    </div>
                 </div>
             </section>
 
@@ -493,7 +502,7 @@
 
             <div class="cc">
                 <p id="email-trigger">ahmed.sayeh67@gmail.com</p><br>
-                <a href="links.html">GET IN TOUCH ↗</a>
+                <a href="links.html">ME CONTACTER ↗</a>
             </div>
         </main>
     </div>
@@ -505,6 +514,16 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+        // --- HERO ENTRANCE ---
+        gsap.set(".line-1", { opacity: 0, x: -120, skewX: -20 });
+        gsap.set(".line-2", { opacity: 0, x: 120, skewX: 20 });
+        const heroTl = gsap.timeline({ delay: 0.2 });
+        heroTl
+            .to(".line-1", { opacity: 1, x: 0, skewX: -8, duration: 1, ease: "power4.out" })
+            .to(".line-2", { opacity: 1, x: 0, skewX: 4,  duration: 1, ease: "power4.out" }, "-=0.7")
+            .from(".header__marq", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, "-=0.3")
+            .from(".nav-pro", { opacity: 0, y: -20, duration: 0.6, ease: "power2.out" }, "<");
 
         // --- LUXURY SMOOTH SCROLL ---
         if (window.innerWidth > 1024) {
@@ -627,7 +646,7 @@
             );
         });
 
-        // --- CONTACT REVEAL ---
+// --- CONTACT REVEAL ---
         gsap.to(".cc", { scrollTrigger: { trigger: ".cc", start: "top 90%" }, opacity: 1, duration: 1.5 });
     </script>
 </body>
