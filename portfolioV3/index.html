@@ -172,6 +172,16 @@
             text-align: center;
         }
 
+        @media (max-width: 767px) {
+            .about__heading {
+                font-size: clamp(0.95rem, 4.2vw, 1.2rem);
+                max-width: 92vw;
+                line-height: 1.4;
+                letter-spacing: -0.01em;
+                padding: 0 8px;
+            }
+        }
+
         .about__heading .accent {
             color: var(--pr-color);
         }
@@ -432,7 +442,7 @@
                     </div>
                     <div class="serv__item">
                         <span class="serv-icon">◈</span>
-                        <div class="serv__item-txt">/ UX/UI Design</div>
+                        <div class="serv__item-txt">/ System Design</div>
                     </div>
                     <div class="serv__item">
                         <span class="serv-icon">🚀</span>
@@ -485,7 +495,7 @@
                     <div class="ach__row">
                         <img src="image-removebg-preview.png" class="ach__laurel" alt="">
                         <div class="ach__info">
-                            <span class="ach__label">Collège</span>
+                            <span class="ach__label">Lycée</span>
                             <span class="ach__name">Omar Ibn El Aziz</span>
                             <span class="ach__org">Oujda · 2019 – 2020</span>
                         </div>
@@ -496,7 +506,7 @@
 
             <footer class="footer">
                 <div class="footer__div">
-                    <span>A</span> <span>step</span> <span>towards</span> <span>a</span> <span>new</span> <span class="MAY">horizon</span>
+                    <span>CODE</span> <span>THAT</span> <span>SHIPS,</span> <span>SYSTEMS</span> <span>THAT</span> <span class="MAY">SCALE</span>
                 </div>
             </footer>
 
@@ -567,8 +577,8 @@
         });
 
         const isMobile = window.innerWidth < 768;
-        const startScale = isMobile ? 2.5 : 4;
-        const endTextScale = isMobile ? 0.6 : 0.5;
+        const startScale = isMobile ? 1.6 : 4;
+        const endTextScale = isMobile ? 0.7 : 0.5;
 
         // Phase 1: Text starts zoomed in (big), everything dezooms
         aboutTl.fromTo(aboutZoom,
