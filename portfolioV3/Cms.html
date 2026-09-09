@@ -111,11 +111,21 @@
         }
 
         .project-link-btn {
-            display: inline-block; margin-top: 20px; color: var(--accent);
+            display: inline-block; margin-top: 20px; margin-right: 20px; color: var(--accent);
             text-decoration: none; font-size: 0.8rem; border-bottom: 1px solid var(--accent);
             padding-bottom: 2px; transition: 0.3s;
         }
         .project-link-btn:hover { opacity: 0.7; }
+        .project-link-btn.is-secondary { color: var(--text-dim); border-bottom-color: var(--text-dim); }
+        .project-link-btn.is-secondary:hover { color: var(--text); border-bottom-color: var(--text); }
+
+        .thumb-wrap { grid-column: 1 / -1; }
+        .project-thumb {
+            width: 100%; max-height: 260px; object-fit: cover;
+            border-radius: 4px; display: block;
+            filter: grayscale(0.7) contrast(1.05); transition: filter 0.5s ease;
+        }
+        .project-thumb:hover { filter: grayscale(0); }
 
         .project-item:hover { background: #FAFAFA; }
         .project-item:hover .project-name,
@@ -150,6 +160,108 @@
         </header>
 
         <section class="projects-list">
+
+            <div class="project-item">
+                <button class="project-trigger" onclick="toggleProject(this)">
+                    <div class="project-meta">
+                        <span class="role-tag">Créateur & Développeur</span>
+                        <h2 class="project-name">Nexus — Assistant IA Local</h2>
+                    </div>
+                    <span class="project-year">2026 — En cours</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="project-details">
+                    <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/nexus-chat" alt="Nexus Chat" loading="lazy">
+                        </div>
+                        <div class="detail-block">
+                            <h4>Stack Technique</h4>
+                            <ul>
+                                <li>Application desktop cross-platform avec <strong>Tauri</strong> (macOS / Windows / Linux).</li>
+                                <li>Frontend <strong>Next.js 14</strong> (App Router) + TypeScript + Tailwind CSS.</li>
+                                <li>Inférence 100% locale via <strong>Ollama</strong> (Llama 3.2, Mistral...).</li>
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                            <h4>Confidentialité & Perf</h4>
+                            <ul>
+                                <li>Aucune donnée envoyée vers un cloud tiers — 100% privé et gratuit.</li>
+                                <li>Chat multi-modèles avec historique persistant.</li>
+                            </ul>
+                            <a href="https://github.com/ahmvdd/nexus-chat" class="project-link-btn" target="_blank">Voir le code (GitHub) ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <button class="project-trigger" onclick="toggleProject(this)">
+                    <div class="project-meta">
+                        <span class="role-tag">Développeur IA & Data</span>
+                        <h2 class="project-name">Trading Terminal — Signaux IA</h2>
+                    </div>
+                    <span class="project-year">2026 — En cours</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="project-details">
+                    <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/IA_Trade" alt="Trading Terminal" loading="lazy">
+                        </div>
+                        <div class="detail-block">
+                            <h4>Machine Learning & Data</h4>
+                            <ul>
+                                <li>Pipeline Python collectant en temps réel des données de marché (futures matières premières).</li>
+                                <li>Indicateurs techniques + modèle <strong>Random Forest</strong> pour prédire les rendements à 5 jours.</li>
+                                <li>Comparaison signaux ML vs signaux basés sur des règles classiques.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                            <h4>Interface & Paper Trading</h4>
+                            <ul>
+                                <li>Dashboard <strong>Angular</strong> inspiré des terminaux Bloomberg (dark UI).</li>
+                                <li>Graphique de prix live, historique des signaux, backtest en paper trading.</li>
+                                <li>Aucun capital réel engagé — environnement 100% simulation.</li>
+                            </ul>
+                            <a href="https://github.com/ahmvdd/IA_Trade" class="project-link-btn" target="_blank">Voir le code (GitHub) ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <button class="project-trigger" onclick="toggleProject(this)">
+                    <div class="project-meta">
+                        <span class="role-tag">Développeur Embarqué</span>
+                        <h2 class="project-name">Station Météo ESP32</h2>
+                    </div>
+                    <span class="project-year">2026 — En cours</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="project-details">
+                    <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/esp32-weather-station" alt="ESP32 Weather Station" loading="lazy">
+                        </div>
+                        <div class="detail-block">
+                            <h4>Hardware & Firmware</h4>
+                            <ul>
+                                <li>Microcontrôleur <strong>ESP32</strong> sous PlatformIO / Arduino.</li>
+                                <li>Capteur DHT22 (température / humidité intérieure) + écran OLED embarqué.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                            <h4>Connectivité</h4>
+                            <ul>
+                                <li>Météo extérieure en temps réel via API + suivi de consommation API Claude.</li>
+                                <li>Dashboard web local pour visualiser les relevés.</li>
+                            </ul>
+                            <a href="https://github.com/ahmvdd/esp32-weather-station" class="project-link-btn" target="_blank">Voir le code (GitHub) ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="project-item">
                 <button class="project-trigger" onclick="toggleProject(this)">
@@ -194,6 +306,9 @@
                 </button>
                 <div class="project-details">
                     <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/Mc-planning-front" alt="Shiftly" loading="lazy">
+                        </div>
                         <div class="detail-block">
                             <h4>Backend & Data</h4>
                             <ul>
@@ -210,6 +325,8 @@
                                 <li>Traitement des demandes RH directement depuis le dashboard.</li>
                             </ul>
                             <a href="https://www.shiftly.site/" class="project-link-btn" target="_blank">Voir l'application ↗</a>
+                            <a href="https://github.com/ahmvdd/Mc-planning-front" class="project-link-btn is-secondary" target="_blank">GitHub (front) ↗</a>
+                            <a href="https://github.com/ahmvdd/Mc-planning-back" class="project-link-btn is-secondary" target="_blank">GitHub (back) ↗</a>
                         </div>
                     </div>
                 </div>
@@ -279,6 +396,39 @@
             <div class="project-item">
                 <button class="project-trigger" onclick="toggleProject(this)">
                     <div class="project-meta">
+                        <span class="role-tag">Développeur Front End</span>
+                        <h2 class="project-name">Interface CRM (Prototype)</h2>
+                    </div>
+                    <span class="project-year">Mars 2025</span>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="project-details">
+                    <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/CRM-platform" alt="CRM Platform" loading="lazy">
+                        </div>
+                        <div class="detail-block">
+                            <h4>UI/UX</h4>
+                            <ul>
+                                <li>Interface <strong>Next.js</strong> avec la librairie de composants <strong>Radix UI</strong>.</li>
+                                <li>Formulaires validés avec React Hook Form.</li>
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                            <h4>Prototypage</h4>
+                            <ul>
+                                <li>Design rapide via v0.dev, déployé sur Vercel.</li>
+                            </ul>
+                            <a href="https://crm-platform-five.vercel.app" class="project-link-btn" target="_blank">Voir l'application ↗</a>
+                            <a href="https://github.com/ahmvdd/CRM-platform" class="project-link-btn is-secondary" target="_blank">GitHub ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <button class="project-trigger" onclick="toggleProject(this)">
+                    <div class="project-meta">
                         <span class="role-tag">Stage Full Stack — CTM</span>
                         <h2 class="project-name">IA & Tracking Bagages</h2>
                     </div>
@@ -316,6 +466,9 @@
                 </button>
                 <div class="project-details">
                     <div class="details-grid">
+                        <div class="thumb-wrap">
+                            <img class="project-thumb" src="https://opengraph.githubassets.com/1/ahmvdd/gestion_rdv" alt="Gestion RDV" loading="lazy">
+                        </div>
                         <div class="detail-block">
                             <h4>Projets Web</h4>
                             <ul>
@@ -323,6 +476,7 @@
                                 <li>E-Learning : Plateforme de devoirs (Laravel & React).</li>
                             </ul>
                             <a href="https://gestio-rdv-doc.vercel.app" class="project-link-btn">Voir l'application CMS</a>
+                            <a href="https://github.com/ahmvdd/gestion_rdv" class="project-link-btn is-secondary" target="_blank">GitHub ↗</a>
                         </div>
                         <div class="detail-block">
                             <h4>No-Code & SEO</h4>

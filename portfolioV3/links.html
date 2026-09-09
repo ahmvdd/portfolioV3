@@ -3,110 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Links</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap" rel="stylesheet">
+    <title>Ahmed Sayeh — Liens</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230047FF'/%3E%3Ctext x='50%25' y='53%25' dominant-baseline='central' text-anchor='middle' font-family='Syne,Arial,sans-serif' font-size='30' font-weight='800' fill='%23fff'%3EAS%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --pr-color: #111111;
             --bg-color: #FFFFFF;
             --accent: #0047FF;
+            --dim: #9a9a9a;
             --cubicbz: cubic-bezier(.9, 0, .1, 1);
-            --fz-big: 60px;
+            --fz-big: 58px;
+            --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
         }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        * { margin: 0; padding: 0; }
+
         body {
-            margin: 0;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
             background: var(--bg-color);
             color: var(--pr-color);
-            font-family: 'Syne', Arial, sans-serif;
+            font-family: "Syne", Arial, sans-serif;
             position: relative;
-            text-align: center;
-            padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
+
         .grid-background {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 20;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+        }
+        .back-link a {
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.3s var(--cubicbz);
+        }
+        .back-link a:hover { color: var(--accent); }
+
+        .links-main {
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 640px;
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 34px;
+            padding-left: 4px;
+        }
+
+        .social-links { list-style: none; }
+        .social-links li { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+        .social-links li:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+
+        .social-links a {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            padding: 22px 4px;
+            text-decoration: none;
+            color: var(--pr-color);
+            transition: padding-left 0.4s var(--cubicbz), color 0.4s var(--cubicbz);
+        }
+        .social-links a:hover { color: var(--accent); padding-left: 20px; }
+
+        .l-num {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dim);
+            transition: color 0.4s var(--cubicbz);
+        }
+        .social-links a:hover .l-num { color: var(--accent); }
+
+        .l-name {
+            font-size: var(--fz-big);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .l-meta { margin-left: auto; display: flex; align-items: baseline; gap: 12px; }
+        .l-handle {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--dim);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.4s var(--cubicbz), transform 0.4s var(--cubicbz);
+        }
+        .l-arrow {
+            font-size: 18px;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.4s var(--cubicbz), transform 0.4s var(--cubicbz);
+        }
+        .social-links a:hover .l-handle,
+        .social-links a:hover .l-arrow { opacity: 1; transform: translateX(0); }
+
+        @media (max-width: 768px) {
+            :root { --fz-big: 38px; }
+            .l-meta { display: none; }
+        }
+        @media (max-width: 460px) {
+            :root { --fz-big: 30px; }
+        }
+
+        /* ============ SITE FOOTER (video background) ============ */
+        .site-footer {
+            --ink: #175A67;
+            --ink-soft: #2A707C;
+            --cream: #F5F2EC;
+            --fs-nav: clamp(.9rem, .55vw + .75rem, 1.02rem);
+            position: relative;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-height: 100svh;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .site-footer a { color: inherit; text-decoration: none; }
+
+        .footer-media { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
+        .footer-bg {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.5;
+            object-fit: cover;
+            object-position: center bottom;
+            pointer-events: none;
+            animation: fw-fade 1.35s ease both;
         }
-        .back-link {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 18px;
-        }
-        .back-link a {
-            color: var(--pr-color);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s var(--cubicbz);
-        }
-        .back-link a:hover {
-            color: var(--accent);
-        }
-        .container {
+
+        .footer-inner {
             position: relative;
-            z-index: 10;
-            text-align: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
-        .social-links {
-            list-style: none;
-            padding: 0;
-        }
-        .social-links li {
-            margin: 20px 0;
-            font-size: var(--fz-big);
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-        .social-links a {
-            text-decoration: none;
-            color: var(--pr-color);
-            transition: color 0.3s var(--cubicbz);
-        }
-        .social-links a:hover {
-            color: var(--accent);
-        }
-        @media (max-width: 768px) {
-            :root {
-                --fz-big: 40px;
+
+        @keyframes fw-fade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* responsive — video becomes a flow item under the wordmark (no zoom-crop) */
+        @media (max-width: 1100px) {
+            .site-footer {
+                height: auto;
+                min-height: 100svh;
+                margin: 0;
+                overflow-x: hidden;
+                overflow-y: visible;
             }
-            .back-link {
-                font-size: 16px;
-                top: 10px;
-                left: 10px;
+            .footer-inner {
+                order: 0;
+                padding: clamp(2rem, 9vh, 4rem) 0;
+            }
+            .footer-media {
+                position: relative;
+                inset: auto;
+                order: 1;
+                flex-shrink: 0;
+                width: 100%;
+                height: auto;
+                margin-top: auto;
+                z-index: 0;
+            }
+            .footer-bg {
+                position: relative;
+                inset: auto;
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+                object-fit: contain;
+                object-position: center bottom;
+                transform: none;
+                display: block;
+            }
+            .footer-media::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: clamp(52px, 16vw, 120px);
+                pointer-events: none;
+                z-index: 1;
+                background: linear-gradient(to bottom, #F5F2EC 0%, rgba(245, 242, 236, .65) 38%, rgba(245, 242, 236, 0) 100%);
             }
         }
-        @media (max-width: 480px) {
-            :root {
-                --fz-big: 30px;
+
+        @media (prefers-reduced-motion: reduce) {
+            .footer-bg { display: none; animation: none; }
+            .site-footer {
+                background-color: #F5F2EC;
+                background-image: url("https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4f690bd1-881a-4192-82f2-d714d34c8fb9.png");
+                background-position: center bottom;
+                background-size: cover;
+                background-repeat: no-repeat;
             }
-            .back-link {
-                font-size: 14px;
-            }
+            .footer-media::after { content: none; }
+        }
+        @media (prefers-reduced-motion: reduce) and (max-width: 1100px) {
+            .site-footer { background-size: 100% auto; }
         }
     </style>
 </head>
 <body>
     <div class="grid-background"></div>
+
     <div class="back-link">
         <a href="index.html">&#8592; Retour</a>
     </div>
-    <div class="container">
-        <ul class="social-links">
-            <li><a href="https://www.linkedin.com/in/ahmed-sayeh-189989222/" target="_blank">/ LINKEDIN</a></li>
-            <li><a href="https://github.com/ahmvdd?tab=overview&from=2025-03-01&to=2025-03-12" target="_blank">/ GITHUB</a></li>
-            <li><a href="https://x.com/hmeedds" target="_blank">/ X (TWITTER)</a></li>
-            <li><a href="https://discord.com/users/yourid" target="_blank">/ DISCORD</a></li>
-        </ul>
-    </div>
+
+    <main class="links-main">
+        <div class="container">
+            <p class="eyebrow">Ahmed Sayeh — on se parle où</p>
+            <ul class="social-links">
+                <li>
+                    <a href="https://github.com/ahmvdd" target="_blank" rel="noopener">
+                        <span class="l-num">01</span>
+                        <span class="l-name">/ Github</span>
+                        <span class="l-meta"><span class="l-handle">@ahmvdd</span><span class="l-arrow">&#8599;</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/ahmed-sayeh-189989222/" target="_blank" rel="noopener">
+                        <span class="l-num">02</span>
+                        <span class="l-name">/ LinkedIn</span>
+                        <span class="l-meta"><span class="l-handle">/in/ahmed-sayeh</span><span class="l-arrow">&#8599;</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://x.com/hmeedds" target="_blank" rel="noopener">
+                        <span class="l-num">03</span>
+                        <span class="l-name">/ X (Twitter)</span>
+                        <span class="l-meta"><span class="l-handle">@hmeedds</span><span class="l-arrow">&#8599;</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:ahmed.sayeh67@gmail.com">
+                        <span class="l-num">04</span>
+                        <span class="l-name">/ Email</span>
+                        <span class="l-meta"><span class="l-handle">ahmed.sayeh67@gmail.com</span><span class="l-arrow">&#8599;</span></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-media" aria-hidden="true">
+            <video class="footer-bg" autoplay muted loop playsinline preload="auto"
+                poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4f690bd1-881a-4192-82f2-d714d34c8fb9.png">
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260901_122529_931c22c8-8d2d-47c0-ad51-b97f56a91e42.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="footer-inner"></div>
+    </footer>
+
+    <script>
+        (function () {
+            var v = document.querySelector(".footer-bg");
+            if (!v) return;
+            v.muted = true;
+            var tryPlay = function () {
+                var p = v.play();
+                if (p && p.catch) p.catch(function () {});
+            };
+            tryPlay();
+            v.addEventListener("canplay", tryPlay, { once: true });
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) tryPlay();
+            });
+            ["pointerdown", "scroll", "keydown", "touchstart"].forEach(function (evt) {
+                window.addEventListener(evt, tryPlay, { once: true, passive: true });
+            });
+        })();
+    </script>
 </body>
 </html>
