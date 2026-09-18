@@ -28,6 +28,11 @@
             padding: 0;
         }
 
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             background: var(--bg-dark);
             color: var(--thre-color);
@@ -83,7 +88,7 @@
         }
 
         .line-hero {
-            font-size: clamp(40px, 11vw, 140px);
+            font-size: clamp(28px, 9vw, 140px);
             font-weight: 800;
             line-height: 1.2;
             text-transform: uppercase;
@@ -144,14 +149,22 @@
             width: 100%;
             background: #FAFAFA;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
             padding: 100px 20px;
         }
         @media (min-width: 1024px) { .about { padding: 170px 20px; } }
 
-        .term {
+        .term-wrap {
+            position: relative;
             width: 100%;
             max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .term {
+            width: 100%;
             background: #0c0c0d;
             border: 1px solid #262626;
             border-radius: 10px;
@@ -159,6 +172,28 @@
             box-shadow: 0 30px 90px rgba(0,0,0,0.20);
             font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
         }
+
+        /* CS2 tile — standalone */
+        .cs2-tile {
+            position: relative;
+            width: 100%;
+            max-width: 240px;
+            aspect-ratio: 16 / 11;
+            margin: 20px auto 56px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+            text-decoration: none;
+        }
+        .cs2-tile__img { width: 100%; height: 100%; object-fit: cover; object-position: center 12%; display: block; }
+        .cs2-tile__overlay {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+            padding: 14px 16px;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.82) 100%);
+        }
+        .cs2-tile__stat { font-size: clamp(26px, 5vw, 34px); font-weight: 800; color: #fff; line-height: 1; }
+        .cs2-tile__label { margin-top: 3px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.8); }
 
         .term__bar {
             display: flex;
@@ -174,7 +209,15 @@
         .term__dot:nth-child(3) { background: #27c93f; }
         .term__title { margin-left: 8px; font-size: 12px; color: #6b6b6b; letter-spacing: 0.5px; }
 
-        .term__body { padding: 26px clamp(16px, 4vw, 34px) 32px; }
+        .term__body {
+            padding: 26px clamp(16px, 4vw, 34px) 32px;
+            max-height: min(56vh, 420px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #333 transparent;
+        }
+        .term__body::-webkit-scrollbar { width: 6px; }
+        .term__body::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         .term__line {
             font-size: clamp(12.5px, 1.6vw, 15.5px);
             line-height: 1.95;
@@ -182,10 +225,27 @@
             white-space: pre-wrap;
             overflow-wrap: anywhere;
         }
-        .term__prompt { color: #27c93f; margin-right: 8px; }
+        .term__prompt { color: #27c93f; margin-right: 8px; flex-shrink: 0; }
         .term__cmd { color: #ffffff; }
         .term__out { color: #b0b0b0; }
         .term__loc { color: #27c93f; }
+        .term__hint { color: #55585c; font-style: italic; }
+
+        .term__prompt-line { display: flex; align-items: center; }
+        .term__input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
+            border: 0;
+            outline: 0;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            caret-color: #27c93f;
+        }
 
         .term:hover { cursor: text; }
         .term__line.is-typing::after {
@@ -205,11 +265,13 @@
 
         /* SECTION TITLE (shared) */
         .section-title {
-            font-size: clamp(30px, 6vw, 64px);
+            font-size: clamp(25px, 6vw, 64px);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.02em;
-            line-height: 1;
+            line-height: 1.05;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
         .section-title .stroke {
             color: transparent;
@@ -250,186 +312,87 @@
         .work .section-title { color: #f2f2f2; }
         .work .section-title .stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.5); }
 
-        .cf {
+        /* PROJECTS - HOVER PREVIEW LIST */
+        .pv { position: relative; z-index: 1; margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.14); }
+        @media (min-width: 1024px) { .pv { margin-top: 48px; } }
+
+        .pv__row {
             position: relative;
-            z-index: 1;
-            margin-top: 44px;
-            padding: 62px 0 6px;
-            perspective: 1700px;
-        }
-        @media (min-width: 1024px) { .cf { margin-top: 64px; padding-top: 74px; } }
-
-        /* top browser bar */
-        .cf__bar {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            display: flex; align-items: center; gap: 8px;
-            width: min(660px, 92%);
-            padding: 8px 10px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            z-index: 40;
-        }
-        .cf__bar-btn {
-            width: 26px; height: 26px; flex-shrink: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
-            font-size: 13px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .cf__bar-url {
-            flex: 1; min-width: 0;
-            display: flex; align-items: center; gap: 7px;
-            padding: 5px 14px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            font-size: 12px;
-            color: rgba(255,255,255,0.72);
-            font-family: ui-monospace, Menlo, monospace;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .cf__bar-url svg { width: 10px; height: 10px; flex-shrink: 0; fill: rgba(255,255,255,0.5); }
-        @media (max-width: 620px) { .cf__bar-btn--r { display: none; } }
-
-        .cf__stage {
-            position: relative;
-            height: clamp(300px, 44vw, 500px);
-            transform-style: preserve-3d;
-            touch-action: pan-y;
-            user-select: none;
-        }
-
-        .cf__card {
-            --w: clamp(280px, 60vw, 700px);
-            position: absolute;
-            top: 0; left: 50%;
-            width: var(--w); height: 100%;
-            margin-left: calc(var(--w) / -2);
-            border-radius: 20px;
-            overflow: hidden;
-            background: #121214;
-            box-shadow: 0 40px 90px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: clamp(14px, 2.4vw, 26px);
+            padding: clamp(18px, 3vw, 30px) 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.14);
             text-decoration: none;
             color: #fff;
-            transform-origin: center center;
-            transition: transform 0.6s var(--cubicbz), opacity 0.6s var(--cubicbz), filter 0.6s var(--cubicbz);
+            transition: padding-left 0.4s var(--cubicbz);
+        }
+        .pv__row:hover { padding-left: 14px; }
+
+        .pv__num {
+            flex-shrink: 0;
+            font-size: clamp(13px, 1.6vw, 16px);
+            font-weight: 800;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+            transition: -webkit-text-stroke-color 0.4s;
+        }
+        .pv__row:hover .pv__num { -webkit-text-stroke-color: var(--pr-color); }
+        @media (max-width: 560px) { .pv__num { display: none; } }
+
+        .pv__thumb {
+            flex-shrink: 0;
+            width: clamp(40px, 6vw, 64px);
+            height: clamp(40px, 6vw, 64px);
+            border-radius: 10px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--pr-color) 0%, #001a5c 100%);
+        }
+        .pv__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .pv__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        .pv__name {
+            font-size: clamp(18px, 4vw, 34px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            transition: color 0.3s;
+        }
+        .pv__row:hover .pv__name { color: var(--pr-color); }
+        .pv__desc { font-size: clamp(12px, 1.3vw, 14px); color: rgba(255,255,255,0.65); max-width: 52ch; overflow-wrap: break-word; }
+        .pv__stack { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); overflow-wrap: break-word; }
+
+        .pv__arrow {
+            flex-shrink: 0;
+            font-size: clamp(16px, 2vw, 22px);
+            color: var(--pr-color);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.35s var(--cubicbz), transform 0.35s var(--cubicbz);
+        }
+        .pv__row:hover .pv__arrow { opacity: 1; transform: translateX(0); }
+
+        /* floating preview that follows the cursor (desktop only) */
+        .pv__follow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 260px;
+            height: 170px;
+            border-radius: 12px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.85);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+            display: none;
             will-change: transform, opacity;
         }
-        .cf__card--grad { background: linear-gradient(135deg, var(--pr-color) 0%, #001a5c 100%); }
-
-        .cf__img {
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: top center;
-            display: block;
-            -webkit-user-drag: none;
-            user-select: none;
-        }
-        .cf__ph {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: clamp(30px, 6vw, 64px);
-            font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em;
-            color: rgba(255,255,255,0.16);
-        }
-
-        /* inner card chrome (overlay on the centered card) */
-        .cf__chrome {
-            position: absolute;
-            top: 14px; left: 50%;
-            transform: translateX(-50%);
-            width: calc(clamp(280px, 60vw, 700px) - 26px);
-            display: flex; align-items: center; justify-content: space-between;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
-            z-index: 25;
-        }
-        .cf__chrome.is-on { opacity: 1; pointer-events: auto; }
-        .cf__chrome-btn {
-            width: 30px; height: 30px; flex-shrink: 0;
-            border-radius: 50%;
-            background: rgba(18,18,20,0.55);
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-            border: 0; color: #fff; font-size: 13px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .cf__chrome-expand {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 8px 16px;
-            border-radius: 999px;
-            background: rgba(18,18,20,0.55);
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-            border: 0; color: #fff;
-            font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
-            cursor: pointer;
-        }
-
-        .cf__cap {
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            padding: clamp(18px, 3.4vw, 34px);
-            background: linear-gradient(to top, rgba(6,6,8,0.96) 0%, rgba(6,6,8,0.74) 50%, rgba(6,6,8,0) 100%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .cf__card.is-active .cf__cap { opacity: 1; }
-        .cf__cap-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-        .cf__name { font-size: clamp(17px, 2.4vw, 26px); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
-        .cf__year { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 1px; flex-shrink: 0; }
-        .cf__desc { font-size: clamp(14px, 1.9vw, 21px); line-height: 1.4; color: #fff; max-width: 42ch; }
-        .cf__stack { margin-top: 12px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.45); }
-
-        /* bottom pill */
-        .cf__pill {
-            margin: 34px auto 0;
-            display: flex; align-items: center; gap: 12px;
-            width: max-content; max-width: 92%;
-            padding: 10px 14px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-        }
-        .cf__nav {
-            width: 40px; height: 40px; flex-shrink: 0;
-            border-radius: 50%;
-            border: 0;
-            background: rgba(255,255,255,0.1);
-            color: #fff; font-size: 18px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.25s, transform 0.2s;
-        }
-        .cf__nav:hover { background: rgba(255,255,255,0.2); }
-        .cf__nav:active { transform: scale(0.9); }
-        .cf__pill-info { display: flex; flex-direction: column; gap: 2px; min-width: 150px; text-align: center; }
-        .cf__pill-name { font-size: 13px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        .cf__pill-sub { font-size: 10.5px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
-        .cf__pill-all {
-            width: 40px; height: 40px; flex-shrink: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1); color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; font-size: 16px;
-            transition: background 0.25s;
-        }
-        .cf__pill-all:hover { background: rgba(255,255,255,0.2); }
-
-        /* pager */
-        .cf__pager { display: flex; align-items: center; gap: 10px; justify-content: center; margin-top: 22px; }
-        .cf__pager-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.9); }
-        .cf__pager-track { position: relative; width: 84px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.16); overflow: hidden; }
-        .cf__pager-fill { position: absolute; top: 0; left: 0; height: 100%; width: 25%; border-radius: 999px; background: rgba(255,255,255,0.9); transition: width 0.4s var(--cubicbz); }
-
-        @media (prefers-reduced-motion: reduce) {
-            .cf__card, .cf__pager-fill { transition: none; }
-        }
+        @media (min-width: 1025px) { .pv__follow { display: block; } }
+        .pv__follow img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         /* SERVICES */
         .serv { padding: 80px 0; }
@@ -806,92 +769,79 @@
 
         <main>
             <section class="about" id="about">
-                <div class="term">
-                    <div class="term__bar">
-                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
-                        <span class="term__title">ahmed@hetic — zsh</span>
-                    </div>
-                    <div class="term__body">
-                        <p class="term__line"><span class="term__prompt">ahmed@hetic:~$</span><span class="term__cmd" data-type="cat about.txt"></span></p>
-                        <p class="term__line term__out" data-type="dev et ia. je transforme des idées en trucs qui tournent vraiment, en prod."></p>
-                        <p class="term__line"><span class="term__prompt">ahmed@hetic:~$</span><span class="term__cmd" data-type="cat location.txt"></span></p>
-                        <p class="term__line term__loc" data-type="HETIC · Paris"></p>
-                        <p class="term__line"><span class="term__prompt">ahmed@hetic:~$</span></p>
+                <div class="term-wrap">
+                    <div class="term">
+                        <div class="term__bar">
+                            <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                            <span class="term__title">ahmed@hetic — zsh</span>
+                        </div>
+                        <div class="term__body" id="term-body">
+                            <div id="term-scroll">
+                                <p class="term__line"><span class="term__prompt">ahmed@hetic:~$</span><span class="term__cmd" data-type="cat about.txt"></span></p>
+                                <p class="term__line term__out" data-type="dev et ia. je transforme des idées en trucs qui tournent vraiment, en prod."></p>
+                                <p class="term__line"><span class="term__prompt">ahmed@hetic:~$</span><span class="term__cmd" data-type="cat location.txt"></span></p>
+                                <p class="term__line term__loc" data-type="HETIC · Paris"></p>
+                                <p class="term__line term__hint" data-type="tapez 'help' pour voir les commandes disponibles"></p>
+                            </div>
+                            <p class="term__line term__prompt-line">
+                                <span class="term__prompt">ahmed@hetic:~$</span>
+                                <input type="text" id="term-input" class="term__input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Terminal — tapez une commande, essayez help">
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section class="work" id="work">
                 <div class="content">
-                    <h2 class="section-title" style="text-align: right;">Projets <span class="stroke">Sélectionnés</span></h2>
+                    <h2 class="section-title" style="text-align: right;">Projets<br><span class="stroke">Sélectionnés</span></h2>
 
-                    <div class="cf" id="cf">
-                        <div class="cf__bar" aria-hidden="true">
-                            <span class="cf__bar-btn">‹</span>
-                            <span class="cf__bar-btn">›</span>
-                            <span class="cf__bar-url"><svg viewBox="0 0 24 24"><path d="M12 1a5 5 0 0 0-5 5v3H5v13h14V9h-2V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 1 1 6 0v3H9z"/></svg><span id="cf-url">shiftly.site</span></span>
-                            <span class="cf__bar-btn cf__bar-btn--r">+</span>
-                            <span class="cf__bar-btn cf__bar-btn--r">⧉</span>
-                        </div>
+                    <div class="pv" id="pv">
+                        <div class="pv__follow" id="pv-follow" aria-hidden="true"><img id="pv-follow-img" src="img/proj-shiftly.webp" alt=""></div>
 
-                        <div class="cf__stage">
-                            <a href="https://www.shiftly.site/" target="_blank" rel="noopener" class="cf__card" data-sub="SaaS planning · en prod">
-                                <img class="cf__img" src="img/proj-shiftly.webp" alt="Shiftly" width="1400" height="907" draggable="false">
-                                <div class="cf__cap">
-                                    <div class="cf__cap-top"><span class="cf__name">Shiftly</span><span class="cf__year">2026 · en prod</span></div>
-                                    <p class="cf__desc">SaaS de gestion de planning d'équipe : organisations, employés, plannings et demandes RH depuis un seul dashboard.</p>
-                                    <p class="cf__stack">NestJS · Prisma · Next.js 16 · PostgreSQL</p>
-                                </div>
-                            </a>
+                        <a href="https://www.shiftly.site/" target="_blank" rel="noopener" class="pv__row" data-img="img/proj-shiftly.webp">
+                            <span class="pv__num">01</span>
+                            <span class="pv__thumb"><img src="img/proj-shiftly.webp" alt="" loading="lazy"></span>
+                            <span class="pv__main">
+                                <span class="pv__name">Shiftly</span>
+                                <span class="pv__desc">SaaS de gestion de planning d'équipe, en production.</span>
+                                <span class="pv__stack">NestJS · Prisma · Next.js 16 · PostgreSQL</span>
+                            </span>
+                            <span class="pv__arrow">↗</span>
+                        </a>
 
-                            <a href="https://github.com/ahmvdd/IA_Trade" target="_blank" rel="noopener" class="cf__card" data-sub="Trading ML · Python · Angular">
-                                <img class="cf__img" src="img/proj-iatrade.webp" alt="IA_Trade" width="1400" height="907" draggable="false">
-                                <div class="cf__cap">
-                                    <div class="cf__cap-top"><span class="cf__name">IA_Trade</span><span class="cf__year">2026</span></div>
-                                    <p class="cf__desc">Terminal de trading algorithmique : pipeline Python temps réel, indicateurs techniques, deux modèles ML comparés et backtest en paper trading.</p>
-                                    <p class="cf__stack">Python · scikit-learn · XGBoost · Flask · Angular 19</p>
-                                </div>
-                            </a>
+                        <a href="https://github.com/ahmvdd/IA_Trade" target="_blank" rel="noopener" class="pv__row" data-img="img/proj-iatrade.webp">
+                            <span class="pv__num">02</span>
+                            <span class="pv__thumb"><img src="img/proj-iatrade.webp" alt="" loading="lazy"></span>
+                            <span class="pv__main">
+                                <span class="pv__name">IA_Trade</span>
+                                <span class="pv__desc">Terminal de trading algorithmique, signaux ML en temps réel.</span>
+                                <span class="pv__stack">Python · scikit-learn · XGBoost · Flask · Angular 19</span>
+                            </span>
+                            <span class="pv__arrow">↗</span>
+                        </a>
 
-                            <a href="https://github.com/ahmvdd/mmporg-metaverse" target="_blank" rel="noopener" class="cf__card" data-sub="Jeu multi · Unity · netcode C#">
-                                <img class="cf__img" src="img/proj-metaverse.webp" alt="MetaVerse" width="1400" height="879" draggable="false">
-                                <div class="cf__cap">
-                                    <div class="cf__cap-top"><span class="cf__name">MetaVerse</span><span class="cf__year">2026</span></div>
-                                    <p class="cf__desc">Jeu multijoueur temps réel : ville 3D Unity, joueurs synchronisés via un serveur TCP custom en C# / .NET, source de vérité unique.</p>
-                                    <p class="cf__stack">Unity 6 · C# · .NET · Serveur TCP custom</p>
-                                </div>
-                            </a>
+                        <a href="https://github.com/ahmvdd/mmporg-metaverse" target="_blank" rel="noopener" class="pv__row" data-img="img/proj-metaverse.webp">
+                            <span class="pv__num">03</span>
+                            <span class="pv__thumb"><img src="img/proj-metaverse.webp" alt="" loading="lazy"></span>
+                            <span class="pv__main">
+                                <span class="pv__name">MetaVerse</span>
+                                <span class="pv__desc">Jeu multijoueur temps réel, netcode TCP custom en C# / .NET.</span>
+                                <span class="pv__stack">Unity 6 · C# · .NET</span>
+                            </span>
+                            <span class="pv__arrow">↗</span>
+                        </a>
 
-                            <a href="https://github.com/ahmvdd/pingwatch" target="_blank" rel="noopener" class="cf__card cf__card--grad" data-sub="Monitoring uptime · cron · Docker">
-                                <span class="cf__ph">PingWatch</span>
-                                <div class="cf__cap">
-                                    <div class="cf__cap-top"><span class="cf__name">PingWatch</span><span class="cf__year">2026</span></div>
-                                    <p class="cf__desc">Monitoring d'uptime : ping automatique toutes les 5 min via cron, historique des temps de réponse, alertes email en cas de panne.</p>
-                                    <p class="cf__stack">Next.js 14 · MongoDB · node-cron · Docker · GitHub Actions</p>
-                                </div>
-                            </a>
-
-                            <div class="cf__chrome" id="cf-chrome">
-                                <button class="cf__chrome-btn cf__chrome-prev" type="button" aria-label="Projet précédent">‹</button>
-                                <button class="cf__chrome-expand" type="button">⤢ Ouvrir</button>
-                                <button class="cf__chrome-btn" type="button" aria-label="Plus">···</button>
-                            </div>
-                        </div>
-
-                        <div class="cf__pill">
-                            <button class="cf__nav cf__nav--prev" type="button" aria-label="Projet précédent">‹</button>
-                            <div class="cf__pill-info">
-                                <span class="cf__pill-name" id="cf-pill-name">Shiftly</span>
-                                <span class="cf__pill-sub" id="cf-pill-sub">SaaS planning · en prod</span>
-                            </div>
-                            <button class="cf__nav cf__nav--next" type="button" aria-label="Projet suivant">›</button>
-                            <a class="cf__pill-all" href="Cms.html" aria-label="Tous les projets">⌕</a>
-                        </div>
-
-                        <div class="cf__pager" aria-hidden="true">
-                            <span class="cf__pager-dot"></span>
-                            <span class="cf__pager-track"><span class="cf__pager-fill" id="cf-fill"></span></span>
-                        </div>
+                        <a href="https://github.com/ahmvdd/pingwatch" target="_blank" rel="noopener" class="pv__row">
+                            <span class="pv__num">04</span>
+                            <span class="pv__thumb"></span>
+                            <span class="pv__main">
+                                <span class="pv__name">PingWatch</span>
+                                <span class="pv__desc">Monitoring d'uptime, alertes email en cas de panne.</span>
+                                <span class="pv__stack">Next.js 14 · MongoDB · node-cron · Docker</span>
+                            </span>
+                            <span class="pv__arrow">↗</span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -1027,6 +977,14 @@
                 </div>
             </footer> -->
 
+            <div class="cs2-tile">
+                <img class="cs2-tile__img" src="img/cs2-tile.webp" alt="" loading="lazy">
+                <div class="cs2-tile__overlay">
+                    <span class="cs2-tile__stat">35</span>
+                    <span class="cs2-tile__label">victoires sur Mirage</span>
+                </div>
+            </div>
+
             <div class="cc">
                 <p id="email-trigger">ahmed.sayeh67@gmail.com</p><br>
                 <a href="links.html">ME CONTACTER ↗</a>
@@ -1109,97 +1067,134 @@
             }
         }
 
-        // --- PROJECTS COVERFLOW ---
-        (function initCoverflow() {
-            const cf = document.getElementById("cf");
-            if (!cf) return;
-            const stage = cf.querySelector(".cf__stage");
-            const cards = Array.from(cf.querySelectorAll(".cf__card"));
-            const chrome = cf.querySelector("#cf-chrome");
-            const urlEl = cf.querySelector("#cf-url");
-            const pillName = cf.querySelector("#cf-pill-name");
-            const pillSub = cf.querySelector("#cf-pill-sub");
-            const fill = cf.querySelector("#cf-fill");
-            let active = 0;
+        // --- TERMINAL: INTERACTIVE COMMANDS ---
+        (function initTermInput() {
+            const body = document.getElementById("term-body");
+            const scrollWrap = document.getElementById("term-scroll");
+            const input = document.getElementById("term-input");
+            if (!body || !scrollWrap || !input) return;
 
-            const prettyUrl = (href) => {
-                try {
-                    const u = new URL(href);
-                    return (u.host.replace(/^www\./, "") + u.pathname).replace(/\/$/, "");
-                } catch (e) { return href; }
+            const PROMPT = "ahmed@hetic:~$";
+
+            const COMMANDS = {
+                help: () => [
+                    "commandes disponibles :", "",
+                    "  whoami      qui je suis",
+                    "  skills      stack technique",
+                    "  projects    mes projets",
+                    "  contact     me contacter",
+                    "  location    où je suis",
+                    "  clear       vide le terminal"
+                ],
+                whoami: () => ["ahmed sayeh — dev et ia.", "je transforme des idées en trucs qui tournent vraiment, en prod."],
+                skills: () => ["typescript · javascript · go · node.js", "next.js · tauri · ollama · postgresql · mariadb"],
+                projects: () => ["shiftly · ia_trade · metaverse · pingwatch", "→ voir plus bas, ou cms.html pour la liste complète"],
+                contact: () => ["ahmed.sayeh67@gmail.com", "→ voir aussi links.html"],
+                location: () => ["hetic · paris"],
+                sudo: () => ["nice try. permission denied."]
             };
 
-            function render() {
-                cards.forEach((card, i) => {
-                    const o = i - active;
-                    const abs = Math.abs(o);
-                    let transform, opacity = 1, blur = 0, pe = "auto";
-                    if (o === 0) {
-                        transform = "translateX(0) translateZ(0) rotateY(0deg) scale(1)";
-                    } else {
-                        const dir = o < 0 ? 1 : -1;
-                        const depth = Math.min(abs, 3);
-                        transform = "translateX(" + (o * 40) + "%) translateZ(-" + (depth * 150) + "px) rotateY(" + (dir * 34) + "deg) scale(" + Math.max(0.6, 0.86 - (abs - 1) * 0.08) + ")";
-                        opacity = abs >= 3 ? 0 : 1 - (abs - 1) * 0.4;
-                        blur = abs >= 3 ? 0 : 1.5 + (abs - 1);
-                        pe = abs >= 3 ? "none" : "auto";
+            function scrollToBottom() { body.scrollTop = body.scrollHeight; }
+
+            function makeLine(cls) {
+                const p = document.createElement("p");
+                p.className = "term__line" + (cls ? " " + cls : "");
+                return p;
+            }
+
+            function echoCmd(cmd) {
+                const p = makeLine();
+                const prompt = document.createElement("span");
+                prompt.className = "term__prompt";
+                prompt.textContent = PROMPT;
+                const cmdSpan = document.createElement("span");
+                cmdSpan.className = "term__cmd";
+                cmdSpan.textContent = cmd;
+                p.appendChild(prompt);
+                p.appendChild(cmdSpan);
+                scrollWrap.appendChild(p);
+            }
+
+            function printOut(text, accent) {
+                const p = makeLine("term__out" + (accent ? " term__loc" : ""));
+                p.textContent = text || " ";
+                scrollWrap.appendChild(p);
+            }
+
+            function runCommand(raw) {
+                const cmd = raw.trim();
+                echoCmd(cmd);
+                if (!cmd) { scrollToBottom(); return; }
+
+                if (cmd.toLowerCase() === "clear") {
+                    scrollWrap.innerHTML = "";
+                    return;
+                }
+
+                const handler = COMMANDS[cmd.toLowerCase()];
+                if (!handler) {
+                    printOut("command not found: " + cmd);
+                    printOut("tapez 'help' pour la liste des commandes");
+                } else {
+                    handler().forEach((line) => printOut(line, cmd.toLowerCase() === "location"));
+                }
+                scrollToBottom();
+            }
+
+            let history = [];
+            let histIdx = -1;
+
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    const val = input.value;
+                    input.value = "";
+                    if (val.trim()) { history.push(val); histIdx = history.length; }
+                    runCommand(val);
+                } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    if (histIdx > 0) { histIdx--; input.value = history[histIdx] || ""; }
+                } else if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    if (histIdx < history.length) {
+                        histIdx++;
+                        input.value = history[histIdx] || "";
                     }
-                    card.style.transform = transform;
-                    card.style.opacity = opacity;
-                    card.style.filter = blur ? "blur(" + blur + "px) grayscale(0.35)" : "none";
-                    card.style.zIndex = String(20 - abs);
-                    card.style.pointerEvents = pe;
-                    card.classList.toggle("is-active", o === 0);
-                });
-                const cur = cards[active];
-                urlEl.textContent = prettyUrl(cur.getAttribute("href"));
-                pillName.textContent = cur.querySelector(".cf__name").textContent;
-                pillSub.textContent = cur.dataset.sub || "";
-                fill.style.width = ((active + 1) / cards.length * 100) + "%";
-                chrome.classList.add("is-on");
-            }
-
-            function setActive(i) {
-                active = (i % cards.length + cards.length) % cards.length;
-                render();
-            }
-
-            cf.querySelectorAll(".cf__nav--prev, .cf__chrome-prev").forEach((b) =>
-                b.addEventListener("click", () => setActive(active - 1)));
-            cf.querySelectorAll(".cf__nav--next").forEach((b) =>
-                b.addEventListener("click", () => setActive(active + 1)));
-            chrome.querySelector(".cf__chrome-expand").addEventListener("click", () =>
-                window.open(cards[active].getAttribute("href"), "_blank", "noopener"));
-
-            let downX = 0, moved = false;
-            stage.addEventListener("pointerdown", (e) => { downX = e.clientX; moved = false; });
-            stage.addEventListener("pointermove", (e) => {
-                if (downX && Math.abs(e.clientX - downX) > 8) moved = true;
-            });
-            window.addEventListener("pointerup", (e) => {
-                if (!downX) return;
-                const dx = e.clientX - downX;
-                downX = 0;
-                if (dx > 55) setActive(active - 1);
-                else if (dx < -55) setActive(active + 1);
+                }
             });
 
-            cards.forEach((card, i) => {
-                card.addEventListener("click", (e) => {
-                    if (moved) { e.preventDefault(); moved = false; return; }
-                    if (i !== active) { e.preventDefault(); setActive(i); }
-                });
-            });
-
-            window.addEventListener("keydown", (e) => {
-                if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-                const r = cf.getBoundingClientRect();
-                if (r.bottom < 0 || r.top > window.innerHeight) return;
-                setActive(active + (e.key === "ArrowLeft" ? -1 : 1));
-            });
-
-            render();
+            term.addEventListener("click", () => input.focus());
         })();
+
+        // --- PROJECTS HOVER PREVIEW ---
+        if (window.innerWidth > 1024) {
+            const pv = document.querySelector('#pv');
+            const pvFollow = document.querySelector('#pv-follow');
+            const pvFollowImg = document.querySelector('#pv-follow-img');
+            if (pv && pvFollow) {
+                let pmX = 0, pmY = 0, pdX = 0, pdY = 0;
+                window.addEventListener('mousemove', (e) => { pmX = e.clientX; pmY = e.clientY; });
+                function updatePvFollow() {
+                    pdX += (pmX - pdX) * 0.15;
+                    pdY += (pmY - pdY) * 0.15;
+                    gsap.set(pvFollow, { x: pdX, y: pdY });
+                    requestAnimationFrame(updatePvFollow);
+                }
+                updatePvFollow();
+
+                pv.querySelectorAll('.pv__row').forEach((row) => {
+                    const img = row.dataset.img;
+                    if (!img) return;
+                    row.addEventListener('mouseenter', () => {
+                        pvFollowImg.src = img;
+                        gsap.to(pvFollow, { opacity: 1, scale: 1, duration: 0.4, ease: 'power3.out' });
+                    });
+                    row.addEventListener('mouseleave', () => {
+                        gsap.to(pvFollow, { opacity: 0, scale: 0.85, duration: 0.35 });
+                    });
+                });
+            }
+        }
 
         // --- SERVICES ICONS ---
         gsap.utils.toArray(".serv__item").forEach((item) => {
