@@ -724,6 +724,177 @@
             .power__bg { top: 0; height: 100%; }
         }
 
+        /* RESEARCH — VEILLE NEWSLETTER */
+        .research { padding: 80px 0; background: #fff; }
+        @media (min-width: 1024px) { .research { padding: 100px 0; } }
+        .research__note {
+            margin-top: 18px;
+            max-width: 62ch;
+            font-size: 13px;
+            font-style: italic;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .rs { margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.1); }
+        .rs__row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: clamp(14px, 2.4vw, 26px);
+            padding: clamp(18px, 3vw, 28px) 4px;
+            border: 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            transition: padding-left 0.4s var(--cubicbz);
+        }
+        .rs__row:hover { padding-left: 14px; }
+        .rs__num {
+            flex-shrink: 0;
+            font-size: clamp(13px, 1.6vw, 16px);
+            font-weight: 800;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.3);
+            transition: -webkit-text-stroke-color 0.4s;
+        }
+        .rs__row:hover .rs__num { -webkit-text-stroke-color: var(--pr-color); }
+        .rs__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        .rs__name {
+            font-size: clamp(19px, 3vw, 28px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            transition: color 0.3s;
+        }
+        .rs__row:hover .rs__name { color: var(--pr-color); }
+        .rs__teaser { font-size: clamp(12px, 1.3vw, 14px); color: #666; overflow-wrap: break-word; }
+        .rs__arrow {
+            flex-shrink: 0;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            color: #111;
+            transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .rs__row:hover .rs__arrow { background: var(--pr-color); border-color: var(--pr-color); color: #fff; transform: rotate(90deg); }
+
+        .rs-modal {
+            position: fixed; inset: 0; z-index: 5000;
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .rs-modal.is-open { display: flex; }
+        .rs-modal__backdrop {
+            position: absolute; inset: 0;
+            background: rgba(8,8,10,0.75);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            border: 0;
+        }
+        .rs-modal__panel {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 560px;
+            max-height: 84vh;
+            overflow-y: auto;
+            background: #0c0c0d;
+            border: 1px solid #262626;
+            border-radius: 16px;
+            padding: clamp(28px, 5vw, 46px);
+            color: #fff;
+            box-shadow: 0 40px 90px rgba(0,0,0,0.5);
+            transform: translateY(16px) scale(0.97);
+            opacity: 0;
+            transition: transform 0.35s var(--cubicbz), opacity 0.35s var(--cubicbz);
+        }
+        .rs-modal.is-open .rs-modal__panel { transform: translateY(0) scale(1); opacity: 1; }
+        .rs-modal__close {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 1px solid #2a2a2c;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.25s;
+        }
+        .rs-modal__close:hover { background: rgba(255,255,255,0.15); }
+        .rs-modal__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; padding-right: 30px; }
+        .rs-modal__num { font-size: 13px; font-weight: 800; color: var(--pr-color); letter-spacing: 2px; }
+        .rs-modal__title {
+            font-size: clamp(22px, 4vw, 30px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+        .rs-modal__date {
+            margin-left: auto;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+        }
+
+        .veille__list { display: flex; flex-direction: column; gap: 16px; list-style: none; }
+        .veille__list li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #444;
+        }
+        .veille__list li::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 7px;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--pr-color);
+        }
+        .veille__list strong { color: #111; font-weight: 800; }
+        .veille__list cite {
+            display: inline-block;
+            margin-left: 6px;
+            font-style: normal;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+        }
+        .veille__list cite a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            transition: color 0.25s, border-color 0.25s;
+        }
+        .veille__list cite a:hover { color: var(--pr-color); border-color: var(--pr-color); }
+        .rs-modal__panel .veille__list li { color: rgba(255,255,255,0.65); }
+        .rs-modal__panel .veille__list strong { color: #fff; }
+        .rs-modal__panel .veille__list cite { color: rgba(255,255,255,0.4); }
+        .rs-modal__panel .veille__list cite a { border-color: rgba(255,255,255,0.25); }
+        .rs-modal__panel .veille__list cite a:hover { color: #4d8bff; border-color: #4d8bff; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rs__row, .rs__arrow, .rs-modal__panel { transition: none; }
+        }
+
         /* FOOTER */
         .footer { height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 20px;}
         .footer__div { font-family: 'Syne', sans-serif; font-size: clamp(30px, 9vw, 110px); color: var(--pr-color); text-transform: uppercase; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 20px; font-weight: 800; perspective: 1000px; }
@@ -977,6 +1148,124 @@
                 </div>
             </footer> -->
 
+            <section class="research" id="research">
+                <div class="content">
+                    <h2 class="section-title" style="text-align: left; color: #111;">Recherches <span class="stroke" style="-webkit-text-stroke: 1px var(--pr-color); color: transparent;">& Veille</span></h2>
+                    <p class="research__note">Une veille perso sur des sujets qui me passionnent — sources externes citées, aucune recherche personnelle, juste ce que je lis et que je trouve marquant.</p>
+
+                    <div class="rs">
+                        <button class="rs__row" type="button" data-target="rs-1">
+                            <span class="rs__num">01</span>
+                            <span class="rs__main">
+                                <span class="rs__name">Quantum Computing</span>
+                                <span class="rs__teaser">Veille 2025 — correction d'erreurs, financement, quantum advantage...</span>
+                            </span>
+                            <span class="rs__arrow">+</span>
+                        </button>
+
+                        <button class="rs__row" type="button" data-target="rs-2">
+                            <span class="rs__num">02</span>
+                            <span class="rs__main">
+                                <span class="rs__name">Aérospatial & Lanceurs</span>
+                                <span class="rs__teaser">Veille 2025 — réutilisabilité, nouveaux entrants, essais de vol...</span>
+                            </span>
+                            <span class="rs__arrow">+</span>
+                        </button>
+
+                        <button class="rs__row" type="button" data-target="rs-3">
+                            <span class="rs__num">03</span>
+                            <span class="rs__main">
+                                <span class="rs__name">Finance Quantitative</span>
+                                <span class="rs__teaser">Veille 2025 — trading algorithmique, agents IA, apprentissage par renforcement...</span>
+                            </span>
+                            <span class="rs__arrow">+</span>
+                        </button>
+
+                        <button class="rs__row" type="button" data-target="rs-4">
+                            <span class="rs__num">04</span>
+                            <span class="rs__main">
+                                <span class="rs__name">Robotique Humanoïde</span>
+                                <span class="rs__teaser">Veille 2025 — course aux livraisons, domination chinoise, retard Tesla...</span>
+                            </span>
+                            <span class="rs__arrow">+</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="rs-modal" id="rs-1" aria-hidden="true">
+                    <button class="rs-modal__backdrop" type="button" data-close aria-label="Fermer"></button>
+                    <div class="rs-modal__panel" role="dialog" aria-modal="true" aria-labelledby="rs-1-title">
+                        <button class="rs-modal__close" type="button" data-close aria-label="Fermer">×</button>
+                        <div class="rs-modal__head">
+                            <span class="rs-modal__num">01</span>
+                            <h3 class="rs-modal__title" id="rs-1-title">Quantum Computing</h3>
+                            <span class="rs-modal__date">2025</span>
+                        </div>
+                        <ul class="veille__list">
+                            <li><strong>La correction d'erreurs est devenue plus centrale que la course aux qubits.</strong> L'industrie passe d'une logique « plus de qubits » à une logique de stabilisation et de réduction du coût de l'erreur.<cite><a href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-year-of-quantum-from-concept-to-reality-in-2025" target="_blank" rel="noopener">McKinsey</a></cite></li>
+                            <li><strong>Les architectures trapped-ion, neutral atoms et topological montent en puissance.</strong> En 2025, Quantinuum a lancé Helios, un système commercial très précis, tandis que Microsoft a présenté Majorana 1, autour des qubits topologiques.</li>
+                            <li><strong>Les démonstrations de « quantum advantage » se précisent, mais restent ciblées.</strong> D-Wave revendique une supériorité sur une simulation de matériaux magnétiques ; Google est crédité d'une percée de vérifiabilité sur une tâche spécifique.</li>
+                            <li><strong>Google revendique une nouvelle preuve de « quantum advantage » vérifiable.</strong> Sur sa puce Willow, l'algorithme Quantum Echoes — publié dans Nature — tourne 13 000 fois plus vite que le meilleur supercalculateur classique, et surtout ses résultats sont vérifiables, contrairement aux démonstrations précédentes.<cite><a href="https://www.hpcwire.com/2025/10/22/google-claims-quantum-advantage-with-willow-chip/" target="_blank" rel="noopener">HPCwire</a></cite></li>
+                            <li><strong>Le quantique dépasse le simple calcul.</strong> Navigation sans GPS par magnétomètres quantiques, imagerie de défauts sur semi-conducteurs, capteurs quantiques envoyés dans l'espace.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="rs-modal" id="rs-2" aria-hidden="true">
+                    <button class="rs-modal__backdrop" type="button" data-close aria-label="Fermer"></button>
+                    <div class="rs-modal__panel" role="dialog" aria-modal="true" aria-labelledby="rs-2-title">
+                        <button class="rs-modal__close" type="button" data-close aria-label="Fermer">×</button>
+                        <div class="rs-modal__head">
+                            <span class="rs-modal__num">02</span>
+                            <h3 class="rs-modal__title" id="rs-2-title">Aérospatial & Lanceurs</h3>
+                            <span class="rs-modal__date">2025</span>
+                        </div>
+                        <ul class="veille__list">
+                            <li><strong>Starship a rempli tous ses objectifs sur son 11e vol d'essai.</strong> Le 13 octobre 2025, rallumage d'un moteur en plein vol, déploiement de 8 simulateurs de satellites Starlink, et test d'une configuration alternative du booster (5 moteurs Raptor allumés au lieu de 3 sur une des phases finales).<cite><a href="https://spacenews.com/starship-successfully-completes-11th-flight-test/" target="_blank" rel="noopener">SpaceNews</a></cite></li>
+                            <li><strong>Honda s'est lancé dans la course à la réutilisabilité.</strong> En juin 2025, l'entreprise a réussi un test de saut et d'atterrissage sur un prototype de fusée — une première pour un industriel japonais.</li>
+                            <li><strong>ArianeGroup avance sur son démonstrateur Themis.</strong> Intégration terminée en septembre 2025, avant des essais de vol à basse altitude pour valider jambes d'atterrissage et guidage.</li>
+                            <li><strong>La fiabilité des moteurs réutilisables devient la norme.</strong> Le Merlin 1D de SpaceX, qui propulse le Falcon 9, a désormais dépassé 100 missions avec rallumages et atterrissages répétés.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="rs-modal" id="rs-3" aria-hidden="true">
+                    <button class="rs-modal__backdrop" type="button" data-close aria-label="Fermer"></button>
+                    <div class="rs-modal__panel" role="dialog" aria-modal="true" aria-labelledby="rs-3-title">
+                        <button class="rs-modal__close" type="button" data-close aria-label="Fermer">×</button>
+                        <div class="rs-modal__head">
+                            <span class="rs-modal__num">03</span>
+                            <h3 class="rs-modal__title" id="rs-3-title">Finance Quantitative</h3>
+                            <span class="rs-modal__date">2025</span>
+                        </div>
+                        <ul class="veille__list">
+                            <li><strong>Des agents LLM battent le buy-and-hold — mais avec une réserve de taille.</strong> Sur des benchmarks multi-marchés en conditions live, des agents de trading basés sur des LLM surperforment la stratégie passive sur la sélection d'actifs. Les auteurs parlent d'« illusion d'alpha » : la performance mesurée en benchmark ne garantit rien sur la robustesse en déploiement réel (hallucinations, biais d'évaluation).<cite><a href="https://arxiv.org/pdf/2510.11695" target="_blank" rel="noopener">arXiv</a></cite></li>
+                            <li><strong>L'architecture de l'agent compte plus que le LLM qui le fait tourner.</strong> Une étude comparative montre que c'est la façon dont l'agent est construit (mémoire, boucle de décision, gestion du risque) — pas le choix du modèle de langage sous-jacent — qui pèse le plus sur la rentabilité et la capacité d'adaptation.<cite><a href="https://arxiv.org/pdf/2608.31041" target="_blank" rel="noopener">arXiv</a></cite></li>
+                            <li><strong>Les systèmes multi-agents pour la découverte de stratégies émergent.</strong> Des travaux de recherche comme QuantEvolve ou AlphaCrafter explorent des architectures d'agents IA capables de générer et tester des stratégies de trading.<cite><a href="https://arxiv.org/html/2510.18569v1" target="_blank" rel="noopener">arXiv</a></cite></li>
+                            <li><strong>L'apprentissage par renforcement gagne du terrain.</strong> De plus en plus utilisé pour optimiser le timing des trades et le rendement ajusté du risque — proche de ce que j'ai exploré avec IA_Trade.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="rs-modal" id="rs-4" aria-hidden="true">
+                    <button class="rs-modal__backdrop" type="button" data-close aria-label="Fermer"></button>
+                    <div class="rs-modal__panel" role="dialog" aria-modal="true" aria-labelledby="rs-4-title">
+                        <button class="rs-modal__close" type="button" data-close aria-label="Fermer">×</button>
+                        <div class="rs-modal__head">
+                            <span class="rs-modal__num">04</span>
+                            <h3 class="rs-modal__title" id="rs-4-title">Robotique Humanoïde</h3>
+                            <span class="rs-modal__date">2025</span>
+                        </div>
+                        <ul class="veille__list">
+                            <li><strong>Boston Dynamics fait apprendre Atlas par démonstration, pas par code.</strong> Avec le Toyota Research Institute, Atlas utilise des « Large Behavior Models » : une seule politique apprise enchaîne locomotion et manipulation (accroupissements, prise, reprise en main, dépose) sur une tâche d'atelier complète, avec 3 à 5× moins de données spécifiques à la tâche qu'avant.<cite><a href="https://bostondynamics.com/blog/large-behavior-models-atlas-find-new-footing/" target="_blank" rel="noopener">Boston Dynamics</a></cite></li>
+                            <li><strong>Atlas récupère seul quand ça part en vrille.</strong> Pièce qui tombe, couvercle qui se referme tout seul — le robot corrige sans intervention humaine et sans comportement de secours programmé à l'avance : la récupération est elle-même apprise.</li>
+                            <li><strong>Figure AI fait tenir tout le haut du corps dans un seul modèle.</strong> Helix est le premier modèle Vision-Language-Action à piloter en continu et en temps réel poignets, torse, tête et doigts individuels d'un humanoïde entier, tout en comprenant des instructions vocales et en saisissant des objets jamais vus à l'entraînement.<cite><a href="https://www.figure.ai/news/helix" target="_blank" rel="noopener">Figure AI</a></cite></li>
+                            <li><strong>Et ça tourne sur du matériel embarqué.</strong> Helix fonctionne sur des GPU embarqués basse consommation — condition nécessaire pour sortir du labo et faire de la manipulation de colis en conditions réelles avec Figure 03.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
             <div class="cs2-tile">
                 <img class="cs2-tile__img" src="img/cs2-tile.webp" alt="" loading="lazy">
                 <div class="cs2-tile__overlay">
@@ -1164,6 +1453,45 @@
             });
 
             term.addEventListener("click", () => input.focus());
+        })();
+
+        // --- RESEARCH MODALS ---
+        (function initResearch() {
+            const rows = document.querySelectorAll(".rs__row");
+            if (!rows.length) return;
+            let openModal = null;
+            let lastTrigger = null;
+
+            function close() {
+                if (!openModal) return;
+                openModal.classList.remove("is-open");
+                openModal.setAttribute("aria-hidden", "true");
+                document.body.style.overflow = "";
+                openModal = null;
+                if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+            }
+
+            function open(id, trigger) {
+                const modal = document.getElementById(id);
+                if (!modal) return;
+                modal.classList.add("is-open");
+                modal.setAttribute("aria-hidden", "false");
+                document.body.style.overflow = "hidden";
+                openModal = modal;
+                lastTrigger = trigger;
+                const closeBtn = modal.querySelector(".rs-modal__close");
+                if (closeBtn) closeBtn.focus();
+            }
+
+            rows.forEach((row) => {
+                row.addEventListener("click", () => open(row.dataset.target, row));
+            });
+            document.querySelectorAll(".rs-modal [data-close]").forEach((el) => {
+                el.addEventListener("click", close);
+            });
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") close();
+            });
         })();
 
         // --- PROJECTS HOVER PREVIEW ---
