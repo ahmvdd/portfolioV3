@@ -185,15 +185,14 @@
             box-shadow: 0 16px 40px rgba(0,0,0,0.25);
             text-decoration: none;
         }
-        .cs2-tile__img { width: 100%; height: 100%; object-fit: cover; object-position: center 12%; display: block; }
+        .cs2-tile__img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         .cs2-tile__overlay {
             position: absolute; inset: 0;
             display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
             padding: 14px 16px;
             background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.82) 100%);
         }
-        .cs2-tile__stat { font-size: clamp(26px, 5vw, 34px); font-weight: 800; color: #fff; line-height: 1; }
-        .cs2-tile__label { margin-top: 3px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.8); }
+        .cs2-tile__label { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; }
 
         .term__bar {
             display: flex;
@@ -293,18 +292,10 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: url('img/work-bg.webp') center / cover no-repeat;
-            filter: brightness(0.82) saturate(0.95);
-            z-index: 0;
-            pointer-events: none;
-        }
-        .work::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(11,11,12,0.6) 0%, rgba(11,11,12,0) 24%, rgba(11,11,12,0) 76%, rgba(11,11,12,0.55) 100%),
-                radial-gradient(ellipse at 50% 45%, rgba(11,11,12,0.05) 0%, rgba(11,11,12,0.34) 65%, rgba(11,11,12,0.6) 100%);
+            background-image:
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: 0;
             pointer-events: none;
         }
@@ -809,7 +800,8 @@
             overflow-y: auto;
             background: #0c0c0d;
             border: 1px solid #262626;
-            border-radius: 16px;
+            border-top: 2px solid var(--pr-color);
+            border-radius: 8px;
             padding: clamp(28px, 5vw, 46px);
             color: #fff;
             box-shadow: 0 40px 90px rgba(0,0,0,0.5);
@@ -833,7 +825,7 @@
         }
         .rs-modal__close:hover { background: rgba(255,255,255,0.15); }
         .rs-modal__head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; padding-right: 30px; }
-        .rs-modal__num { font-size: 13px; font-weight: 800; color: var(--pr-color); letter-spacing: 2px; }
+        .rs-modal__num { font-size: 13px; font-weight: 700; color: var(--pr-color); letter-spacing: 2px; font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
         .rs-modal__title {
             font-size: clamp(22px, 4vw, 30px);
             font-weight: 800;
@@ -1267,10 +1259,9 @@
             </section>
 
             <div class="cs2-tile">
-                <img class="cs2-tile__img" src="img/cs2-tile.webp" alt="" loading="lazy">
+                <img class="cs2-tile__img" src="img/cs2-tile.webp?v=2" alt="" loading="lazy">
                 <div class="cs2-tile__overlay">
-                    <span class="cs2-tile__stat">35</span>
-                    <span class="cs2-tile__label">victoires sur Mirage</span>
+                    <span class="cs2-tile__label">CS2 Player</span>
                 </div>
             </div>
 
