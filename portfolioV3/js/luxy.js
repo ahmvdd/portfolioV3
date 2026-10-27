@@ -66,7 +66,7 @@
 			if (this.wrapper === "undefined") return false;
 
 			this.targets = document.querySelectorAll(this.settings.targets);
-			document.body.style.height = this.wrapper.clientHeight + 'px';
+			// document.body.style.height = this.wrapper.clientHeight + 'px'; // Désactivé : cassait position:sticky
 
 			this.windowHeight = window.clientHeight;
 			this.attachEvent();
@@ -144,9 +144,7 @@
 		resize: function(){
 			var self = this;
 			self.windowHeight = (window.innerHeight || document.documentElement.clientHeight || 0);
-			if (parseInt(self.wrapper.clientHeight) != parseInt(document.body.style.height)) {
-				document.body.style.height = self.wrapper.clientHeight + 'px';
-			}
+			// body.style.height forcing désactivé : cassait position:sticky
 			self.resizeId = requestAnimationFrame(self.resize.bind(self));
 		},
 
